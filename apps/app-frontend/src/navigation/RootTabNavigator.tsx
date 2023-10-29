@@ -1,8 +1,9 @@
+import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import { colors } from "../constants";
 import { ContactScreen } from "../screens/ContactScreen/ContactScreen";
 import { StoreListScreen } from "../screens/StoreListScreen/StoreListScreen";
-import { Ionicons } from "@expo/vector-icons";
-import { colors } from "../constants";
 
 const Tab = createBottomTabNavigator();
 

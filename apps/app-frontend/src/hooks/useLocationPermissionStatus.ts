@@ -1,11 +1,11 @@
-import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import {
   LocationPermissionResponse,
   requestForegroundPermissionsAsync,
 } from "expo-location";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export function useLocationPermissionStatus(
-  options?: UseQueryOptions<LocationPermissionResponse>
+  options?: UseQueryOptions<LocationPermissionResponse>,
 ) {
   return useQuery<LocationPermissionResponse>({
     queryKey: ["locationPermissionStatus"],

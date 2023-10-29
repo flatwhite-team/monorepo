@@ -1,13 +1,13 @@
 import { memo } from "react";
-import { Text, Image, View, TouchableOpacity } from "react-native";
-import { StyleSheet } from "react-native";
-import isEqual from "lodash/isEqual";
-import { Store } from "../../../models/Store";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
-import { BusinessDay } from "../../../models/BusinessDay";
+import isEqual from "lodash/isEqual";
+
 import { colors } from "../../../constants";
+import { BusinessDay } from "../../../models/BusinessDay";
+import { Store } from "../../../models/Store";
+import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
 
 const logoImage = require("../../../images/icon.png");
 

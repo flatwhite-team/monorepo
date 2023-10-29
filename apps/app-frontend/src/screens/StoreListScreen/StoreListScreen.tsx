@@ -1,17 +1,17 @@
 import { Suspense, useState } from "react";
-import { View, FlatList, RefreshControl } from "react-native";
-import { useInfiniteStores } from "./hooks/useInfiniteStores";
-import { styles } from "../../../styles/commonStyle";
-import { StyleSheet } from "react-native";
-import StoreItem from "./components/StoreItem";
-import { useLocationPermissionStatus } from "../../hooks/useLocationPermissionStatus";
-import { useCurrentLocation } from "../../hooks/useCurrentLocation";
-import { DEFAULT_COORDS, DEFAULT_RADIUS } from "../../constants";
+import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { CenteredActivityIndicator } from "../../components/CenteredActivityIndicator";
-import { Emtpy } from "./components/Empty";
 import { useQueryClient } from "@tanstack/react-query";
+
+import { styles } from "../../../styles/commonStyle";
+import { CenteredActivityIndicator } from "../../components/CenteredActivityIndicator";
+import { DEFAULT_COORDS, DEFAULT_RADIUS } from "../../constants";
+import { useCurrentLocation } from "../../hooks/useCurrentLocation";
+import { useLocationPermissionStatus } from "../../hooks/useLocationPermissionStatus";
+import { Emtpy } from "./components/Empty";
 import { Header } from "./components/Header";
+import StoreItem from "./components/StoreItem";
+import { useInfiniteStores } from "./hooks/useInfiniteStores";
 
 export function StoreListScreen() {
   const inset = useSafeAreaInsets();
@@ -59,7 +59,7 @@ function Resolved() {
     },
     {
       size: pageSize,
-    }
+    },
   );
 
   if (infiniteStoresData == null) {

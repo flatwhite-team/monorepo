@@ -1,4 +1,5 @@
-import { UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+
 import { Menu } from "../models/Menu";
 import { fetchMenus } from "../remotes/fetchMenus";
 

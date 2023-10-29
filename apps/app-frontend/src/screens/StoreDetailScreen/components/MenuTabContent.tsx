@@ -1,10 +1,10 @@
-import { useRoute, RouteProp } from "@react-navigation/native";
+import { Suspense } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { RouteProp, useRoute } from "@react-navigation/native";
+
+import { CenteredActivityIndicator } from "../../../components/CenteredActivityIndicator";
 import { useMenus } from "../../../hooks/useMenus";
 import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
-import { View, Text, FlatList } from "react-native";
-import { Suspense } from "react";
-import { CenteredActivityIndicator } from "../../../components/CenteredActivityIndicator";
-import { StyleSheet } from "react-native";
 import MenuItem from "./MenuItem";
 
 export function MenuTabContent() {

@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { RootTabNavigator } from "./RootTabNavigator";
+
 import { StoreDetailScreen } from "../screens/StoreDetailScreen/StoreDetailScreen";
+import { RootTabNavigator } from "./RootTabNavigator";
 
 export type HomeStackParamList = {
   StoreListScreen: undefined;

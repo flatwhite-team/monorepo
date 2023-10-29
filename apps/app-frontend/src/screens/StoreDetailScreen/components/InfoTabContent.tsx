@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
-import { BusinessDay } from "../../../models/BusinessDay";
-import { useRoute, RouteProp } from "@react-navigation/native";
+import { StyleSheet, Text, View } from "react-native";
+import { RouteProp, useRoute } from "@react-navigation/native";
+
 import { useStore } from "../../../hooks/useStore";
+import { BusinessDay } from "../../../models/BusinessDay";
 import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
 
 export function InfoTabContent() {

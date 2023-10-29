@@ -2,6 +2,7 @@ import {
   UndefinedInitialDataInfiniteOptions,
   useInfiniteQuery,
 } from "@tanstack/react-query";
+
 import { Store } from "../../../models/Store";
 import { fetchStores } from "../../../remotes/fetchStores";
 
@@ -20,12 +21,12 @@ export function useInfiniteStores(
     radius: number;
   },
   pageOptions: PageOptions,
-  queryOptions?: UndefinedInitialDataInfiniteOptions<Store[]>
+  queryOptions?: UndefinedInitialDataInfiniteOptions<Store[]>,
 ) {
   return useInfiniteQuery<Store[]>({
     queryKey: useInfiniteStores.queryKey(
       { lat, long, radius },
-      { size: pageOptions.size }
+      { size: pageOptions.size },
     ),
     queryFn: ({ pageParam: storeIdCursor }) => {
       return fetchStores({
@@ -59,7 +60,7 @@ useInfiniteStores.queryKey = (
     long: number;
     radius: number;
   },
-  pageOptions: PageOptions
+  pageOptions: PageOptions,
 ) => {
   return [useInfiniteStores.baseQueryKey, locationOptions, pageOptions];
 };

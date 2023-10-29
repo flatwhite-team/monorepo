@@ -1,9 +1,10 @@
-import { useWindowDimensions, Text } from "react-native";
-import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import { InfoTabContent } from "./InfoTabContent";
 import { useState } from "react";
-import { MenuTabContent } from "./MenuTabContent";
+import { Text, useWindowDimensions } from "react-native";
+import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+
 import { colors } from "../../../constants";
+import { InfoTabContent } from "./InfoTabContent";
+import { MenuTabContent } from "./MenuTabContent";
 
 const renderScene = SceneMap({
   info: InfoTabContent,

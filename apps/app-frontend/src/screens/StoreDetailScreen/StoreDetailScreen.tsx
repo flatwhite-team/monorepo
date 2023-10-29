@@ -1,12 +1,12 @@
 import React, { Suspense } from "react";
-import { View, Text, Image } from "react-native";
-import { StyleSheet } from "react-native";
-import { useStore } from "../../hooks/useStore";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import { HomeStackParamList } from "../../navigation/HomeStackNavigator";
+
 import { CenteredActivityIndicator } from "../../components/CenteredActivityIndicator";
-import { StoreDetailTabView } from "./components/StoreDetailTabView";
 import { colors } from "../../constants";
+import { useStore } from "../../hooks/useStore";
+import { HomeStackParamList } from "../../navigation/HomeStackNavigator";
+import { StoreDetailTabView } from "./components/StoreDetailTabView";
 
 const logoImage = require("../../images/icon.png");
 

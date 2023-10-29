@@ -1,4 +1,4 @@
-import { View, ActivityIndicator, ActivityIndicatorProps } from "react-native";
+import { ActivityIndicator, ActivityIndicatorProps, View } from "react-native";
 
 export function CenteredActivityIndicator(props: ActivityIndicatorProps) {
   return (

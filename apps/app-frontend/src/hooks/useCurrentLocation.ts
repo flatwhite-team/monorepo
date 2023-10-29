@@ -1,10 +1,11 @@
-import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import {
+  getCurrentPositionAsync,
   LocationAccuracy,
   LocationObjectCoords,
   LocationOptions,
-  getCurrentPositionAsync,
 } from "expo-location";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+
 import { DEFAULT_COORDS } from "../constants";
 
 type LocationObject = {

@@ -1,5 +1,7 @@
 import axios, { AxiosResponse, Method } from "axios";
+
 import getEnvVars from "../../environment";
+
 const { apiUrl } = getEnvVars();
 
 axios.interceptors.request.use(
@@ -8,7 +10,7 @@ axios.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 axios.interceptors.response.use(
@@ -17,7 +19,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 interface FetcherParams {

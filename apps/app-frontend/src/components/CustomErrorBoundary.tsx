@@ -6,7 +6,7 @@ interface RenderFallbackProps<ErrorType extends Error = Error> {
 }
 
 type RenderFallbackType = <ErrorType extends Error>(
-  props: RenderFallbackProps<ErrorType>
+  props: RenderFallbackProps<ErrorType>,
 ) => ReactNode;
 
 interface ErrorBoundaryState {

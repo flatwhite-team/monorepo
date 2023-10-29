@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
-import { Text, View, Image } from "react-native";
 import { memo } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 import isEqual from "lodash/isEqual";
-import { Menu } from "../../../models/Menu";
+
 import { colors } from "../../../constants";
+import { Menu } from "../../../models/Menu";
 
 const tempMenuImage = require("../../../images/icon.png");
 

@@ -63,7 +63,7 @@ export class BusinessDay {
 
   public static formatBusinessDay(businessDay: BusinessDay) {
     return `${요일_라벨[businessDay.dayOfWeek]} ${this.formatTime(
-      businessDay.openTime
+      businessDay.openTime,
     )} ~ ${this.formatTime(businessDay.closeTime)}`;
   }
 
@@ -89,7 +89,7 @@ export class BusinessDay {
 
   public static formatBusinessHours(businessDay: BusinessDay) {
     return `${this.formatTime(businessDay.openTime)} ~ ${this.formatTime(
-      businessDay.closeTime
+      businessDay.closeTime,
     )}`;
   }
 
