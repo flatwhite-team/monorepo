@@ -153,8 +153,9 @@ export const storeRouter = createTRPCRouter({
         menus: z.array(
           z.object({
             name: z.string(),
-            price: z.number(),
+            price: z.number().optional(),
             images: z.array(z.string()),
+            description: z.string().optional(),
           }),
         ),
         businessDays: z.array(
@@ -183,6 +184,7 @@ export const storeRouter = createTRPCRouter({
               return {
                 name: menu.name,
                 price: menu.price,
+                description: menu.description,
                 images: {
                   create: menu.images.map((url) => {
                     return {
