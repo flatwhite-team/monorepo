@@ -1,3 +1,4 @@
+import { $Enums } from "@flatwhite-team/prisma";
 import type { BusinessDay, Image, Menu, Store } from "@flatwhite-team/prisma";
 import { z } from "zod";
 
@@ -139,5 +140,60 @@ export const storeRouter = createTRPCRouter({
           ${skip}, ${take ?? DEFAULT_TAKE}
         ;
       `;
+    }),
+  create: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        address: z.string(),
+        tel: z.string().optional(),
+        latitude: z.number(),
+        longitude: z.number(),
+        description: z.string().optional(),
+        menus: z.array(
+          z.object({
+            name: z.string(),
+            price: z.number(),
+            images: z.array(z.string()),
+          }),
+        ),
+        businessDays: z.array(
+          z.object({
+            dayOfWeek: z.nativeEnum($Enums.DayOfWeek),
+            openTime: z.string(),
+            closeTime: z.string(),
+          }),
+        ),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.store.create({
+        data: {
+          name: input.name,
+          address: input.address,
+          tel: input.tel,
+          latitude: input.latitude,
+          longitude: input.longitude,
+          description: input.description,
+          businessDays: {
+            create: input.businessDays,
+          },
+          menus: {
+            create: input.menus.map((menu) => {
+              return {
+                name: menu.name,
+                price: menu.price,
+                images: {
+                  create: menu.images.map((url) => {
+                    return {
+                      url,
+                    };
+                  }),
+                },
+              };
+            }),
+          },
+        },
+      });
     }),
 });
