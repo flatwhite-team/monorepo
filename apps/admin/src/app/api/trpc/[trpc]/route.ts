@@ -1,9 +1,5 @@
+import { appRouter, createTRPCContext } from "@flatwhite-team/trpc-server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-
-import {
-  appRouter,
-  createTRPCContext,
-} from "../../../../../../../packages/trpc-server";
 
 /**
  * Configure basic CORS headers
