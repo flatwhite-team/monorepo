@@ -1,6 +1,6 @@
 {
   "name": "@flatwhite-team/admin",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "build": "yarn with-env next build",
@@ -12,7 +12,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@flatwhite-team/prisma": "^1.0.0",
+    "@flatwhite-team/prisma": "^2.0.2",
     "@flatwhite-team/trpc-server": "^0.1.0",
     "@t3-oss/env-nextjs": "^0.7.1",
     "@tanstack/react-query": "^5.0.5",

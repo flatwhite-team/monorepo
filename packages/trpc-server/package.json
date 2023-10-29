@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@flatwhite-team/prisma": "^1.0.0",
+    "@flatwhite-team/prisma": "^2.0.2",
     "@trpc/client": "next",
     "@trpc/server": "next",
     "superjson": "1.13.1",
