@@ -47,25 +47,23 @@ function Resolved() {
   const radius = DEFAULT_RADIUS;
   const pageSize = DEFAULT_STORE_LIST_PAGINATION_SIZE;
   const {
-    isFetching,
     data: infiniteStoresData,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteStores(
-    {
-      lat: latitude,
-      long: longitude,
+  } = useInfiniteStores({
+    locationOptions: {
+      latitude,
+      longitude,
       radius,
     },
-    {
-      size: pageSize,
-    },
-  );
+    take: pageSize,
+  });
 
   if (infiniteStoresData == null) {
     throw new Error("상점 정보를 불러오지 못했습니다.");
   }
 
+  // @ts-ignore: trpc useInfiniteQuery 타입이 틀림
   const stores = infiniteStoresData.pages.flat();
 
   if (stores.length === 0) {

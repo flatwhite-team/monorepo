@@ -1,13 +1,17 @@
 import { memo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { Image as ImageModel, Menu } from "@flatwhite-team/prisma";
 import isEqual from "lodash/isEqual";
 
 import { colors } from "../../../constants";
-import { Menu } from "../../../models/Menu";
 
 const tempMenuImage = require("../../../images/icon.png");
 
-function MenuItem({ id, name, price, description, images }: Menu) {
+interface MenuProps extends Menu {
+  images: Pick<ImageModel, "url">[];
+}
+
+function MenuItem({ id, name, price, description, images }: MenuProps) {
   return (
     <View key={id} style={MenuItemStyle.container}>
       <Image

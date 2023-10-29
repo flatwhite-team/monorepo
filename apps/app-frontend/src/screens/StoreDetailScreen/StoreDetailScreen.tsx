@@ -4,8 +4,8 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 
 import { CenteredActivityIndicator } from "../../components/CenteredActivityIndicator";
 import { colors } from "../../constants";
-import { useStore } from "../../hooks/useStore";
 import { HomeStackParamList } from "../../navigation/HomeStackNavigator";
+import { api } from "../../utils/api";
 import { StoreDetailTabView } from "./components/StoreDetailTabView";
 
 const logoImage = require("../../images/icon.png");
@@ -22,7 +22,7 @@ function Resolved() {
   const {
     params: { storeId },
   } = useRoute<RouteProp<HomeStackParamList, "StoreDetailScreen">>();
-  const { data: store } = useStore(storeId);
+  const { data: store } = api.store.findById.useQuery(storeId);
 
   if (store == null) {
     throw new Error("상점 정보를 불러오지 못했습니다.");
