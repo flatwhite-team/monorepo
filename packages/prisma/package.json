@@ -6,8 +6,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "db:generate": "prisma generate",
-    "db:push": "prisma db push --skip-generate",
-    "typecheck": "tsc --noEmit"
+    "db:push": "prisma db push --skip-generate"
   },
   "dependencies": {
     "@prisma/client": "^5.5.2"
