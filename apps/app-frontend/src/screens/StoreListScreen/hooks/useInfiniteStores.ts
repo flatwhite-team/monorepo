@@ -18,7 +18,6 @@ export function useInfiniteStores({
     },
     {
       queryKey: [useInfiniteStores.baseQueryKey, { locationOptions }],
-      initialPageParam: undefined,
       getNextPageParam: (lastPage) => {
         if (lastPage.length < take || lastPage.length === 0) {
           return undefined;
