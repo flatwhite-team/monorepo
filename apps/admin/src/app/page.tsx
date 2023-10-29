@@ -39,7 +39,7 @@ const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     formData.append(key, value as string);
   });
 
-  const upload = await fetch(url, {
+  await fetch(url, {
     method: "POST",
     body: formData,
   });
