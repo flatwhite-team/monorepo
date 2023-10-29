@@ -1,0 +1,62 @@
+{
+  "expo": {
+    "owner": "flatwhite-team",
+    "name": "flatwhite",
+    "slug": "frontend",
+    "version": "1.0.2",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#222222"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "cafe.flatwhite",
+      "infoPlist": {
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "현재 위치를 중심으로 주변 카페를 찾습니다.",
+        "NSLocationAlwaysUsageDescription": "현재 위치를 중심으로 주변 카페를 찾습니다.",
+        "NSLocationWhenInUseUsageDescription": "현재 위치를 중심으로 주변 카페를 찾습니다."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#222222"
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ],
+      "package": "cafe.flatwhite"
+    },
+    "web": {
+      "favicon": "./assets/icon.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "현재 위치를 중심으로 주변 카페를 찾습니다.",
+          "locationAlwaysPermission": "현재 위치를 중심으로 주변 카페를 찾습니다.",
+          "locationWhenInUsePermission": "현재 위치를 중심으로 주변 카페를 찾습니다."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "7a047f6f-7806-404d-8ef8-c70ea9e302bc"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/7a047f6f-7806-404d-8ef8-c70ea9e302bc"
+    }
+  }
+}
