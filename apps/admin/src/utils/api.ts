@@ -1,10 +1,9 @@
+import type { AppRouter } from "@flatwhite-team/trpc-server";
 import { createTRPCReact } from "@trpc/react-query";
-
-import type { AppRouter } from "../../../../packages/trpc-server";
 
 export const api = createTRPCReact<AppRouter>();
 
 export {
   type RouterInputs,
   type RouterOutputs,
-} from "../../../../packages/trpc-server";
+} from "@flatwhite-team/trpc-server";
