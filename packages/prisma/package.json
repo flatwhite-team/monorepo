@@ -1,6 +1,6 @@
 {
   "name": "@flatwhite-team/prisma",
-  "version": "2.0.2",
+  "version": "2.0.7",
   "publishConfig": {
     "@flatwhite-team:registry": "https://npm.pkg.github.com"
   },
@@ -15,18 +15,16 @@
   "license": "UNLICENSED",
   "scope": "@flatwhite-team",
   "scripts": {
-    "build": "yarn db:generate && tsup ./index.ts --format cjs,esm --dts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate",
-    "dev": "yarn run build -- --watch",
+    "postinstall": "npx tsc && npx prisma generate",
+    "publish-package": "changeset version && changeset publish",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@prisma/client": "^5.5.2"
   },
   "devDependencies": {
-    "@swc/core": "^1.3.95",
-    "prisma": "^5.5.2",
-    "tsup": "^7.2.0"
+    "prisma": "^5.5.2"
   }
 }
