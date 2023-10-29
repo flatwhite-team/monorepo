@@ -1,5 +1,5 @@
 {
-  "name": "@acme/auth",
+  "name": "@flatwhite-team/trpc-server",
   "version": "0.1.0",
   "private": true,
   "main": "./index.ts",
@@ -12,14 +12,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@acme/db": "^0.1.0",
-    "@auth/core": "^0.18.0",
-    "@auth/drizzle-adapter": "^0.3.5",
-    "@t3-oss/env-nextjs": "^0.7.1",
-    "next": "^14.0.0",
-    "next-auth": "5.0.0-beta.3",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "@flatwhite-team/prisma": "^1.0.0",
+    "@trpc/client": "next",
+    "@trpc/server": "next",
+    "superjson": "1.13.1",
     "zod": "^3.22.2"
   },
   "devDependencies": {
