@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Store {
+  id           String        @id @default(cuid())
+  name         String
+  address      String
+  tel          String?
+  latitude     Float
+  longitude    Float
+  description  String?       @db.Text
+  images       Image[]
+  menus        Menu[]
+  businessDays BusinessDay[]
+}
+
+enum DayOfWeek {
+  SUN
+  MON
+  TUE
+  WED
+  THU
+  FRI
+  SAT
+  WEEKDAYS
+  WEEKENDS
+  EVERYDAY
+}
+
+model BusinessDay {
+  dayOfWeek DayOfWeek
+  openTime  String?   @db.VarChar(5)
+  closeTime String?   @db.VarChar(5)
+  store     Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  storeId   String
+
+  @@unique([dayOfWeek, storeId])
+  @@index([storeId])
+}
+
+model Image {
+  url     String  @id @db.VarChar(255)
+  store   Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  storeId String
+  menu    Menu?   @relation(fields: [menuId, storeId], references: [id, storeId], onDelete: Cascade)
+  menuId  String?
+
+  @@index([storeId])
+  @@index([menuId, storeId])
+}
+
+model Menu {
+  id          String  @id @default(cuid())
+  name        String
+  price       Int?
+  description String? @db.Text
+  store       Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  storeId     String
+  images      Image[]
+
+  @@unique([id, storeId])
+  @@unique([name, storeId])
+  @@index([storeId])
+}

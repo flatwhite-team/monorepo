@@ -37,7 +37,6 @@
     "superjson": "1.13.1"
   },
   "devDependencies": {
-    "@acme/api": "^0.1.0",
     "@acme/eslint-config": "^0.2.0",
     "@acme/prettier-config": "^0.1.0",
     "@acme/tailwind-config": "^0.1.0",
@@ -46,6 +45,7 @@
     "@babel/preset-env": "^7.23.2",
     "@babel/runtime": "^7.23.2",
     "@expo/config-plugins": "^7.2.5",
+    "@flatwhite-team/trpc-server": "^0.1.0",
     "@types/babel__core": "^7.20.3",
     "@types/react": "^18.2.33",
     "eslint": "^8.52.0",
