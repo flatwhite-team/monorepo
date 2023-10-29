@@ -1,16 +1,33 @@
 {
   "name": "@flatwhite-team/prisma",
   "version": "1.0.0",
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flatwhite-team/monorepo.git",
+    "directory": "packages/prisma"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "license": "UNLICENSED",
+  "scope": "@flatwhite-team",
   "scripts": {
+    "build": "tsup ./index.ts --format cjs,esm --dts",
     "db:generate": "prisma generate",
-    "db:push": "prisma db push --skip-generate"
+    "db:push": "prisma db push --skip-generate",
+    "dev": "yarn run build -- --watch",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@prisma/client": "^5.5.2"
   },
   "devDependencies": {
-    "prisma": "^5.5.2"
+    "@changesets/cli": "^2.26.2",
+    "@swc/core": "^1.3.95",
+    "prisma": "^5.5.2",
+    "tsup": "^7.2.0"
   }
 }
