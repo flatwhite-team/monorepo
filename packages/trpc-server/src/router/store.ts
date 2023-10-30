@@ -146,16 +146,16 @@ export const storeRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         address: z.string(),
-        tel: z.string().optional(),
+        tel: z.string().nullable(),
         latitude: z.number(),
         longitude: z.number(),
-        description: z.string().optional(),
+        description: z.string().nullable(),
         menus: z.array(
           z.object({
             name: z.string(),
-            price: z.number().optional(),
+            price: z.number().nullable(),
             images: z.array(z.string()),
-            description: z.string().optional(),
+            description: z.string().nullable(),
           }),
         ),
         businessDays: z.array(

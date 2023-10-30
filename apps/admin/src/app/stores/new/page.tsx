@@ -9,10 +9,10 @@ import { api } from "~/utils/api";
 interface Inputs {
   name: string;
   address: string;
-  tel?: string;
+  tel: string | null;
   latitude: number;
   longitude: number;
-  description?: string;
+  description: string | null;
   businessDays: {
     dayOfWeek: $Enums.DayOfWeek;
     openTime: string;
@@ -20,8 +20,8 @@ interface Inputs {
   }[];
   menus: {
     name: string;
-    description?: string;
-    price?: number;
+    description: string | null;
+    price: number | null;
     imageUrl: string;
   }[];
 }
@@ -73,7 +73,7 @@ export default function NewStorePage() {
           className="border"
           type="text"
           placeholder="name"
-          {...register("name")}
+          {...register("name", { required: true })}
         />
       </div>
       <div className="flex gap-4">
@@ -82,7 +82,12 @@ export default function NewStorePage() {
           className="border"
           type="text"
           placeholder="description"
-          {...register("description")}
+          {...register("description", {
+            required: false,
+            setValueAs: (value) => {
+              return value === "" ? null : value;
+            },
+          })}
         />
       </div>
       <div className="flex gap-4">
@@ -91,7 +96,7 @@ export default function NewStorePage() {
           className="border"
           type="text"
           placeholder="address"
-          {...register("address")}
+          {...register("address", { required: true })}
         />
       </div>
       <div className="flex gap-4">
@@ -100,7 +105,12 @@ export default function NewStorePage() {
           className="border"
           type="text"
           placeholder="tel"
-          {...register("tel")}
+          {...register("tel", {
+            required: false,
+            setValueAs: (value) => {
+              return value === "" ? null : value;
+            },
+          })}
         />
       </div>
       <div className="flex gap-4">
@@ -109,7 +119,7 @@ export default function NewStorePage() {
           className="border"
           type="text"
           placeholder="latitude"
-          {...register("latitude", { valueAsNumber: true })}
+          {...register("latitude", { required: true, valueAsNumber: true })}
         />
       </div>
       <div className="flex gap-4">
@@ -118,13 +128,17 @@ export default function NewStorePage() {
           className="border"
           type="text"
           placeholder="longitude"
-          {...register("longitude", { valueAsNumber: true })}
+          {...register("longitude", { required: true, valueAsNumber: true })}
         />
       </div>
       {businessDayFields.map((businessDayField, index) => {
         return (
           <div key={businessDayField.id}>
-            <select {...register(`businessDays.${index}.dayOfWeek`)}>
+            <select
+              {...register(`businessDays.${index}.dayOfWeek`, {
+                required: true,
+              })}
+            >
               {Object.values($Enums.DayOfWeek).map((dayOfWeek) => {
                 return (
                   <option key={dayOfWeek} value={dayOfWeek}>
@@ -150,8 +164,8 @@ export default function NewStorePage() {
         onClick={() => {
           appendBusinessDay({
             dayOfWeek: $Enums.DayOfWeek.EVERYDAY,
-            openTime: "00:00",
-            closeTime: "00:00",
+            openTime: "",
+            closeTime: "",
           });
         }}
       >
@@ -164,25 +178,44 @@ export default function NewStorePage() {
               className="border"
               type="text"
               placeholder="name"
-              {...register(`menus.${index}.name`)}
+              {...register(`menus.${index}.name`, { required: true })}
             />
             <input
               className="border"
               type="text"
               placeholder="description"
-              {...register(`menus.${index}.description`)}
+              {...register(`menus.${index}.description`, {
+                required: false,
+                setValueAs: (value) => {
+                  return value === "" ? null : value;
+                },
+              })}
             />
             <input
               className="border"
               type="number"
               placeholder="price"
-              {...register(`menus.${index}.price`, { valueAsNumber: true })}
+              {...register(`menus.${index}.price`, {
+                required: false,
+                setValueAs: (value) => {
+                  if (value === 0 || value === "") {
+                    return null;
+                  }
+
+                  return Number(value);
+                },
+              })}
             />
             <input
               className="border"
               type="text"
               placeholder="imageUrl"
-              {...register(`menus.${index}.imageUrl`)}
+              {...register(`menus.${index}.imageUrl`, {
+                required: true,
+                setValueAs: (value) => {
+                  return value === "" ? null : value;
+                },
+              })}
             />
           </div>
         );
@@ -201,8 +234,8 @@ export default function NewStorePage() {
       </button>
       <input
         type="checkbox"
-        checked={done}
-        onClick={() => {
+        defaultChecked={done}
+        onChange={() => {
           setDone(!done);
         }}
       />
