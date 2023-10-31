@@ -7,6 +7,7 @@ import { styles } from "../styles/commonStyle";
 import CustomErrorBoundary from "./components/CustomErrorBoundary";
 import { colors } from "./constants";
 import { HomeStackNavigator } from "./navigation/HomeStackNavigator";
+import { TRPCProvider } from "./utils/api";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,7 +33,7 @@ export default function App() {
         </View>
       )}
     >
-      <QueryClientProvider client={queryClient}>
+      <TRPCProvider>
         <SafeAreaProvider>
           <View style={styles.container}>
             <StatusBar
@@ -44,7 +45,7 @@ export default function App() {
             </NavigationContainer>
           </View>
         </SafeAreaProvider>
-      </QueryClientProvider>
+      </TRPCProvider>
     </CustomErrorBoundary>
   );
 }

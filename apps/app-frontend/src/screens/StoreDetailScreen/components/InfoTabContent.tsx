@@ -1,15 +1,15 @@
 import { StyleSheet, Text, View } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/native";
 
-import { useStore } from "../../../hooks/useStore";
 import { BusinessDay } from "../../../models/BusinessDay";
 import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
+import { api } from "../../../utils/api";
 
 export function InfoTabContent() {
   const {
     params: { storeId },
   } = useRoute<RouteProp<HomeStackParamList, "StoreDetailScreen">>();
-  const { data: store } = useStore(storeId);
+  const { data: store } = api.store.findById.useQuery(storeId);
 
   if (store == null) {
     throw new Error("상점 정보를 불러오지 못했습니다.");

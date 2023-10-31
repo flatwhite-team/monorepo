@@ -1,12 +1,12 @@
 import { memo } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import isEqual from "lodash/isEqual";
 
 import { colors } from "../../../constants";
 import { BusinessDay } from "../../../models/BusinessDay";
-import { Store } from "../../../models/Store";
 import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
 
 const logoImage = require("../../../images/icon.png");
@@ -17,7 +17,7 @@ type StoreItemNavigationProp = NativeStackNavigationProp<
 >;
 
 interface Props {
-  data: Store;
+  data: JoinedStore;
 }
 
 function StoreItem({ data: { id, name, images, menus, businessDays } }: Props) {

@@ -1,3 +1,5 @@
+import { BusinessDay as BusinessDayModel } from "@flatwhite-team/prisma";
+
 const 요일 = {
   SUN: "SUN",
   MON: "MON",
@@ -26,12 +28,12 @@ const 요일_라벨 = {
   EVERYDAY: "매일",
 } as const;
 
-type Time = `${"0" | "1"}${number}:${number}${number}`;
+type Time = BusinessDay["openTime"] | BusinessDay["closeTime"];
 
-export class BusinessDay {
-  dayOfWeek: 요일;
-  openTime: Time | null;
-  closeTime: Time | null;
+export class BusinessDay implements Omit<BusinessDayModel, "storeId"> {
+  dayOfWeek: BusinessDayModel["dayOfWeek"];
+  openTime: BusinessDayModel["openTime"];
+  closeTime: BusinessDayModel["closeTime"];
 
   constructor(dayOfWeek: 요일, openTime: Time | null, closeTime: Time | null) {
     this.dayOfWeek = dayOfWeek;
