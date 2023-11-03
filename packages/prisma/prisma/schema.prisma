@@ -13,17 +13,17 @@ datasource db {
 }
 
 model Store {
-  id            String         @id @default(cuid())
-  name          String
-  address       String
-  tel           String?
-  latitude      Float
-  longitude     Float
-  description   String?        @db.Text
-  images        Image[]
-  menus         Menu[]
-  businessDays  BusinessDay[]
-  storeManagers StoreManager[]
+  id           String         @id @default(cuid())
+  name         String
+  address      String
+  tel          String?
+  latitude     Float
+  longitude    Float
+  description  String?        @db.Text
+  images       Image[]
+  menus        Menu[]
+  businessDays BusinessDay[]
+  managers     StoreManager[]
 }
 
 enum DayOfWeek {
@@ -113,7 +113,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   role          Role
-  storeManagers StoreManager[]
+  manages       StoreManager[]
 }
 
 enum Role {
