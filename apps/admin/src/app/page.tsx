@@ -4,6 +4,7 @@ import { customAlphabet } from "nanoid";
 
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", 8);
 
+// TODO(@Jaehoo-dev): internal 서비스로 옮기기
 export default function HomePage() {
   return (
     <>

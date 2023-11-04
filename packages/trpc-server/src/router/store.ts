@@ -46,6 +46,18 @@ export const storeRouter = createTRPCRouter({
       },
     });
   }),
+  findManagingByUserId: publicProcedure
+    .input(z.string())
+    .query(({ ctx, input }) => {
+      return ctx.prisma.storeManager.findMany({
+        where: {
+          userId: input,
+        },
+        select: {
+          store: true,
+        },
+      });
+    }),
   infiniteFindByDistance: publicProcedure
     .input(
       z.object({
