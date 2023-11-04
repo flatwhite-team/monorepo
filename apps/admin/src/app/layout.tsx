@@ -5,8 +5,7 @@ import "~/styles/globals.css";
 
 import { headers } from "next/headers";
 
-import AuthSessionProvider from "./_providers/AuthSessionProvider";
-import { TRPCReactProvider } from "./_providers/TRPCReactProvider";
+import { TRPCReactProvider } from "./providers";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -41,7 +40,7 @@ export default function Layout(props: { children: React.ReactNode }) {
     <html lang="en">
       <body className={["font-sans", fontSans.variable].join(" ")}>
         <TRPCReactProvider headers={headers()}>
-          <AuthSessionProvider>{props.children}</AuthSessionProvider>
+          {props.children}
         </TRPCReactProvider>
       </body>
     </html>
