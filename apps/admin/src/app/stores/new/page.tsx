@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { $Enums } from "@flatwhite-team/prisma";
+import { DayOfWeek } from "@flatwhite-team/prisma";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { api } from "~/utils/api";
@@ -14,7 +14,7 @@ interface Inputs {
   longitude: number;
   description: string | null;
   businessDays: {
-    dayOfWeek: $Enums.DayOfWeek;
+    dayOfWeek: DayOfWeek;
     openTime: string;
     closeTime: string;
   }[];
@@ -139,7 +139,7 @@ export default function NewStorePage() {
                 required: true,
               })}
             >
-              {Object.values($Enums.DayOfWeek).map((dayOfWeek) => {
+              {Object.values(DayOfWeek).map((dayOfWeek) => {
                 return (
                   <option key={dayOfWeek} value={dayOfWeek}>
                     {dayOfWeek}
@@ -163,7 +163,7 @@ export default function NewStorePage() {
       <button
         onClick={() => {
           appendBusinessDay({
-            dayOfWeek: $Enums.DayOfWeek.EVERYDAY,
+            dayOfWeek: DayOfWeek.EVERYDAY,
             openTime: "",
             closeTime: "",
           });
