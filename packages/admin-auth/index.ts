@@ -34,8 +34,8 @@ export const {
   adapter: PrismaAdapter(prisma),
   providers: [
     KakaoProvider({
-      clientId: process.env.AUTH_KAKAO_CLIENT_ID!,
-      clientSecret: process.env.AUTH_KAKAO_CLIENT_SECRET!,
+      clientId: process.env.AUTH_KAKAO_CLIENT_ID,
+      clientSecret: process.env.AUTH_KAKAO_CLIENT_SECRET,
     }),
   ],
   callbacks: {
