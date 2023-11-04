@@ -54,6 +54,9 @@ export function TRPCProvider(props: { children: React.ReactNode }) {
         queries: {
           suspense: true,
           networkMode: "always",
+          refetchOnMount: false,
+          refetchOnWindowFocus: false,
+          staleTime: Infinity,
         },
       },
     });
@@ -67,6 +70,7 @@ export function TRPCProvider(props: { children: React.ReactNode }) {
           headers() {
             const headers = new Map<string, string>();
             headers.set("x-trpc-source", "expo-react");
+
             return Object.fromEntries(headers);
           },
         }),

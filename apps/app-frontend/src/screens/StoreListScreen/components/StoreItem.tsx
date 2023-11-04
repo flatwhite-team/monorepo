@@ -34,7 +34,9 @@ function StoreItem({ data: { id, name, images, menus, businessDays } }: Props) {
         source={images.length > 0 ? { uri: images[0].url } : logoImage}
       />
       <View style={StoreItemStyle.info}>
-        <Text style={StoreItemStyle.title}>{name}</Text>
+        <Text style={StoreItemStyle.title} numberOfLines={1}>
+          {name}
+        </Text>
         <Text style={StoreItemStyle.businessHours} numberOfLines={1}>
           {currentBusinessDay != null
             ? BusinessDay.formatBusinessHours(currentBusinessDay)
