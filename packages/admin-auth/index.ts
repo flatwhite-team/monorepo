@@ -1,15 +1,17 @@
 import type { DefaultSession } from "@auth/core/types";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@flatwhite-team/prisma";
+import { PrismaClient, Role } from "@flatwhite-team/prisma";
 import NextAuth from "next-auth";
+import type { KakaoProfile } from "next-auth/providers/kakao";
 import KakaoProvider from "next-auth/providers/kakao";
 
 export type { Session } from "next-auth";
 
 declare module "next-auth" {
-  interface Session {
+  interface Session extends DefaultSession {
     user: {
       id: string;
+      role: Role;
     } & DefaultSession["user"];
   }
 }
@@ -36,17 +38,37 @@ export const {
     KakaoProvider({
       clientId: process.env.AUTH_KAKAO_CLIENT_ID,
       clientSecret: process.env.AUTH_KAKAO_CLIENT_SECRET,
+      profile(profile: KakaoProfile) {
+        return {
+          id: profile.id.toString(),
+          name: profile.kakao_account?.name,
+          email: profile.kakao_account?.email,
+          emailVerified: profile.kakao_account?.is_email_verified,
+          phoneNumber: profile.kakao_account?.phone_number,
+          image: profile.properties?.profile_image,
+          role: Role.STORE_MANAGER,
+        };
+      },
     }),
   ],
+  pages: {
+    signIn: "/auth",
+  },
   callbacks: {
     session: ({ session, user }) => {
       return {
         ...session,
         user: {
           ...session.user,
-          id: user.id,
+          ...user,
         },
       };
+    },
+    authorized: ({ auth }) => {
+      return (
+        auth?.user.role === Role.APP_ADMIN ||
+        auth?.user.role === Role.STORE_MANAGER
+      );
     },
   },
 });

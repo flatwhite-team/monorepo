@@ -13,16 +13,17 @@ datasource db {
 }
 
 model Store {
-  id           String        @id @default(cuid())
+  id           String         @id @default(cuid())
   name         String
   address      String
   phoneNumber  String?
   latitude     Float
   longitude    Float
-  description  String?       @db.Text
+  description  String?        @db.Text
   images       Image[]
   menus        Menu[]
   businessDays BusinessDay[]
+  managers     StoreManager[]
 }
 
 enum DayOfWeek {
@@ -105,13 +106,21 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  role          Role
+  manages       StoreManager[]
+}
+
+enum Role {
+  APP_ADMIN
+  STORE_MANAGER
+  CUSTOMER
 }
 
 model VerificationToken {
@@ -120,4 +129,22 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model StoreManager {
+  id      String    @id @default(cuid())
+  user    User      @relation(fields: [userId], references: [id])
+  userId  String
+  store   Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  storeId String
+  role    StoreRole
+
+  @@unique([userId, storeId])
+  @@index([userId])
+  @@index([storeId])
+}
+
+enum StoreRole {
+  OWNER
+  MANAGER
 }
