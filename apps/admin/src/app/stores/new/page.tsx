@@ -27,8 +27,6 @@ interface Inputs {
 }
 
 export default function NewStorePage() {
-  api.store.findById.useQuery("cln8pzvbq0001r8whfe0p0zgu");
-
   const [done, setDone] = useState(false);
   const { mutate: createStore } = api.store.create.useMutation();
   const { register, handleSubmit, control } = useForm<Inputs>();

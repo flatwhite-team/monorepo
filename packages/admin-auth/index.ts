@@ -31,8 +31,13 @@ export const {
   signOut,
   update,
 } = NextAuth({
-  adapter: PrismaAdapter(new PrismaClient()),
-  providers: [KakaoProvider],
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    KakaoProvider({
+      clientId: process.env.AUTH_KAKAO_CLIENT_ID!,
+      clientSecret: process.env.AUTH_KAKAO_CLIENT_SECRET!,
+    }),
+  ],
   callbacks: {
     session: ({ session, user }) => {
       return {
