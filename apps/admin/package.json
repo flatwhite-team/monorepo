@@ -14,7 +14,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.421.0",
     "@aws-sdk/s3-presigned-post": "^3.421.0",
-    "@flatwhite-team/auth": "*",
+    "@flatwhite-team/admin-auth": "*",
     "@flatwhite-team/prisma": "*",
     "@flatwhite-team/trpc-server": "*",
     "@t3-oss/env-nextjs": "^0.7.1",
@@ -37,6 +37,7 @@
     "@acme/prettier-config": "^0.1.0",
     "@acme/tailwind-config": "^0.1.0",
     "@acme/tsconfig": "^0.1.0",
+    "@prisma/nextjs-monorepo-workaround-plugin": "^5.5.2",
     "@types/node": "^18.18.7",
     "@types/react": "^18.2.33",
     "@types/react-dom": "^18.2.14",

@@ -1,5 +1,5 @@
 {
-  "name": "@flatwhite-team/auth",
+  "name": "@flatwhite-team/admin-auth",
   "version": "0.1.0",
   "private": true,
   "main": "./index.ts",

@@ -22,8 +22,8 @@ export function TRPCReactProvider(props: {
     });
   });
 
-  const [trpcClient] = useState(() => {
-    return api.createClient({
+  const [trpcClient] = useState(() =>
+    api.createClient({
       transformer: superjson,
       links: [
         loggerLink({
@@ -35,8 +35,8 @@ export function TRPCReactProvider(props: {
           },
         }),
       ],
-    });
-  });
+    }),
+  );
 
   return (
     <api.Provider client={trpcClient} queryClient={queryClient}>

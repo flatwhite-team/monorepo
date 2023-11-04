@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { SessionProvider } from "@flatwhite-team/auth";
+import { SessionProvider } from "@flatwhite-team/admin-auth";
 
 interface Props {
   children: ReactNode;

@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@flatwhite-team/auth": "*",
+    "@flatwhite-team/admin-auth": "*",
     "@flatwhite-team/prisma": "*",
     "@trpc/client": "^10.43.0",
     "@trpc/server": "^10.43.0",

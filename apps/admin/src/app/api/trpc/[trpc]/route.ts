@@ -1,4 +1,4 @@
-import { auth } from "@flatwhite-team/auth";
+import { auth } from "@flatwhite-team/admin-auth";
 import { appRouter, createTRPCContext } from "@flatwhite-team/trpc-server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
@@ -16,6 +16,8 @@ const handler = auth(async (req) => {
     router: appRouter,
     req,
     createContext() {
+      console.log("auth", req.auth);
+
       return createTRPCContext({
         auth: req.auth,
         req,

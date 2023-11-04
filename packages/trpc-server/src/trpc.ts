@@ -6,8 +6,8 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
-import { auth } from "@flatwhite-team/auth";
-import type { Session } from "@flatwhite-team/auth";
+import { auth } from "@flatwhite-team/admin-auth";
+import type { Session } from "@flatwhite-team/admin-auth";
 import { prisma } from "@flatwhite-team/prisma";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
@@ -51,10 +51,13 @@ export const createTRPCContext = async (options: {
   req?: Request;
   auth: Session | null;
 }) => {
+  console.log("=============", options);
+
   const session = options.auth ?? (await auth());
   const source = options.req?.headers.get("x-trpc-source") ?? "unknown";
 
   console.log(">>> tRPC Request from", source, "by", session?.user);
+  console.log(session);
 
   return createInnerTRPCContext({
     session,
@@ -107,7 +110,9 @@ export const publicProcedure = t.procedure;
  * Reusable middleware that enforces users are logged in before running the
  * procedure
  */
-const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+const enforceUserIsAdminAuthed = t.middleware(({ ctx, next }) => {
+  console.log("==========================", ctx);
+
   if (ctx.session?.user == null) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
@@ -134,4 +139,6 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+export const protectedAdminProcedure = t.procedure.use(
+  enforceUserIsAdminAuthed,
+);

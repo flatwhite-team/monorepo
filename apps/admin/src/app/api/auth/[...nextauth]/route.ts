@@ -1,1 +1,1 @@
-export { GET, POST } from "@flatwhite-team/auth";
+export { GET, POST } from "@flatwhite-team/admin-auth";

@@ -1,4 +1,4 @@
-import { auth, signIn, signOut } from "@flatwhite-team/auth";
+import { auth, signIn, signOut } from "@flatwhite-team/admin-auth";
 
 export async function AuthShowcase() {
   const session = await auth();
@@ -8,10 +8,7 @@ export async function AuthShowcase() {
       <form
         action={async () => {
           "use server";
-          await signIn("kakao", {
-            redirect: true,
-            callbackUrl: "/",
-          });
+          await signIn("kakao");
         }}
       >
         <button className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20">
