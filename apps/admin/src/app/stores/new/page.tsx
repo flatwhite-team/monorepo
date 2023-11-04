@@ -9,7 +9,7 @@ import { api } from "~/utils/api";
 interface Inputs {
   name: string;
   address: string;
-  tel: string | null;
+  phoneNumber: string | null;
   latitude: number;
   longitude: number;
   description: string | null;
@@ -27,6 +27,8 @@ interface Inputs {
 }
 
 export default function NewStorePage() {
+  api.store.findById.useQuery("cln8pzvbq0001r8whfe0p0zgu");
+
   const [done, setDone] = useState(false);
   const { mutate: createStore } = api.store.create.useMutation();
   const { register, handleSubmit, control } = useForm<Inputs>();
@@ -51,7 +53,7 @@ export default function NewStorePage() {
         createStore({
           name: fields.name,
           address: fields.address,
-          tel: fields.tel,
+          phoneNumber: fields.phoneNumber,
           latitude: fields.latitude,
           longitude: fields.longitude,
           description: fields.description,
@@ -100,12 +102,12 @@ export default function NewStorePage() {
         />
       </div>
       <div className="flex gap-4">
-        <label htmlFor="tel">tel</label>
+        <label htmlFor="phoneNumber">phoneNumber</label>
         <input
           className="border"
           type="text"
-          placeholder="tel"
-          {...register("tel", {
+          placeholder="phoneNumber"
+          {...register("phoneNumber", {
             required: false,
             setValueAs: (value) => {
               return value === "" ? null : value;

@@ -39,7 +39,7 @@ export function InfoTabContent() {
       </View>
       <ContentWrapper>
         <Ionicons name="call-outline" size={18} />
-        <Text className="text-base">{store.tel}</Text>
+        <Text className="text-base">{store.phoneNumber}</Text>
       </ContentWrapper>
       <ContentWrapper>
         <Ionicons name="map-outline" size={18} />
