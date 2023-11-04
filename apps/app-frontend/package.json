@@ -20,6 +20,7 @@
     "@trpc/client": "^10.43.0",
     "@trpc/react-query": "^10.43.0",
     "@trpc/server": "^10.43.0",
+    "axios": "^1.5.1",
     "expo": "^49.0.16",
     "expo-location": "~16.1.0",
     "expo-status-bar": "~1.7.1",
