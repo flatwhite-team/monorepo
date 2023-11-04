@@ -146,7 +146,7 @@ export const storeRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         address: z.string(),
-        tel: z.string().nullable(),
+        phoneNumber: z.string().nullable(),
         latitude: z.number(),
         longitude: z.number(),
         description: z.string().nullable(),
@@ -172,7 +172,7 @@ export const storeRouter = createTRPCRouter({
         data: {
           name: input.name,
           address: input.address,
-          tel: input.tel,
+          phoneNumber: input.phoneNumber,
           latitude: input.latitude,
           longitude: input.longitude,
           description: input.description,

@@ -6,10 +6,26 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
+import { auth } from "@flatwhite-team/admin-auth";
+import type { Session } from "@flatwhite-team/admin-auth";
 import { PrismaClient } from "@flatwhite-team/prisma";
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
+  });
+
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
+}
 
 /**
  * 1. CONTEXT
@@ -20,6 +36,9 @@ import { ZodError } from "zod";
  * processing a request
  *
  */
+interface CreateContextOptions {
+  session: Session | null;
+}
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use
@@ -30,10 +49,9 @@ import { ZodError } from "zod";
  * - trpc's `createSSGHelpers` where we don't have req/res
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
-const createInnerTRPCContext = () => {
-  const prisma = new PrismaClient();
-
+const createInnerTRPCContext = (options: CreateContextOptions) => {
   return {
+    session: options.session,
     prisma,
   };
 };
@@ -43,8 +61,18 @@ const createInnerTRPCContext = () => {
  * process every request that goes through your tRPC endpoint
  * @link https://trpc.io/docs/context
  */
-export const createTRPCContext = () => {
-  return createInnerTRPCContext();
+export const createTRPCContext = async (options: {
+  req?: Request;
+  auth: Session | null;
+}) => {
+  const session = options.auth ?? (await auth());
+  const source = options.req?.headers.get("x-trpc-source") ?? "unknown";
+
+  console.log(">>> tRPC Request from", source, "by", session?.user);
+
+  return createInnerTRPCContext({
+    session,
+  });
 };
 
 /**
@@ -93,10 +121,20 @@ export const publicProcedure = t.procedure;
  * Reusable middleware that enforces users are logged in before running the
  * procedure
  */
-const enforceUserIsAuthed = t.middleware(({ next }) => {
+const enforceUserIsServerAuthed = t.middleware(({ ctx, next }) => {
+  if (ctx.session?.user == null) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+    });
+  }
+
   return next({
     ctx: {
       // infers the `session` as non-nullable
+      session: {
+        ...ctx.session,
+        user: ctx.session.user,
+      },
     },
   });
 });
@@ -110,4 +148,6 @@ const enforceUserIsAuthed = t.middleware(({ next }) => {
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+export const protectedServerProcedure = t.procedure.use(
+  enforceUserIsServerAuthed,
+);

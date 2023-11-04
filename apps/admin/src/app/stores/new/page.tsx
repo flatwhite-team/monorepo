@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { $Enums } from "@flatwhite-team/prisma";
+import { DayOfWeek } from "@flatwhite-team/prisma";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { api } from "~/utils/api";
@@ -9,12 +9,12 @@ import { api } from "~/utils/api";
 interface Inputs {
   name: string;
   address: string;
-  tel: string | null;
+  phoneNumber: string | null;
   latitude: number;
   longitude: number;
   description: string | null;
   businessDays: {
-    dayOfWeek: $Enums.DayOfWeek;
+    dayOfWeek: DayOfWeek;
     openTime: string;
     closeTime: string;
   }[];
@@ -51,7 +51,7 @@ export default function NewStorePage() {
         createStore({
           name: fields.name,
           address: fields.address,
-          tel: fields.tel,
+          phoneNumber: fields.phoneNumber,
           latitude: fields.latitude,
           longitude: fields.longitude,
           description: fields.description,
@@ -100,12 +100,12 @@ export default function NewStorePage() {
         />
       </div>
       <div className="flex gap-4">
-        <label htmlFor="tel">tel</label>
+        <label htmlFor="phoneNumber">phoneNumber</label>
         <input
           className="border"
           type="text"
-          placeholder="tel"
-          {...register("tel", {
+          placeholder="phoneNumber"
+          {...register("phoneNumber", {
             required: false,
             setValueAs: (value) => {
               return value === "" ? null : value;
@@ -139,7 +139,7 @@ export default function NewStorePage() {
                 required: true,
               })}
             >
-              {Object.values($Enums.DayOfWeek).map((dayOfWeek) => {
+              {Object.values(DayOfWeek).map((dayOfWeek) => {
                 return (
                   <option key={dayOfWeek} value={dayOfWeek}>
                     {dayOfWeek}
@@ -163,7 +163,7 @@ export default function NewStorePage() {
       <button
         onClick={() => {
           appendBusinessDay({
-            dayOfWeek: $Enums.DayOfWeek.EVERYDAY,
+            dayOfWeek: DayOfWeek.EVERYDAY,
             openTime: "",
             closeTime: "",
           });
