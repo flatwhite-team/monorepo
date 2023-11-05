@@ -57,6 +57,7 @@ export function TRPCProvider(props: { children: React.ReactNode }) {
           refetchOnMount: false,
           refetchOnWindowFocus: false,
           staleTime: Infinity,
+          retry: false,
         },
       },
     });

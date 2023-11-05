@@ -61,10 +61,12 @@ const createInnerTRPCContext = (options: CreateContextOptions) => {
  * process every request that goes through your tRPC endpoint
  * @link https://trpc.io/docs/context
  */
-export const createTRPCContext = async (options: {
-  req?: Request;
-  auth: Session | null;
-}) => {
+export const createTRPCContext = async (
+  options: {
+    req?: Request;
+    auth?: Session | null;
+  } = {},
+) => {
   const session = options.auth ?? (await auth());
   const source = options.req?.headers.get("x-trpc-source") ?? "unknown";
 
