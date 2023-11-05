@@ -2,7 +2,7 @@
   "expo": {
     "owner": "flatwhite-team",
     "name": "flatwhite",
-    "slug": "frontend",
+    "slug": "flatwhite",
     "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#222222"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "cafe.flatwhite",
@@ -49,7 +51,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "7a047f6f-7806-404d-8ef8-c70ea9e302bc"
+        "projectId": "61cb9615-8517-4d8a-896c-70ee2b6d7b4c"
       }
     },
     "runtimeVersion": {
