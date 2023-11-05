@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "main": "index.js",
-  "engines": {
-    "node": "16"
-  },
   "scripts": {
     "android": "expo start --android",
     "build:android": "eas build --platform android --profile production",
