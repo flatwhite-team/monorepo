@@ -1,9 +1,6 @@
 {
-  "name": "create-t3-turbo",
+  "name": "flatwhite",
   "private": true,
-  "engines": {
-    "node": ">=18.18.2"
-  },
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
