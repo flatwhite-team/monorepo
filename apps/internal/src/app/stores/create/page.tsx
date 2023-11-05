@@ -26,7 +26,6 @@ interface Inputs {
   }[];
 }
 
-// TODO(@Jaehoo-dev): internal 서비스로 옮기기
 export default function NewStorePage() {
   const [done, setDone] = useState(false);
   const { mutate: createStore } = api.store.create.useMutation();
