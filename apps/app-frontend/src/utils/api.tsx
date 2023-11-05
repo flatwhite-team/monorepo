@@ -32,14 +32,9 @@ const getBaseUrl = () => {
   const debuggerHost = Constants.expoConfig?.hostUri;
   const localhost = debuggerHost?.split(":")[0];
 
-  if (!localhost) {
-    // TODO: 어드민 배포한 다음에 라이브 url 반환
-    throw new Error(
-      "Failed to get localhost. Please point to your production server.",
-    );
-  }
-
-  return `http://${localhost}:3000`;
+  return localhost == null
+    ? "https://admin.flatwhite.cafe"
+    : `http://${localhost}:3000`;
 };
 
 /**
