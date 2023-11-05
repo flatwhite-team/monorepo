@@ -1,9 +1,6 @@
 {
   "name": "create-t3-turbo",
   "private": true,
-  "engines": {
-    "node": "18"
-  },
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
