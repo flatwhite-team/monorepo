@@ -1,8 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@flatwhite-team/admin-auth";
-import { Role } from "@flatwhite-team/prisma";
-
-import { prisma } from "~/utils/prisma";
+import { prisma, Role } from "@flatwhite-team/prisma";
 
 export async function PromoteRole() {
   const session = await auth();

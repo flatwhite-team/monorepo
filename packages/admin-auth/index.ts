@@ -1,6 +1,6 @@
 import type { DefaultSession } from "@auth/core/types";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient, Role } from "@flatwhite-team/prisma";
+import { prisma, Role } from "@flatwhite-team/prisma";
 import NextAuth from "next-auth";
 import type { KakaoProfile } from "next-auth/providers/kakao";
 import KakaoProvider from "next-auth/providers/kakao";
@@ -14,16 +14,6 @@ declare module "next-auth" {
       role: Role;
     } & DefaultSession["user"];
   }
-}
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-const prisma = globalForPrisma.prisma ?? new PrismaClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
 }
 
 export const {
