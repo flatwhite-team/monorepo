@@ -12,9 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#222222"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "cafe.flatwhite",
