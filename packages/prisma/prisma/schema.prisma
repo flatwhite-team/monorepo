@@ -24,6 +24,8 @@ model Store {
   menus        Menu[]
   businessDays BusinessDay[]
   managers     StoreManager[]
+
+  @@unique([name, latitude, longitude])
 }
 
 enum DayOfWeek {
