@@ -1,9 +1,7 @@
 import { memo } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import { Image as ImageModel, Menu } from "@flatwhite-team/prisma";
 import isEqual from "lodash/isEqual";
-
-import { colors } from "../../../constants";
 
 const tempMenuImage = require("../../../images/icon.png");
 
@@ -13,65 +11,32 @@ interface MenuProps extends Menu {
 
 function MenuItem({ id, name, price, description, images }: MenuProps) {
   return (
-    <View key={id} style={MenuItemStyle.container}>
+    <View key={id} className="flex-1 flex-row border-b border-gray-100 py-5">
       <Image
-        style={MenuItemStyle.image}
+        className="h-20 w-20 rounded-lg object-cover"
         source={images.length > 0 ? { uri: images[0].url } : tempMenuImage}
       />
-      <View style={MenuItemStyle.info}>
-        <Text style={MenuItemStyle.title}>{name}</Text>
-        {description != null ? (
-          <Text
-            style={MenuItemStyle.description}
-            numberOfLines={1}
-            ellipsizeMode={"tail"}
-          >
-            {description}
-          </Text>
-        ) : null}
-        {price != null ? (
-          <Text style={MenuItemStyle.price}>
-            {`${price.toLocaleString()}원`}
-          </Text>
-        ) : null}
+      <View className="ml-5 flex-1 flex-col">
+        <View>
+          <Text className="text-lg font-semibold">{name}</Text>
+          {description != null ? (
+            <Text
+              className="text-base text-gray-400"
+              numberOfLines={1}
+              ellipsizeMode={"tail"}
+            >
+              {description}
+            </Text>
+          ) : null}
+          {price != null ? (
+            <Text className="text-primary text-base font-semibold">
+              {`${price.toLocaleString()}원`}
+            </Text>
+          ) : null}
+        </View>
       </View>
     </View>
   );
 }
-
-const MenuItemStyle = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    flex: 1,
-    borderBottomColor: colors.gray100,
-    borderBottomWidth: 1,
-    paddingVertical: 20,
-  },
-  image: {
-    width: 80,
-    height: 80,
-    resizeMode: "cover",
-    borderRadius: 10,
-  },
-  info: {
-    flexDirection: "column",
-    flex: 1,
-    gap: 4,
-    marginLeft: 20,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  description: {
-    fontSize: 16,
-    color: colors.gray,
-  },
-  price: {
-    color: colors.primary,
-    fontSize: 16,
-    fontWeight: "600",
-  },
-});
 
 export default memo(MenuItem, isEqual);
