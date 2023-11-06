@@ -1,11 +1,10 @@
 import { memo } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import isEqual from "lodash/isEqual";
 
-import { colors } from "../../../constants";
 import { BusinessDay } from "../../../models/BusinessDay";
 import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
 
@@ -26,24 +25,24 @@ function StoreItem({ data: { id, name, images, menus, businessDays } }: Props) {
 
   return (
     <TouchableOpacity
-      style={StoreItemStyle.container}
+      className="max-h-32 flex-1 flex-row border-b border-gray-100 p-5"
       onPress={() => navigation.navigate("StoreDetailScreen", { storeId: id })}
     >
       <Image
-        style={StoreItemStyle.image}
+        className="h-20 w-20 rounded-lg object-cover"
         source={images.length > 0 ? { uri: images[0].url } : logoImage}
       />
-      <View style={StoreItemStyle.info}>
-        <Text style={StoreItemStyle.title} numberOfLines={1}>
+      <View className="ml-5 flex-1 flex-col">
+        <Text className="text-xl font-semibold text-black" numberOfLines={1}>
           {name}
         </Text>
-        <Text style={StoreItemStyle.businessHours} numberOfLines={1}>
+        <Text className="text-base" numberOfLines={1}>
           {currentBusinessDay != null
             ? BusinessDay.formatBusinessHours(currentBusinessDay)
             : "가게 문의"}
         </Text>
         {menus.length > 0 ? (
-          <Text style={StoreItemStyle.menu} numberOfLines={1}>
+          <Text className="text-base text-gray-400" numberOfLines={1}>
             {menus.map((menu) => menu.name).join(", ")}
           </Text>
         ) : null}
@@ -51,41 +50,5 @@ function StoreItem({ data: { id, name, images, menus, businessDays } }: Props) {
     </TouchableOpacity>
   );
 }
-
-const StoreItemStyle = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "row",
-    maxHeight: 120,
-    borderBottomColor: colors.gray100,
-    borderBottomWidth: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#000000",
-    marginBottom: 4,
-  },
-  info: {
-    flex: 1,
-    flexDirection: "column",
-    gap: 4,
-  },
-  businessHours: {
-    fontSize: 16,
-  },
-  menu: {
-    fontSize: 16,
-    color: colors.gray,
-  },
-  image: {
-    width: 80,
-    height: 80,
-    resizeMode: "cover",
-    marginRight: 20,
-    borderRadius: 10,
-  },
-});
 
 export default memo(StoreItem, isEqual);

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { RouteProp, useRoute } from "@react-navigation/native";
 
@@ -18,10 +18,10 @@ export function InfoTabContent() {
   }
 
   return (
-    <View className="my-5 flex flex-col">
+    <ScrollView className="mb-5 flex flex-1 flex-col pt-5">
       <View className="mb-2 flex flex-row gap-x-2">
         <View className="mt-0.5">
-          <Ionicons name="time-outline" size={18} />
+          <Ionicons name="time-outline" size={20} />
         </View>
         <View>
           {store.businessDays.length > 0 ? (
@@ -38,14 +38,20 @@ export function InfoTabContent() {
         </View>
       </View>
       <ContentWrapper>
-        <Ionicons name="call-outline" size={18} />
+        <Ionicons name="call-outline" size={20} />
         <Text className="text-base">{store.phoneNumber}</Text>
       </ContentWrapper>
       <ContentWrapper>
-        <Ionicons name="map-outline" size={18} />
+        <Ionicons name="map-outline" size={20} />
         <Text className="text-base">{store.address}</Text>
       </ContentWrapper>
-    </View>
+      <View className="mb-5 flex flex-row gap-x-2">
+        <View className="mt-0.5">
+          <Ionicons name="information-circle-outline" size={20} />
+        </View>
+        <Text className="flex-1 text-base">{`${store.description}${store.description}`}</Text>
+      </View>
+    </ScrollView>
   );
 }
 

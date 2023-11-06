@@ -27,7 +27,6 @@ function Resolved() {
 
   return menus.length > 0 ? (
     <FlatList
-      style={MenuTabStyle.flatList}
       data={menus}
       renderItem={({ item }) => {
         return <MenuItem {...item} />;
@@ -35,17 +34,6 @@ function Resolved() {
     />
   ) : (
     // TODO: 메뉴 없을 때 처리
-    <Text style={MenuTabStyle.subText}>가게에 문의해주세요.</Text>
+    <Text>가게에 문의해주세요.</Text>
   );
 }
-
-const MenuTabStyle = StyleSheet.create({
-  flatList: {
-    flex: 1,
-    width: "100%",
-  },
-  subText: {
-    fontSize: 16,
-    marginTop: 20,
-  },
-});
