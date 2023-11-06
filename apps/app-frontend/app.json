@@ -3,7 +3,7 @@
     "owner": "flatwhite-team",
     "name": "플랫화이트",
     "slug": "flatwhite",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,7 +14,6 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "1.0.4",
       "supportsTablet": true,
       "bundleIdentifier": "cafe.flatwhite",
       "infoPlist": {
@@ -57,7 +56,7 @@
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/7a047f6f-7806-404d-8ef8-c70ea9e302bc"
+      "url": "https://u.expo.dev/61cb9615-8517-4d8a-896c-70ee2b6d7b4c"
     }
   }
 }
