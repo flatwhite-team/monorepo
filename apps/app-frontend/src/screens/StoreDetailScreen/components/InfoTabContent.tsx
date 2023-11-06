@@ -45,12 +45,14 @@ export function InfoTabContent() {
         <Ionicons name="map-outline" size={20} />
         <Text className="text-base">{store.address}</Text>
       </ContentWrapper>
-      <View className="mb-5 flex flex-row gap-x-2">
-        <View className="mt-0.5">
-          <Ionicons name="information-circle-outline" size={20} />
+      {store.description != null ? (
+        <View className="mb-5 flex flex-row gap-x-2">
+          <View className="mt-0.5">
+            <Ionicons name="information-circle-outline" size={20} />
+          </View>
+          <Text className="flex-1 text-base">{`${store.description}`}</Text>
         </View>
-        <Text className="flex-1 text-base">{`${store.description}${store.description}`}</Text>
-      </View>
+      ) : null}
     </ScrollView>
   );
 }
