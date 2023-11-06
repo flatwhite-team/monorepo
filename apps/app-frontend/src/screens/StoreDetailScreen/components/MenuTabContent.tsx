@@ -34,6 +34,6 @@ function Resolved() {
     />
   ) : (
     // TODO: 메뉴 없을 때 처리
-    <Text>가게에 문의해주세요.</Text>
+    <Text className="mt-5 text-base">가게에 문의해주세요.</Text>
   );
 }
