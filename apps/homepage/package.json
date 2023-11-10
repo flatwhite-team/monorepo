@@ -1,11 +1,11 @@
 {
-  "name": "@flatwhite-team/admin",
+  "name": "@flatwhite-team/homepage",
   "version": "0.1.2",
   "private": true,
   "scripts": {
     "build": "yarn with-env next build",
     "clean": "git clean -xdf .next .turbo node_modules",
-    "dev": "yarn with-env next dev --port 3001",
+    "dev": "yarn with-env next dev",
     "lint": "dotenv -v SKIP_ENV_VALIDATION=1 next lint",
     "start": "yarn with-env next start",
     "typecheck": "tsc --noEmit",
