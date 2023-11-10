@@ -5,9 +5,12 @@ import NextAuth from "next-auth";
 import type { KakaoProfile } from "next-auth/providers/kakao";
 import KakaoProvider from "next-auth/providers/kakao";
 
-import { env } from "./env.mjs";
-
 export type { Session } from "next-auth";
+
+const shouldUseSecureCookies = process.env.VERCEL_URL != null;
+const cookiePrefix = shouldUseSecureCookies ? "__Secure-" : "";
+const hostName =
+  process.env.VERCEL_URL != null ? "flatwhite.cafe" : "localhost";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -17,10 +20,6 @@ declare module "next-auth" {
     } & DefaultSession["user"];
   }
 }
-
-const useSecureCookies = env.AUTH_URL.startsWith("https://");
-const cookiePrefix = useSecureCookies ? "__Secure-" : "";
-const hostName = new URL(env.AUTH_URL).hostname;
 
 export const {
   handlers: { GET, POST },
@@ -75,7 +74,7 @@ export const {
         sameSite: "lax",
         path: "/",
         domain: "." + hostName,
-        secure: useSecureCookies,
+        secure: shouldUseSecureCookies,
       },
     },
   },
