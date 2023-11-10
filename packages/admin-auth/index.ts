@@ -7,14 +7,10 @@ import KakaoProvider from "next-auth/providers/kakao";
 
 export type { Session } from "next-auth";
 
-console.log(process.env.VERCEL_URL);
-
 const shouldUseSecureCookies = process.env.VERCEL_URL != null;
 const cookiePrefix = shouldUseSecureCookies ? "__Secure-" : "";
 const hostName =
-  process.env.VERCEL_URL != null
-    ? new URL(process.env.VERCEL_URL).hostname
-    : "localhost";
+  process.env.VERCEL_URL != null ? "flatwhite.cafe" : "localhost";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
