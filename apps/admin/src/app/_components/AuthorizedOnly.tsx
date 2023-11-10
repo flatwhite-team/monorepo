@@ -26,11 +26,11 @@ export function AuthorizedOnly({ children }: Props) {
   }
 
   if (status === "authenticated" && !권한이_있는가) {
-    redirect("/403");
+    redirect("https://www.flatwhite.cafe/403");
   }
 
   if (status === "unauthenticated") {
-    redirect("/401");
+    redirect("https://www.flatwhite.cafe/401");
   }
 
   return <div>loading...</div>;
