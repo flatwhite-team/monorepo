@@ -7,6 +7,8 @@ import KakaoProvider from "next-auth/providers/kakao";
 
 export type { Session } from "next-auth";
 
+console.log(process.env.VERCEL_URL);
+
 const shouldUseSecureCookies = process.env.VERCEL_URL != null;
 const cookiePrefix = shouldUseSecureCookies ? "__Secure-" : "";
 const hostName =
