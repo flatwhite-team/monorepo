@@ -1,12 +1,17 @@
 "use client";
 
+import assert from "assert";
+
 import { api } from "~/utils/api";
-import { useAuthorizedSession } from "./_providers/AuthorizedSessionProvider";
+import { useAuthorizedSession } from "../_providers/AuthorizedSessionProvider";
 
 export default function DashboardHome() {
   const { user } = useAuthorizedSession();
-  const { data } = api.store.findManagingByUserId.useQuery(user.id);
-  console.log(data);
+  const { data: stores } = api.store.findManagingByUserId.useQuery(user.id);
 
-  return <div>resolved</div>;
+  assert(stores != null, "상점 정보가 없습니다.");
+
+  return stores.map(({ id, name }) => {
+    return <div key={id}>{name}</div>;
+  });
 }

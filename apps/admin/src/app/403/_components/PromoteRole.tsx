@@ -11,7 +11,7 @@ export async function PromoteRole() {
       session?.user.role === Role.STORE_MANAGER);
 
   if (!isAuthenticated) {
-    return redirect("/401");
+    return location.replace("https://www.flatwhite.cafe/401");
   }
 
   if (isAuthorized) {

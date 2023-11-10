@@ -6,11 +6,7 @@ export async function SignUp() {
   const session = await auth();
 
   if (session != null) {
-    const 권한이_있는가 =
-      session.user.role === "APP_ADMIN" ||
-      session.user.role === "STORE_MANAGER";
-
-    return redirect(권한이_있는가 ? "/" : "/403");
+    return redirect("/");
   }
 
   return (

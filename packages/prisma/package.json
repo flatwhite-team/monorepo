@@ -3,7 +3,6 @@
   "version": "2.0.7",
   "main": "./index.ts",
   "types": "./index.ts",
-  "license": "UNLICENSED",
   "scripts": {
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate"

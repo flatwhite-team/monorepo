@@ -49,12 +49,17 @@ export const storeRouter = createTRPCRouter({
   findManagingByUserId: publicProcedure
     .input(z.string())
     .query(({ ctx, input }) => {
-      return ctx.prisma.storeManager.findMany({
+      return ctx.prisma.store.findMany({
         where: {
-          userId: input,
+          managers: {
+            some: {
+              userId: input,
+            },
+          },
         },
         select: {
-          store: true,
+          id: true,
+          name: true,
         },
       });
     }),

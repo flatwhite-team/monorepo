@@ -30,7 +30,7 @@ export function AuthorizedOnly({ children }: Props) {
   }
 
   if (status === "unauthenticated") {
-    redirect("/401");
+    redirect("https://www.flatwhite.cafe/401");
   }
 
   return <div>loading...</div>;
