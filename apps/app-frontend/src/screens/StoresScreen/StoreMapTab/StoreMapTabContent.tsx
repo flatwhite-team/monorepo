@@ -24,12 +24,7 @@ export function StoreMapTabContent() {
       <MapView
         className="h-full w-full"
         provider={PROVIDER_GOOGLE}
-        region={{
-          latitude: currentLocation?.coords.latitude ?? 37.5665,
-          longitude: currentLocation?.coords.longitude ?? 126.978,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.002,
-        }}
+        region={region}
         userLocationPriority="balanced"
         showsUserLocation={true}
         showsMyLocationButton={true}
