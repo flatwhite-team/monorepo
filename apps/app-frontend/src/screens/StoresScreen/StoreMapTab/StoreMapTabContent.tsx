@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { debounce } from "lodash";
 
 import { useCurrentLocation } from "~/hooks/useCurrentLocation";
 import { useLocationPermissionStatus } from "~/hooks/useLocationPermissionStatus";
@@ -19,6 +20,10 @@ export function StoreMapTabContent() {
   });
   const { data: stores } = api.store.findInBox.useQuery(region);
 
+  const handleRegionChangeComplete = debounce((region) => {
+    setRegion(region);
+  }, 500);
+
   return (
     <View className="flex-1">
       <MapView
@@ -32,9 +37,7 @@ export function StoreMapTabContent() {
         rotateEnabled={false}
         pitchEnabled={false}
         toolbarEnabled={false}
-        onRegionChangeComplete={(region) => {
-          setRegion(region);
-        }}
+        onRegionChangeComplete={handleRegionChangeComplete}
       >
         {stores.map(({ id, latitude, longitude }) => {
           return (
