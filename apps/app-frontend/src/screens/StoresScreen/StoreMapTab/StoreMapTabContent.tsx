@@ -39,13 +39,13 @@ export function StoreMapTabContent() {
         toolbarEnabled={false}
         onRegionChangeComplete={handleRegionChangeComplete}
       >
-        {stores.map(({ id, latitude, longitude }) => {
+        {stores.map((store) => {
           return (
             <Marker
-              key={id}
+              key={store.id}
               coordinate={{
-                latitude,
-                longitude,
+                latitude: store.latitude,
+                longitude: store.longitude,
               }}
             />
           );
