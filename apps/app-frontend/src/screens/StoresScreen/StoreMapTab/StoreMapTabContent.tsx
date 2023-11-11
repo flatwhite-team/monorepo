@@ -43,6 +43,7 @@ export function StoreMapTabContent() {
           return (
             <Marker
               key={store.id}
+              identifier={store.id}
               coordinate={{
                 latitude: store.latitude,
                 longitude: store.longitude,
