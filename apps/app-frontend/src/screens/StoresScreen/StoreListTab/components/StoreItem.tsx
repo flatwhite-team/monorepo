@@ -5,11 +5,11 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import isEqual from "lodash/isEqual";
 
-import { colors } from "../../../constants";
-import { BusinessDay } from "../../../models/BusinessDay";
-import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
+import { colors } from "../../../../constants";
+import { BusinessDay } from "../../../../models/BusinessDay";
+import { HomeStackParamList } from "../../../../navigation/HomeStackNavigator";
 
-const logoImage = require("../../../images/icon.png");
+const logoImage = require("../../../../images/icon.png");
 
 type StoreItemNavigationProp = NativeStackNavigationProp<
   HomeStackParamList,
@@ -77,7 +77,7 @@ const StoreItemStyle = StyleSheet.create({
   },
   menu: {
     fontSize: 16,
-    color: colors.gray,
+    color: colors.gray500,
   },
   image: {
     width: 80,

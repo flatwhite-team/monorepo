@@ -2,21 +2,21 @@ import { useState } from "react";
 import { Text, useWindowDimensions } from "react-native";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 
-import { colors } from "../../../constants";
-import { InfoTabContent } from "./InfoTabContent";
-import { MenuTabContent } from "./MenuTabContent";
+import { colors } from "~/constants";
+import { StoreListTabContent } from "./StoreListTab/StoreListTabContent";
+import { StoreMapTabContent } from "./StoreMapTab/StoreMapTabContent";
 
 const renderScene = SceneMap({
-  info: InfoTabContent,
-  menu: MenuTabContent,
+  list: StoreListTabContent,
+  map: StoreMapTabContent,
 });
 
 const tabs = [
-  { key: "info", title: "정보" },
-  { key: "menu", title: "메뉴" },
+  { key: "list", title: "목록" },
+  { key: "map", title: "지도" },
 ];
 
-export function StoreDetailTabView() {
+export function StoresTabView() {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -32,7 +32,6 @@ export function StoreDetailTabView() {
               backgroundColor: colors.background,
             }}
             labelStyle={{
-              color: "black",
               fontSize: 16,
             }}
             renderLabel={({ route, focused }) => {
@@ -55,7 +54,7 @@ export function StoreDetailTabView() {
       navigationState={{ index, routes: tabs }}
       renderScene={renderScene}
       onIndexChange={setIndex}
-      initialLayout={{ width: layout.width }}
+      initialLayout={{ width: layout.width, height: layout.height }}
       lazy={true}
     />
   );

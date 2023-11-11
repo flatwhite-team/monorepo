@@ -4,7 +4,7 @@ import { StoreDetailScreen } from "../screens/StoreDetailScreen/StoreDetailScree
 import { RootTabNavigator } from "./RootTabNavigator";
 
 export type HomeStackParamList = {
-  StoreListScreen: undefined;
+  StoresScreen: undefined;
   StoreDetailScreen: { storeId: string };
 };
 
@@ -12,9 +12,9 @@ const Stack = createNativeStackNavigator<HomeStackParamList>();
 
 export function HomeStackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="StoreListScreen">
+    <Stack.Navigator initialRouteName="StoresScreen">
       <Stack.Screen
-        name="StoreListScreen"
+        name="StoresScreen"
         component={RootTabNavigator}
         options={{
           headerShown: false,

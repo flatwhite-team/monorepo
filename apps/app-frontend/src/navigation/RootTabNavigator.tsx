@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { colors } from "../constants";
 import { ContactScreen } from "../screens/ContactScreen/ContactScreen";
-import { StoreListScreen } from "../screens/StoreListScreen/StoreListScreen";
+import { StoresScreen } from "../screens/StoresScreen/StoresScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,7 +20,7 @@ export function RootTabNavigator() {
     >
       <Tab.Screen
         name="Home"
-        component={StoreListScreen}
+        component={StoresScreen}
         options={{
           headerShown: false,
           tabBarLabel: "카페",
