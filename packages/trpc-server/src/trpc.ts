@@ -54,9 +54,6 @@ export const createTRPCContext = async (
   } = {},
 ) => {
   const session = options.auth ?? (await auth());
-  const source = options.req?.headers.get("x-trpc-source") ?? "unknown";
-
-  console.log(">>> tRPC Request from", source, "by", session?.user);
 
   return createInnerTRPCContext({
     session,
