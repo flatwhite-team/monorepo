@@ -1,4 +1,4 @@
-import { $Enums } from "@flatwhite-team/prisma";
+import { DayOfWeek } from "@flatwhite-team/prisma";
 import type { BusinessDay, Image, Menu, Store } from "@flatwhite-team/prisma";
 import { z } from "zod";
 
@@ -60,6 +60,50 @@ export const storeRouter = createTRPCRouter({
         select: {
           id: true,
           name: true,
+        },
+      });
+    }),
+  findInBox: publicProcedure
+    .input(
+      z.object({
+        latitude: z.number(),
+        longitude: z.number(),
+        latitudeDelta: z.number(),
+        longitudeDelta: z.number(),
+      }),
+    )
+    .query(({ ctx, input }) => {
+      const { latitude, longitude, latitudeDelta, longitudeDelta } = input;
+      const differenceFromLatitude = Math.min(latitudeDelta / 2, 0.028);
+      const differenceFromLongitude = Math.min(longitudeDelta / 2, 0.025);
+
+      return ctx.prisma.store.findMany({
+        where: {
+          latitude: {
+            gte: latitude - differenceFromLatitude,
+            lte: latitude + differenceFromLatitude,
+          },
+          longitude: {
+            gte: longitude - differenceFromLongitude,
+            lte: longitude + differenceFromLongitude,
+          },
+        },
+        include: {
+          menus: {
+            include: {
+              images: {
+                select: {
+                  url: true,
+                },
+              },
+            },
+          },
+          businessDays: true,
+          images: {
+            select: {
+              url: true,
+            },
+          },
         },
       });
     }),
@@ -177,9 +221,9 @@ export const storeRouter = createTRPCRouter({
         ),
         businessDays: z.array(
           z.object({
-            dayOfWeek: z.nativeEnum($Enums.DayOfWeek),
-            openTime: z.string(),
-            closeTime: z.string(),
+            dayOfWeek: z.nativeEnum(DayOfWeek),
+            openTime: z.string().nullable(),
+            closeTime: z.string().nullable(),
           }),
         ),
       }),

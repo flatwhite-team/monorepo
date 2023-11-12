@@ -1,33 +1,20 @@
 import { Suspense, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { FlatList, RefreshControl } from "react-native";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { styles } from "../../../styles/commonStyle";
-import { CenteredActivityIndicator } from "../../components/CenteredActivityIndicator";
-import { DEFAULT_COORDS, DEFAULT_RADIUS } from "../../constants";
-import { useCurrentLocation } from "../../hooks/useCurrentLocation";
-import { useLocationPermissionStatus } from "../../hooks/useLocationPermissionStatus";
+import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicator";
+import { colors, DEFAULT_COORDS, DEFAULT_RADIUS } from "~/constants";
+import { useCurrentLocation } from "~/hooks/useCurrentLocation";
+import { useLocationPermissionStatus } from "~/hooks/useLocationPermissionStatus";
+import { StoreItem } from "../components/StoreItem";
 import { Emtpy } from "./components/Empty";
-import { Header } from "./components/Header";
-import StoreItem from "./components/StoreItem";
 import { useInfiniteStores } from "./hooks/useInfiniteStores";
 
-export function StoreListScreen() {
-  const inset = useSafeAreaInsets();
-
+export function StoreListTabContent() {
   return (
-    <View
-      style={{
-        ...ListStyle.container,
-        paddingTop: inset.top,
-      }}
-    >
-      <Header />
-      <Suspense fallback={<CenteredActivityIndicator size="large" />}>
-        <Resolved />
-      </Suspense>
-    </View>
+    <Suspense fallback={<CenteredActivityIndicator size="large" />}>
+      <Resolved />
+    </Suspense>
   );
 }
 
@@ -78,10 +65,18 @@ function Resolved() {
 
   return (
     <FlatList
-      style={ListStyle.flatList}
+      className="w-full pt-1"
       data={stores}
       renderItem={({ item }) => {
-        return <StoreItem data={item} />;
+        return (
+          <StoreItem
+            data={item}
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: colors.gray100,
+            }}
+          />
+        );
       }}
       onEndReached={() => {
         if (hasNextPage) {
@@ -115,15 +110,5 @@ function Resolved() {
     />
   );
 }
-
-const ListStyle = StyleSheet.create({
-  container: {
-    ...styles.container,
-    alignItems: "flex-start",
-  },
-  flatList: {
-    width: "100%",
-  },
-});
 
 const DEFAULT_STORE_LIST_PAGINATION_SIZE = 10;

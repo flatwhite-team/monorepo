@@ -1,4 +1,5 @@
 import { StatusBar, Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -25,15 +26,17 @@ export default function App() {
     >
       <TRPCProvider>
         <SafeAreaProvider>
-          <View style={styles.container}>
-            <StatusBar
-              barStyle="dark-content"
-              backgroundColor={colors.background}
-            />
-            <NavigationContainer>
-              <HomeStackNavigator />
-            </NavigationContainer>
-          </View>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <View style={styles.container}>
+              <StatusBar
+                barStyle="dark-content"
+                backgroundColor={colors.background}
+              />
+              <NavigationContainer>
+                <HomeStackNavigator />
+              </NavigationContainer>
+            </View>
+          </GestureHandlerRootView>
         </SafeAreaProvider>
       </TRPCProvider>
     </CustomErrorBoundary>
