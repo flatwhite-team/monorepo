@@ -2,7 +2,6 @@ import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { colors } from "~/constants";
-import { Header } from "./components/Header";
 import { StoresTabView } from "./StoresTabView";
 
 export function StoresScreen() {
@@ -15,7 +14,6 @@ export function StoresScreen() {
         paddingTop: inset.top,
       }}
     >
-      <Header />
       <StoresTabView />
     </View>
   );
