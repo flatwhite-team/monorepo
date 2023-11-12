@@ -65,7 +65,7 @@ const MenuItemStyle = StyleSheet.create({
   },
   description: {
     fontSize: 16,
-    color: colors.gray,
+    color: colors.gray500,
   },
   price: {
     color: colors.primary,

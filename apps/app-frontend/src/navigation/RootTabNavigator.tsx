@@ -29,7 +29,7 @@ export function RootTabNavigator() {
               <Ionicons
                 name="cafe"
                 size={24}
-                color={focused ? colors.primary : colors.gray}
+                color={focused ? colors.primary : colors.gray300}
               />
             );
           },
@@ -46,7 +46,7 @@ export function RootTabNavigator() {
               <Ionicons
                 name="mail"
                 size={24}
-                color={focused ? colors.primary : colors.gray}
+                color={focused ? colors.primary : colors.gray300}
               />
             );
           },
