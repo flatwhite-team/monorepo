@@ -44,6 +44,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         "android.permission.FOREGROUND_SERVICE",
       ],
       package: "cafe.flatwhite",
+      config: {
+        googleMaps: {
+          apiKey: process.env.ANDROID_GOOGLE_MAPS_API_KEY,
+        },
+      },
     },
     web: {
       favicon: "./assets/icon.png",
