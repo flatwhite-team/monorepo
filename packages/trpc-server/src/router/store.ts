@@ -1,4 +1,4 @@
-import { $Enums } from "@flatwhite-team/prisma";
+import { DayOfWeek } from "@flatwhite-team/prisma";
 import type { BusinessDay, Image, Menu, Store } from "@flatwhite-team/prisma";
 import { z } from "zod";
 
@@ -204,9 +204,9 @@ export const storeRouter = createTRPCRouter({
         ),
         businessDays: z.array(
           z.object({
-            dayOfWeek: z.nativeEnum($Enums.DayOfWeek),
-            openTime: z.string(),
-            closeTime: z.string(),
+            dayOfWeek: z.nativeEnum(DayOfWeek),
+            openTime: z.string().nullable(),
+            closeTime: z.string().nullable(),
           }),
         ),
       }),
