@@ -1,15 +1,20 @@
 import { memo } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from "react-native";
 import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import isEqual from "lodash/isEqual";
 
-import { colors } from "../../../../constants";
-import { BusinessDay } from "../../../../models/BusinessDay";
-import { HomeStackParamList } from "../../../../navigation/HomeStackNavigator";
-
-const logoImage = require("../../../../images/icon.png");
+import { colors } from "../../../constants";
+import { BusinessDay } from "../../../models/BusinessDay";
+import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
 
 type StoreItemNavigationProp = NativeStackNavigationProp<
   HomeStackParamList,
@@ -18,20 +23,28 @@ type StoreItemNavigationProp = NativeStackNavigationProp<
 
 interface Props {
   data: JoinedStore;
+  style?: ViewStyle;
 }
 
-function StoreItem({ data: { id, name, images, menus, businessDays } }: Props) {
+export function StoreItem({
+  data: { id, name, images, menus, businessDays },
+  style,
+}: Props) {
   const navigation = useNavigation<StoreItemNavigationProp>();
   const currentBusinessDay = BusinessDay.getCurrentBusinessDay(businessDays);
 
   return (
     <TouchableOpacity
-      style={StoreItemStyle.container}
+      style={{ ...StoreItemStyle.container, ...style }}
       onPress={() => navigation.navigate("StoreDetailScreen", { storeId: id })}
     >
       <Image
         style={StoreItemStyle.image}
-        source={images.length > 0 ? { uri: images[0].url } : logoImage}
+        source={
+          images.length > 0
+            ? { uri: images[0].url }
+            : require("../../../images/icon.png")
+        }
       />
       <View style={StoreItemStyle.info}>
         <Text style={StoreItemStyle.title} numberOfLines={1}>
@@ -52,13 +65,13 @@ function StoreItem({ data: { id, name, images, menus, businessDays } }: Props) {
   );
 }
 
+StoreItem.maxHeight = 120;
+
 const StoreItemStyle = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    maxHeight: 120,
-    borderBottomColor: colors.gray100,
-    borderBottomWidth: 1,
+    maxHeight: StoreItem.maxHeight,
     padding: 20,
   },
   title: {
@@ -84,8 +97,6 @@ const StoreItemStyle = StyleSheet.create({
     height: 80,
     resizeMode: "cover",
     marginRight: 20,
-    borderRadius: 10,
+    borderRadius: 4,
   },
 });
-
-export default memo(StoreItem, isEqual);

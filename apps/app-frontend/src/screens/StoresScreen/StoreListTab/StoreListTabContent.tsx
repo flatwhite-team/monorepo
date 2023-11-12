@@ -1,13 +1,13 @@
 import { Suspense, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicator";
-import { DEFAULT_COORDS, DEFAULT_RADIUS } from "~/constants";
+import { colors, DEFAULT_COORDS, DEFAULT_RADIUS } from "~/constants";
 import { useCurrentLocation } from "~/hooks/useCurrentLocation";
 import { useLocationPermissionStatus } from "~/hooks/useLocationPermissionStatus";
+import { StoreItem } from "../components/StoreItem";
 import { Emtpy } from "./components/Empty";
-import StoreItem from "./components/StoreItem";
 import { useInfiniteStores } from "./hooks/useInfiniteStores";
 
 export function StoreListTabContent() {
@@ -68,7 +68,15 @@ function Resolved() {
       className="w-full pt-1"
       data={stores}
       renderItem={({ item }) => {
-        return <StoreItem data={item} />;
+        return (
+          <StoreItem
+            data={item}
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: colors.gray100,
+            }}
+          />
+        );
       }}
       onEndReached={() => {
         if (hasNextPage) {

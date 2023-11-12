@@ -51,7 +51,7 @@ const MenuItemStyle = StyleSheet.create({
     width: 80,
     height: 80,
     resizeMode: "cover",
-    borderRadius: 10,
+    borderRadius: 4,
   },
   info: {
     flexDirection: "column",
