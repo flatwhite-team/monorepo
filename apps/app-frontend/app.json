@@ -3,7 +3,7 @@
     "owner": "flatwhite-team",
     "name": "플랫화이트",
     "slug": "flatwhite",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,6 +20,9 @@
         "NSLocationAlwaysAndWhenInUseUsageDescription": "현재 위치를 중심으로 주변 카페를 찾습니다.",
         "NSLocationAlwaysUsageDescription": "현재 위치를 중심으로 주변 카페를 찾습니다.",
         "NSLocationWhenInUseUsageDescription": "현재 위치를 중심으로 주변 카페를 찾습니다."
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyAWnbhJI3XgnTNz578j2Y1iSpRxgt1Pneg"
       }
     },
     "android": {
@@ -32,7 +35,12 @@
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE"
       ],
-      "package": "cafe.flatwhite"
+      "package": "cafe.flatwhite",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyC5ARlHOCBtwqUjVpyxpzd2WVgLaMOR7-o"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/icon.png"
