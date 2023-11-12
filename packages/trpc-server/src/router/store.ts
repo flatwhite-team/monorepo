@@ -74,8 +74,8 @@ export const storeRouter = createTRPCRouter({
     )
     .query(({ ctx, input }) => {
       const { latitude, longitude, latitudeDelta, longitudeDelta } = input;
-      const differenceFromLatitude = Math.min(latitudeDelta / 2, 0.015);
-      const differenceFromLongitude = Math.min(longitudeDelta / 2, 0.03);
+      const differenceFromLatitude = Math.min(latitudeDelta / 2, 0.05);
+      const differenceFromLongitude = Math.min(longitudeDelta / 2, 0.04);
 
       return ctx.prisma.store.findMany({
         where: {
