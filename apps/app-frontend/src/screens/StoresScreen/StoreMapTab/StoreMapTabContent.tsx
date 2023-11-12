@@ -39,7 +39,7 @@ export function StoreMapTabContent() {
         toolbarEnabled={false}
         onRegionChangeComplete={handleRegionChangeComplete}
       >
-        {stores.map((store) => {
+        {stores?.map((store) => {
           return (
             <Marker
               key={store.id}
