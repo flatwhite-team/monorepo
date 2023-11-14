@@ -7,8 +7,6 @@ import { StoresTabView } from "./StoresTabView";
 
 export function StoresScreen() {
   const inset = useSafeAreaInsets();
-  const navigation = useNavigation();
-  console.log(navigation.getId(), navigation.getState());
 
   return (
     <View
