@@ -5,7 +5,7 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 import { CenteredActivityIndicator } from "../../../components/CenteredActivityIndicator";
 import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
 import { api } from "../../../utils/api";
-import MenuItem from "./MenuItem";
+import { MenuItem } from "./MenuItem";
 
 export function MenuTabContent() {
   return (
@@ -33,7 +33,8 @@ function Resolved() {
       }}
     />
   ) : (
-    // TODO: 메뉴 없을 때 처리
-    <Text className="mt-5 text-base">가게에 문의해주세요.</Text>
+    <Text className="mt-5 text-center text-base text-gray-700">
+      가게에 문의해주세요.
+    </Text>
   );
 }

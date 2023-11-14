@@ -8,8 +8,6 @@ import { HomeStackParamList } from "../../navigation/HomeStackNavigator";
 import { api } from "../../utils/api";
 import { StoreDetailTabView } from "./components/StoreDetailTabView";
 
-const logoImage = require("../../images/icon.png");
-
 export function StoreDetailScreen() {
   return (
     <Suspense fallback={<CenteredActivityIndicator size="large" />}>
@@ -29,12 +27,14 @@ function Resolved() {
   }
 
   return (
-    <View style={DetailStyle.container}>
+    <View className="flex-1">
       <Image
         source={
-          store.images.length > 0 ? { uri: store.images[0].url } : logoImage
+          store.images.length > 0
+            ? { uri: store.images[0].url }
+            : require("../../images/icon.png")
         }
-        style={DetailStyle.image}
+        className="h-64 w-full object-cover"
       />
       {/* [TODO] 이미지 슬라이더 */}
       {/* <Swiper
@@ -51,51 +51,10 @@ function Resolved() {
               );
             })}
           </Swiper> */}
-      <View style={DetailStyle.contentWrapper}>
-        <Text style={DetailStyle.subTitle}>{store.name}</Text>
+      <View className="bg-background flex-1 gap-y-4">
+        <Text className="px-6 text-2xl font-semibold">{store.name}</Text>
         <StoreDetailTabView />
       </View>
     </View>
   );
 }
-
-const DetailStyle = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  contentWrapper: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: colors.background,
-    gap: 16,
-  },
-  subTitle: {
-    color: "#000000",
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  image: {
-    resizeMode: "cover",
-    width: "100%",
-    height: 250,
-  },
-  storeInfoSection: {
-    marginTop: 20,
-    marginBottom: 20,
-    display: "flex",
-    flexDirection: "column",
-    gap: 8,
-  },
-  infoText: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 4,
-  },
-  icon: {
-    width: 20,
-    height: 20,
-  },
-  subText: {
-    fontSize: 16,
-  },
-});
