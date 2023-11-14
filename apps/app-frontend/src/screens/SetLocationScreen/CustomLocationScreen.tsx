@@ -1,15 +1,18 @@
-import { useRef, useState } from "react";
-import { Dimensions, View } from "react-native";
+import { useState } from "react";
+import { Button, StyleSheet, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
-import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 import { debounce } from "lodash";
 
+import { colors } from "~/constants";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { api } from "~/utils/api";
-import { StoreItem } from "../components/StoreItem";
 
-export function StoreMapTabContent() {
-  const { location } = useCustomLocation();
+export function CustomLocationScreen() {
+  const inset = useSafeAreaInsets();
+  const navigation = useNavigation();
+  const { location, setLocation } = useCustomLocation();
   const initialRegion = {
     latitude: location.latitude,
     longitude: location.longitude,
@@ -18,18 +21,19 @@ export function StoreMapTabContent() {
   };
   const [region, setRegion] = useState(initialRegion);
   const { data: stores } = api.store.findInBox.useQuery(region);
-  const _stores = stores ?? [];
-  const mapRef = useRef<MapView>(null);
-  const carouselRef = useRef<ICarouselInstance>(null);
 
   const handleRegionChangeComplete = debounce((region: Region) => {
     setRegion(region);
-  }, 500);
+  }, 700);
 
   return (
-    <View className="flex-1">
+    <View
+      style={{
+        ...Style.wrapper,
+        paddingBottom: inset.bottom,
+      }}
+    >
       <MapView
-        ref={mapRef}
         className="w-full flex-1"
         provider={PROVIDER_GOOGLE}
         initialRegion={initialRegion}
@@ -42,7 +46,7 @@ export function StoreMapTabContent() {
         toolbarEnabled={false}
         onRegionChangeComplete={handleRegionChangeComplete}
       >
-        {_stores.map((store) => {
+        {stores?.map((store) => {
           return (
             <Marker
               key={store.id}
@@ -55,20 +59,25 @@ export function StoreMapTabContent() {
           );
         })}
       </MapView>
-      {_stores.length > 0 ? (
-        <View style={{ maxHeight: StoreItem.maxHeight }}>
-          <Carousel
-            ref={carouselRef}
-            loop={false}
-            width={Dimensions.get("window").width}
-            data={_stores}
-            scrollAnimationDuration={300}
-            renderItem={({ item }) => {
-              return <StoreItem data={item} />;
-            }}
-          />
-        </View>
-      ) : null}
+      <View>
+        <Button
+          title="이 위치 카페 보기"
+          onPress={() => {
+            setLocation({
+              latitude: region.latitude,
+              longitude: region.longitude,
+            });
+            navigation.goBack();
+          }}
+        />
+      </View>
     </View>
   );
 }
+
+const Style = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+});

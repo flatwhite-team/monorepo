@@ -11,7 +11,7 @@ interface MenuProps extends Menu {
   images: Pick<ImageModel, "url">[];
 }
 
-function MenuItem({ id, name, price, description, images }: MenuProps) {
+export function MenuItem({ id, name, price, description, images }: MenuProps) {
   return (
     <View key={id} style={MenuItemStyle.container}>
       <Image
@@ -46,6 +46,7 @@ const MenuItemStyle = StyleSheet.create({
     borderBottomColor: colors.gray100,
     borderBottomWidth: 1,
     paddingVertical: 20,
+    paddingHorizontal: 24,
   },
   image: {
     width: 80,
@@ -73,5 +74,3 @@ const MenuItemStyle = StyleSheet.create({
     fontWeight: "600",
   },
 });
-
-export default memo(MenuItem, isEqual);

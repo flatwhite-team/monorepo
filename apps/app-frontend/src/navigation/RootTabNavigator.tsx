@@ -15,6 +15,9 @@ export function RootTabNavigator() {
           fontSize: 12,
         },
         tabBarActiveTintColor: colors.primary,
+        headerStyle: {
+          backgroundColor: colors.background,
+        },
       }}
       initialRouteName="Home"
     >

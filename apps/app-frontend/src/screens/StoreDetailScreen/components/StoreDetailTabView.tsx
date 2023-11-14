@@ -31,10 +31,6 @@ export function StoreDetailTabView() {
             style={{
               backgroundColor: colors.background,
             }}
-            labelStyle={{
-              color: "black",
-              fontSize: 16,
-            }}
             renderLabel={({ route, focused }) => {
               return (
                 <Text

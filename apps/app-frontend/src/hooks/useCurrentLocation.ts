@@ -6,31 +6,26 @@ import {
 } from "expo-location";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
-import { DEFAULT_COORDS } from "../constants";
+import { useLocationPermissionStatus } from "./useLocationPermissionStatus";
 
-type LocationObject = {
+export type LocationObject = {
   coords: Pick<LocationObjectCoords, "latitude" | "longitude">;
 };
 
 export function useCurrentLocation({
   locationOptions,
   queryOptions,
-  shouldUseFallbackLocation = false,
 }: {
   locationOptions?: LocationOptions;
-  queryOptions?: UseQueryOptions<LocationObject>;
-  shouldUseFallbackLocation?: boolean;
+  queryOptions?: UseQueryOptions<LocationObject | null>;
 } = {}) {
-  return useQuery<LocationObject>({
-    queryKey: useCurrentLocation.queryKey(shouldUseFallbackLocation),
+  const { data: locationPermissionStatus } = useLocationPermissionStatus();
+
+  return useQuery<LocationObject | null>({
+    queryKey: useCurrentLocation.queryKey,
     queryFn: () => {
-      if (shouldUseFallbackLocation) {
-        return {
-          coords: {
-            latitude: DEFAULT_COORDS.latitude,
-            longitude: DEFAULT_COORDS.longitude,
-          },
-        };
+      if (!locationPermissionStatus?.granted) {
+        return null;
       }
 
       return getCurrentPositionAsync({
@@ -42,7 +37,4 @@ export function useCurrentLocation({
   });
 }
 
-useCurrentLocation.baseQueryKey = "currentLocation";
-useCurrentLocation.queryKey = (shouldUseFallbackLocation: boolean) => {
-  return [useCurrentLocation.baseQueryKey, shouldUseFallbackLocation];
-};
+useCurrentLocation.queryKey = ["currentLocation"];

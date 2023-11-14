@@ -30,13 +30,13 @@ export function StoreItem({
   data: { id, name, images, menus, businessDays },
   style,
 }: Props) {
-  const navigation = useNavigation<StoreItemNavigationProp>();
+  const { navigate } = useNavigation<StoreItemNavigationProp>();
   const currentBusinessDay = BusinessDay.getCurrentBusinessDay(businessDays);
 
   return (
     <TouchableOpacity
       style={{ ...StoreItemStyle.container, ...style }}
-      onPress={() => navigation.navigate("StoreDetailScreen", { storeId: id })}
+      onPress={() => navigate("StoreDetailScreen", { storeId: id })}
     >
       <Image
         style={StoreItemStyle.image}
