@@ -1,6 +1,5 @@
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
 
 import { colors } from "~/constants";
 import { StoresTabView } from "./StoresTabView";
