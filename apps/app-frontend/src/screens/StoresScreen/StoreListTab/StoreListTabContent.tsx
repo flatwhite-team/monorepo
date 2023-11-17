@@ -7,7 +7,6 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicator";
 import { colors, DEFAULT_COORDS, DEFAULT_RADIUS } from "~/constants";
-import { useCurrentLocation } from "~/hooks/useCurrentLocation";
 import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { StoreItem } from "../components/StoreItem";
@@ -25,7 +24,7 @@ export function StoreListTabContent() {
 function Resolved() {
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
-  const { location, setLocation, setToDefault } = useCustomLocation();
+  const { location, setLocation, initializeLocation } = useCustomLocation();
   const radius = DEFAULT_RADIUS;
   const pageSize = DEFAULT_STORE_LIST_PAGINATION_SIZE;
   const {
@@ -83,18 +82,15 @@ function Resolved() {
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              onRefresh={() => {
+              onRefresh={async () => {
                 setRefreshing(true);
                 setTimeout(() => {
                   setRefreshing(false);
                 }, 500);
 
-                setToDefault();
+                await initializeLocation();
 
-                queryClient.removeQueries({
-                  queryKey: [useCurrentLocation.queryKey],
-                });
-                queryClient.removeQueries({
+                queryClient.refetchQueries({
                   queryKey: [useInfiniteStores.baseQueryKey],
                 });
               }}

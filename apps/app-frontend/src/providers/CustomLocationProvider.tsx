@@ -6,6 +6,7 @@ import {
   useContext,
   useState,
 } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { DEFAULT_COORDS } from "~/constants";
 import { useCurrentLocation } from "~/hooks/useCurrentLocation";
@@ -19,7 +20,7 @@ const CustomLocationContext = createContext<
   | {
       location: Location;
       setLocation: Dispatch<SetStateAction<Location>>;
-      setToDefault: () => void;
+      initializeLocation: () => Promise<void>;
     }
   | undefined
 >(undefined);
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export function CustomLocationProvider({ children }: Props) {
+  const queryClient = useQueryClient();
   const { data: currentLocation } = useCurrentLocation();
   const initialLocation =
     currentLocation?.coords == null
@@ -42,7 +44,8 @@ export function CustomLocationProvider({ children }: Props) {
         };
   const [location, setLocation] = useState(initialLocation);
 
-  function setToDefault() {
+  async function initializeLocation() {
+    await queryClient.refetchQueries(useCurrentLocation.queryKey);
     setLocation(initialLocation);
   }
 
@@ -51,7 +54,7 @@ export function CustomLocationProvider({ children }: Props) {
       value={{
         location,
         setLocation,
-        setToDefault,
+        initializeLocation,
       }}
     >
       {children}
