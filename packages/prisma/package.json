@@ -6,7 +6,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "db:gen": "prisma generate",
-    "db:push": "prisma db push --skip-generate"
+    "db:push": "prisma db push --skip-generate",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.6.0"
