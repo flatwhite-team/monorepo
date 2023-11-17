@@ -17,7 +17,9 @@ export function StoreMapTabContent() {
     longitudeDelta: 0.002,
   };
   const [region, setRegion] = useState(initialRegion);
-  const { data: stores } = api.store.findInBox.useQuery(region);
+  const { data: stores } = api.store.findInBox.useQuery({
+    location: region,
+  });
   const _stores = stores ?? [];
   const mapRef = useRef<MapView>(null);
   const carouselRef = useRef<ICarouselInstance>(null);

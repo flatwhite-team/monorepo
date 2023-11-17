@@ -19,6 +19,7 @@ const CustomLocationContext = createContext<
   | {
       location: Location;
       setLocation: Dispatch<SetStateAction<Location>>;
+      setToDefault: () => void;
     }
   | undefined
 >(undefined);
@@ -29,7 +30,7 @@ interface Props {
 
 export function CustomLocationProvider({ children }: Props) {
   const { data: currentLocation } = useCurrentLocation();
-  const locationCoords =
+  const initialLocation =
     currentLocation?.coords == null
       ? {
           latitude: DEFAULT_COORDS.latitude,
@@ -39,13 +40,18 @@ export function CustomLocationProvider({ children }: Props) {
           latitude: currentLocation.coords.latitude,
           longitude: currentLocation.coords.longitude,
         };
-  const [location, setLocation] = useState(locationCoords);
+  const [location, setLocation] = useState(initialLocation);
+
+  function setToDefault() {
+    setLocation(initialLocation);
+  }
 
   return (
     <CustomLocationContext.Provider
       value={{
         location,
         setLocation,
+        setToDefault,
       }}
     >
       {children}
@@ -60,16 +66,5 @@ export function useCustomLocation() {
     throw new Error("CustomLocationProvider를 사용하지 않았습니다.");
   }
 
-  const { location, setLocation } = context;
-
-  return {
-    location,
-    setLocation,
-    setToDefault: () => {
-      setLocation({
-        latitude: DEFAULT_COORDS.latitude,
-        longitude: DEFAULT_COORDS.longitude,
-      });
-    },
-  };
+  return context;
 }
