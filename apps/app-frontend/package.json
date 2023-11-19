@@ -6,7 +6,7 @@
   "scripts": {
     "android": "expo start --android",
     "build:android": "eas build --platform android --profile production",
-    "dev": "expo start --ios -c",
+    "dev": "expo start --ios",
     "ios": "expo start --ios",
     "start": "expo start",
     "typecheck": "yarn run -T tsc --noEmit"

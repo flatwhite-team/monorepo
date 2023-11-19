@@ -1,3 +1,4 @@
+import { ComponentProps } from "react";
 import { Button, Text, View } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -6,7 +7,9 @@ import { DEFAULT_COORDS } from "~/constants";
 import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 
-export function Emtpy() {
+interface Props extends ComponentProps<typeof View> {}
+
+export function Emtpy(props: Props) {
   const navigation =
     useNavigation<
       NativeStackNavigationProp<HomeStackParamList, "StoresScreen">
@@ -32,28 +35,9 @@ export function Emtpy() {
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignSelf: "center",
-      }}
-    >
-      <View
-        style={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 20,
-          }}
-        >
-          주변에 카페가 없어요.
-        </Text>
-        <Button title={confirmButtonTitle} onPress={handleConfirm} />
-      </View>
+    <View className="flex-1 justify-center self-center" {...props}>
+      <Text className="text-xl">주변에 카페가 없어요.</Text>
+      <Button title={confirmButtonTitle} onPress={handleConfirm} />
     </View>
   );
 }

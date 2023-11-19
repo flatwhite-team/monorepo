@@ -88,7 +88,7 @@ function Resolved({ scrollY }: Props) {
   return (
     <>
       {stores.length === 0 ? (
-        <Emtpy />
+        <Emtpy className={`mt-[${FILTERS_SCROLL_VIEW_HEIGHT}px]`} />
       ) : (
         <FlatList
           className="w-full pt-12"
