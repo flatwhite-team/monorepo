@@ -1,16 +1,10 @@
-import { DayOfWeek } from "@flatwhite-team/prisma";
+import { Characteristic, DayOfWeek, Prisma } from "@flatwhite-team/prisma";
 import type { BusinessDay, Image, Menu, Store } from "@flatwhite-team/prisma";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 const DEFAULT_TAKE = 10;
-
-const locationOptionsSchema = z.object({
-  latitude: z.number(),
-  longitude: z.number(),
-  radius: z.number(),
-});
 
 type ImageUrl = Pick<Image, "url">;
 type MenuWithImages = Menu & { images: ImageUrl[] };
@@ -19,6 +13,7 @@ export type JoinedStore = Store & {
   menus: MenuWithImages[];
   businessDays: BusinessDay[];
   images: ImageUrl[];
+  characteristics: Characteristic[];
 };
 
 export const storeRouter = createTRPCRouter({
@@ -43,6 +38,7 @@ export const storeRouter = createTRPCRouter({
           },
         },
         businessDays: true,
+        characteristics: true,
       },
     });
   }),
@@ -66,51 +62,89 @@ export const storeRouter = createTRPCRouter({
   findInBox: publicProcedure
     .input(
       z.object({
-        latitude: z.number(),
-        longitude: z.number(),
-        latitudeDelta: z.number(),
-        longitudeDelta: z.number(),
+        location: z.object({
+          latitude: z.number(),
+          longitude: z.number(),
+          latitudeDelta: z.number(),
+          longitudeDelta: z.number(),
+        }),
+        characteristics: z.nativeEnum(Characteristic).array().optional(),
       }),
     )
-    .query(({ ctx, input }) => {
-      const { latitude, longitude, latitudeDelta, longitudeDelta } = input;
+    .query(({ ctx, input: { location, characteristics } }) => {
+      const { latitude, longitude, latitudeDelta, longitudeDelta } = location;
       const differenceFromLatitude = Math.min(latitudeDelta / 2, 0.028);
       const differenceFromLongitude = Math.min(longitudeDelta / 2, 0.025);
 
-      return ctx.prisma.store.findMany({
-        where: {
-          latitude: {
-            gte: latitude - differenceFromLatitude,
-            lte: latitude + differenceFromLatitude,
+      return ctx.prisma.store
+        .findMany({
+          where: {
+            latitude: {
+              gte: latitude - differenceFromLatitude,
+              lte: latitude + differenceFromLatitude,
+            },
+            longitude: {
+              gte: longitude - differenceFromLongitude,
+              lte: longitude + differenceFromLongitude,
+            },
           },
-          longitude: {
-            gte: longitude - differenceFromLongitude,
-            lte: longitude + differenceFromLongitude,
-          },
-        },
-        include: {
-          menus: {
-            include: {
-              images: {
-                select: {
-                  url: true,
+          include: {
+            menus: {
+              include: {
+                images: {
+                  select: {
+                    url: true,
+                  },
                 },
               },
             },
-          },
-          businessDays: true,
-          images: {
-            select: {
-              url: true,
+            businessDays: true,
+            images: {
+              select: {
+                url: true,
+              },
             },
+            characteristics: true,
           },
-        },
-      });
+        })
+        .then((result) => {
+          return result
+            .filter((store) => {
+              if (characteristics == null || characteristics.length === 0) {
+                return true;
+              }
+
+              const storeCharacteristicsSet = new Set(
+                store.characteristics.map(({ characteristic }) => {
+                  return characteristic;
+                }),
+              );
+
+              return characteristics.every((characteristic) => {
+                return storeCharacteristicsSet.has(characteristic);
+              });
+            })
+            .map((store) => {
+              return {
+                ...store,
+                characteristics: store.characteristics.map(
+                  ({ characteristic }) => {
+                    return characteristic;
+                  },
+                ),
+              };
+            });
+        });
     }),
   infiniteFindByDistance: publicProcedure
     .input(
       z.object({
-        locationOptions: locationOptionsSchema,
+        locationOptions: z.object({
+          latitude: z.number(),
+          longitude: z.number(),
+          radius: z.number(),
+        }),
+        characteristics: z.nativeEnum(Characteristic).array().optional(),
         take: z.number().optional(),
         cursor: z.string().optional(),
       }),
@@ -118,6 +152,7 @@ export const storeRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       const {
         locationOptions: { latitude, longitude, radius },
+        characteristics,
         take,
         cursor,
       } = input;
@@ -163,7 +198,15 @@ export const storeRouter = createTRPCRouter({
               WHERE Store.id = Menu.storeId
             ),
             JSON_ARRAY()
-          ) AS menus
+          ) AS menus,
+          COALESCE(
+            (
+              SELECT JSON_ARRAYAGG(StoreCharacteristic.characteristic)
+              FROM StoreCharacteristic
+              WHERE Store.id = StoreCharacteristic.storeId
+            ),
+            JSON_ARRAY()
+          ) AS characteristics
         FROM 
           Store
         WHERE 
@@ -190,6 +233,19 @@ export const storeRouter = createTRPCRouter({
                 )
               )
         )
+        ${
+          characteristics == null || characteristics.length === 0
+            ? Prisma.empty
+            : Prisma.sql`AND Store.id IN (
+                SELECT DISTINCT storeId
+                FROM StoreCharacteristic
+                WHERE characteristic IN (${Prisma.join(characteristics)})
+                GROUP BY storeId
+                HAVING COUNT(DISTINCT characteristic) >= ${
+                  characteristics.length
+                }
+              )`
+        }
         GROUP BY
           Store.id
         ORDER BY

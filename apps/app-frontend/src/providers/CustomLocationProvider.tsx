@@ -6,6 +6,7 @@ import {
   useContext,
   useState,
 } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { DEFAULT_COORDS } from "~/constants";
 import { useCurrentLocation } from "~/hooks/useCurrentLocation";
@@ -19,6 +20,7 @@ const CustomLocationContext = createContext<
   | {
       location: Location;
       setLocation: Dispatch<SetStateAction<Location>>;
+      initializeLocation: () => Promise<void>;
     }
   | undefined
 >(undefined);
@@ -28,8 +30,9 @@ interface Props {
 }
 
 export function CustomLocationProvider({ children }: Props) {
+  const queryClient = useQueryClient();
   const { data: currentLocation } = useCurrentLocation();
-  const locationCoords =
+  const initialLocation =
     currentLocation?.coords == null
       ? {
           latitude: DEFAULT_COORDS.latitude,
@@ -39,13 +42,19 @@ export function CustomLocationProvider({ children }: Props) {
           latitude: currentLocation.coords.latitude,
           longitude: currentLocation.coords.longitude,
         };
-  const [location, setLocation] = useState(locationCoords);
+  const [location, setLocation] = useState(initialLocation);
+
+  async function initializeLocation() {
+    await queryClient.refetchQueries(useCurrentLocation.queryKey);
+    setLocation(initialLocation);
+  }
 
   return (
     <CustomLocationContext.Provider
       value={{
         location,
         setLocation,
+        initializeLocation,
       }}
     >
       {children}
@@ -60,16 +69,5 @@ export function useCustomLocation() {
     throw new Error("CustomLocationProvider를 사용하지 않았습니다.");
   }
 
-  const { location, setLocation } = context;
-
-  return {
-    location,
-    setLocation,
-    setToDefault: () => {
-      setLocation({
-        latitude: DEFAULT_COORDS.latitude,
-        longitude: DEFAULT_COORDS.longitude,
-      });
-    },
-  };
+  return context;
 }

@@ -13,19 +13,54 @@ datasource db {
 }
 
 model Store {
-  id           String         @id @default(cuid())
-  name         String
-  address      String
-  phoneNumber  String?
-  latitude     Float
-  longitude    Float
-  description  String?        @db.Text
-  images       Image[]
-  menus        Menu[]
-  businessDays BusinessDay[]
-  managers     StoreManager[]
+  id              String          @id @default(cuid())
+  name            String
+  address         String
+  phoneNumber     String?
+  latitude        Float
+  longitude       Float
+  description     String?         @db.Text
+  images          Image[]
+  menus           Menu[]
+  businessDays    BusinessDay[]
+  managers        StoreManager[]
+  characteristics StoreCharacteristic[]
 
   @@unique([name, latitude, longitude])
+}
+
+model StoreCharacteristic {
+  characteristic Characteristic
+  store          Store          @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  storeId        String
+
+  @@unique([characteristic, storeId])
+  @@index([storeId])
+  @@index([characteristic])
+}
+
+enum Characteristic {
+  SPECIALTY_COFFEE
+  DECAFFEINATED_COFFEE
+  BAKERY
+  DESSERT
+  VEGAN
+  PET_FRIENDLY
+  ROASTERY
+  STUDY
+  CALM
+  QUIET
+  TALK
+  WIFI
+  FAMILY
+  FRIENDS
+  DATE
+  WORK
+  MEETING
+  OUTDOOR
+  PARKING
+  DRIVE_THRU
+  OUTLET
 }
 
 enum DayOfWeek {
