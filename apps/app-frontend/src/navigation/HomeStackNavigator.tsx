@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { Characteristic } from "@flatwhite-team/prisma";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicator";
@@ -9,7 +10,7 @@ import { StoreDetailScreen } from "../screens/StoreDetailScreen/StoreDetailScree
 import { RootTabNavigator } from "./RootTabNavigator";
 
 export type HomeStackParamList = {
-  StoresScreen: undefined;
+  StoresScreen: { filters: Characteristic[] };
   StoreDetailScreen: { storeId: string };
   CustomLocationScreen: undefined;
 };
