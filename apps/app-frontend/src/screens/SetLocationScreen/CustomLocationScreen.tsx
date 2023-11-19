@@ -50,9 +50,7 @@ export function CustomLocationScreen() {
         rotateEnabled={false}
         pitchEnabled={false}
         toolbarEnabled={false}
-        onRegionChangeComplete={(region) => {
-          setRegion(region);
-        }}
+        onRegionChangeComplete={setRegion}
       >
         {stores?.map((store) => {
           return (
