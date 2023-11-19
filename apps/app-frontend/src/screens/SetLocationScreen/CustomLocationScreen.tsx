@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, StyleSheet, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -20,13 +20,17 @@ export function CustomLocationScreen() {
     longitudeDelta: 0.002,
   };
   const [region, setRegion] = useState(initialRegion);
+  const [regionForQuery, setRegionForQuery] = useState(region);
   const { data: stores } = api.store.findInBox.useQuery({
-    location: region,
+    location: regionForQuery,
   });
-
-  const handleRegionChangeComplete = debounce((region: Region) => {
-    setRegion(region);
+  const debounceSetRegionForQuery = debounce((region: Region) => {
+    setRegionForQuery(region);
   }, 700);
+
+  useEffect(() => {
+    debounceSetRegionForQuery(region);
+  }, [region]);
 
   return (
     <View
@@ -46,7 +50,9 @@ export function CustomLocationScreen() {
         rotateEnabled={false}
         pitchEnabled={false}
         toolbarEnabled={false}
-        onRegionChangeComplete={handleRegionChangeComplete}
+        onRegionChangeComplete={(region) => {
+          setRegion(region);
+        }}
       >
         {stores?.map((store) => {
           return (
