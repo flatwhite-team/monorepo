@@ -1,11 +1,36 @@
-import { ReactNode } from "react";
 import { Button, Text, View } from "react-native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-interface Props {
-  confirmButton: ReactNode;
-}
+import { DEFAULT_COORDS } from "~/constants";
+import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
+import { useCustomLocation } from "~/providers/CustomLocationProvider";
 
-export function Emtpy({ confirmButton }: Props) {
+export function Emtpy() {
+  const navigation =
+    useNavigation<
+      NativeStackNavigationProp<HomeStackParamList, "StoresScreen">
+    >();
+  const {
+    params: { filters },
+  } = useRoute<RouteProp<HomeStackParamList, "StoresScreen">>();
+  const { setLocation } = useCustomLocation();
+  const filtered = filters.length > 0;
+  const confirmButtonTitle = filtered ? "필터 제거" : "강남역 주변 카페 보기";
+
+  function handleConfirm() {
+    if (filtered) {
+      navigation.setParams({
+        filters: [],
+      });
+    } else {
+      setLocation({
+        latitude: DEFAULT_COORDS.latitude,
+        longitude: DEFAULT_COORDS.longitude,
+      });
+    }
+  }
+
   return (
     <View
       style={{
@@ -27,7 +52,7 @@ export function Emtpy({ confirmButton }: Props) {
         >
           주변에 카페가 없어요.
         </Text>
-        {confirmButton}
+        <Button title={confirmButtonTitle} onPress={handleConfirm} />
       </View>
     </View>
   );
