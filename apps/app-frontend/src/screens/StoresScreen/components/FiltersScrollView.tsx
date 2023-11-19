@@ -91,7 +91,7 @@ const 필터: Record<Characteristic, string> = {
   QUIET: "조용한",
   TALK: "대화",
   FAMILY: "가족",
-  FRIENDS: "친구모임",
+  FRIENDS: "친구",
   DATE: "데이트",
   WORK: "업무",
   MEETING: "미팅",
