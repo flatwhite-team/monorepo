@@ -1,7 +1,10 @@
+import { Characteristic } from "@flatwhite-team/prisma";
+
 import { api } from "../../../../utils/api";
 
 export function useInfiniteStores({
   locationOptions,
+  characteristics,
   take,
 }: {
   locationOptions: {
@@ -9,15 +12,20 @@ export function useInfiniteStores({
     longitude: number;
     radius: number;
   };
+  characteristics?: Characteristic[];
   take: number;
 }) {
   return api.store.infiniteFindByDistance.useInfiniteQuery(
     {
       locationOptions,
+      characteristics,
       take,
     },
     {
-      queryKey: [useInfiniteStores.baseQueryKey, { locationOptions }],
+      queryKey: [
+        useInfiniteStores.baseQueryKey,
+        { locationOptions, characteristics },
+      ],
       getNextPageParam: (lastPage) => {
         if (lastPage.length < take || lastPage.length === 0) {
           return undefined;
