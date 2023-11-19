@@ -1,10 +1,11 @@
+import { ReactNode } from "react";
 import { Button, Text, View } from "react-native";
 
 interface Props {
-  onConfirm: () => void;
+  confirmButton: ReactNode;
 }
 
-export function Emtpy({ onConfirm }: Props) {
+export function Emtpy({ confirmButton }: Props) {
   return (
     <View
       style={{
@@ -26,7 +27,7 @@ export function Emtpy({ onConfirm }: Props) {
         >
           주변에 카페가 없어요.
         </Text>
-        <Button title="강남역 주변 카페 보기" onPress={onConfirm} />
+        {confirmButton}
       </View>
     </View>
   );

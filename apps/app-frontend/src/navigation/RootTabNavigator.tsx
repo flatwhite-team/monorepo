@@ -24,6 +24,9 @@ export function RootTabNavigator() {
       <Tab.Screen
         name="Home"
         component={StoresScreen}
+        initialParams={{
+          filters: [],
+        }}
         options={{
           headerShown: false,
           tabBarLabel: "카페",

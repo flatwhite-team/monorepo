@@ -51,6 +51,7 @@ export function StoresTabView() {
           />
         );
       }}
+      swipeEnabled={false}
       navigationState={{ index, routes: tabs }}
       renderScene={renderScene}
       onIndexChange={setIndex}
