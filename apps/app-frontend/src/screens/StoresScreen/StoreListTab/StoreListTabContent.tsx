@@ -28,7 +28,7 @@ function Resolved() {
   } = useRoute<RouteProp<HomeStackParamList, "StoresScreen">>();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
-  const { location, setLocation, initializeLocation } = useCustomLocation();
+  const { location, initializeLocation } = useCustomLocation();
   const radius = DEFAULT_RADIUS;
   const pageSize = DEFAULT_STORE_LIST_PAGINATION_SIZE;
   const {
