@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
-import { Text, View } from "react-native";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable, Text, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { Characteristic } from "@flatwhite-team/prisma";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -16,7 +16,7 @@ export function FiltersScrollView(props: Props) {
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        className="px-4 py-2"
+        className="px-4"
       >
         <XStack space={4} className="mr-8">
           {Object.keys(필터).map((characteristic) => {
@@ -48,7 +48,7 @@ function Badge({ characteristic }: BadgeProps) {
   const active = filters.includes(characteristic);
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={() => {
         const newParams = active
           ? filters.filter((filter) => {
@@ -74,13 +74,13 @@ function Badge({ characteristic }: BadgeProps) {
           {필터[characteristic]}
         </Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 
 const 필터: Record<Characteristic, string> = {
-  DECAFFEINATED_COFFEE: "디카페인",
   SPECIALTY_COFFEE: "스페셜티",
+  DECAFFEINATED_COFFEE: "디카페인",
   BAKERY: "베이커리",
   DESSERT: "디저트",
   VEGAN: "비건",

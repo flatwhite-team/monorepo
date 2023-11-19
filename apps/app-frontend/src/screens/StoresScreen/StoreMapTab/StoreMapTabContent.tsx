@@ -5,7 +5,6 @@ import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { debounce } from "lodash";
 
-import { colors } from "~/constants";
 import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { api } from "~/utils/api";
@@ -36,7 +35,7 @@ export function StoreMapTabContent() {
 
   return (
     <View className="flex-1">
-      <FiltersScrollView className="absolute z-50" />
+      <FiltersScrollView className="absolute z-50 py-3" />
       <MapView
         ref={mapRef}
         className="w-full flex-1"
