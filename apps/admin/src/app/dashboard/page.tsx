@@ -15,6 +15,13 @@ export default function DashboardHome() {
     return (
       <div key={id}>
         <p>{name}</p>
+        <button
+          onClick={() => {
+            console.log(id);
+          }}
+        >
+          이동
+        </button>
       </div>
     );
   });
