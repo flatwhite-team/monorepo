@@ -18,6 +18,9 @@ export function RootTabNavigator() {
         headerStyle: {
           backgroundColor: colors.background,
         },
+        tabBarStyle: {
+          backgroundColor: colors.background,
+        },
       }}
       initialRouteName="Home"
     >
@@ -25,7 +28,7 @@ export function RootTabNavigator() {
         name="Home"
         component={StoresScreen}
         initialParams={{
-          filters: [],
+          filters: undefined,
         }}
         options={{
           headerShown: false,

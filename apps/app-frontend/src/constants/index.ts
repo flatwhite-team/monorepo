@@ -6,6 +6,7 @@ export const DEFAULT_COORDS = {
 export const DEFAULT_RADIUS = 3000; // 3km
 
 export const colors = {
+  black: "#000000",
   white: "#FFFFFF",
   background: "#FDFCF9",
   primary: "#2F68A8",

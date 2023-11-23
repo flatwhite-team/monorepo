@@ -68,10 +68,12 @@ export const storeRouter = createTRPCRouter({
           latitudeDelta: z.number(),
           longitudeDelta: z.number(),
         }),
+        // deprecated
         characteristics: z.nativeEnum(Characteristic).array().optional(),
+        filters: z.array(z.array(z.nativeEnum(Characteristic))).optional(),
       }),
     )
-    .query(({ ctx, input: { location, characteristics } }) => {
+    .query(({ ctx, input: { location, filters = [] } }) => {
       const { latitude, longitude, latitudeDelta, longitudeDelta } = location;
       const differenceFromLatitude = Math.min(latitudeDelta / 2, 0.028);
       const differenceFromLongitude = Math.min(longitudeDelta / 2, 0.025);
@@ -108,21 +110,27 @@ export const storeRouter = createTRPCRouter({
           },
         })
         .then((result) => {
+          const filterSets = filters
+            .filter((filter) => {
+              return filter.length > 0;
+            })
+            .map((filter) => {
+              return new Set(filter);
+            });
+
           return result
             .filter((store) => {
-              if (characteristics == null || characteristics.length === 0) {
-                return true;
+              for (const filterSet of filterSets) {
+                if (
+                  !store.characteristics.some(({ characteristic }) => {
+                    return filterSet.has(characteristic);
+                  })
+                ) {
+                  return false;
+                }
               }
 
-              const storeCharacteristicsSet = new Set(
-                store.characteristics.map(({ characteristic }) => {
-                  return characteristic;
-                }),
-              );
-
-              return characteristics.every((characteristic) => {
-                return storeCharacteristicsSet.has(characteristic);
-              });
+              return true;
             })
             .map((store) => {
               return {
@@ -144,7 +152,9 @@ export const storeRouter = createTRPCRouter({
           longitude: z.number(),
           radius: z.number(),
         }),
+        // deprecated
         characteristics: z.nativeEnum(Characteristic).array().optional(),
+        filters: z.array(z.array(z.nativeEnum(Characteristic))).optional(),
         take: z.number().optional(),
         cursor: z.string().optional(),
       }),
@@ -152,7 +162,7 @@ export const storeRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       const {
         locationOptions: { latitude, longitude, radius },
-        characteristics,
+        filters = [],
         take,
         cursor,
       } = input;
@@ -165,9 +175,12 @@ export const storeRouter = createTRPCRouter({
         longitude + radiusInDegress / Math.cos(latitude * (Math.PI / 180));
       const minLong =
         longitude - radiusInDegress / Math.cos(latitude * (Math.PI / 180));
+      const _filters = filters.filter((filterGroup) => {
+        return filterGroup.length > 0;
+      });
 
       return ctx.prisma.$queryRaw<JoinedStore[]>`
-        SELECT 
+        SELECT
           Store.*,
           COALESCE(
             (
@@ -207,21 +220,21 @@ export const storeRouter = createTRPCRouter({
             ),
             JSON_ARRAY()
           ) AS characteristics
-        FROM 
+        FROM
           Store
-        WHERE 
-          latitude BETWEEN ${minLat} AND ${maxLat} 
-        AND 
+        WHERE
+          latitude BETWEEN ${minLat} AND ${maxLat}
+        AND
           longitude BETWEEN ${minLong} AND ${maxLong}
         AND ST_Distance_Sphere(
             POINT(${longitude}, ${latitude}),
             POINT(longitude, latitude)
           ) <= ${radius}
         AND (
-          ${cursor} IS NULL 
-          OR 
+          ${cursor} IS NULL
+          OR
             ${cursor} IS NOT NULL
-            AND 
+            AND
               ST_Distance_Sphere(
                 POINT(${longitude}, ${latitude}),
                 POINT(longitude, latitude)
@@ -234,23 +247,28 @@ export const storeRouter = createTRPCRouter({
               )
         )
         ${
-          characteristics == null || characteristics.length === 0
-            ? Prisma.empty
-            : Prisma.sql`AND Store.id IN (
-                SELECT DISTINCT storeId
-                FROM StoreCharacteristic
-                WHERE characteristic IN (${Prisma.join(characteristics)})
-                GROUP BY storeId
-                HAVING COUNT(DISTINCT characteristic) >= ${
-                  characteristics.length
-                }
-              )`
+          _filters.length > 0
+            ? Prisma.raw(
+                `AND ${_filters
+                  .map((filterGroup) => {
+                    const inClause = filterGroup.map((c) => `'${c}'`).join(",");
+
+                    return `EXISTS (
+                      SELECT 1 FROM StoreCharacteristic
+                      WHERE Store.id = StoreCharacteristic.storeId
+                      AND StoreCharacteristic.characteristic IN (${inClause})
+                    )`;
+                  })
+                  .join(" AND ")}
+              `,
+              )
+            : Prisma.empty
         }
         GROUP BY
           Store.id
         ORDER BY
           ST_Distance_Sphere(
-            POINT(${longitude}, ${latitude}), 
+            POINT(${longitude}, ${latitude}),
             POINT(longitude, latitude)
           ) ASC
         LIMIT
