@@ -1,19 +1,41 @@
 import { Suspense } from "react";
 import { Characteristic } from "@flatwhite-team/prisma";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { RouteProp } from "@react-navigation/native";
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
 
 import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicator";
 import { colors } from "~/constants";
+import { 필터_카테고리 } from "~/models/Filters";
 import { CustomLocationProvider } from "~/providers/CustomLocationProvider";
 import { CustomLocationScreen } from "~/screens/SetLocationScreen/CustomLocationScreen";
 import { StoreDetailScreen } from "../screens/StoreDetailScreen/StoreDetailScreen";
 import { RootTabNavigator } from "./RootTabNavigator";
 
 export type HomeStackParamList = {
-  StoresScreen: { filters: Characteristic[] };
+  StoresScreen: {
+    filters?: {
+      [필터_카테고리.음식료]?: Characteristic[];
+      [필터_카테고리.종류]?: Characteristic[];
+      [필터_카테고리.분위기]?: Characteristic[];
+      [필터_카테고리.시설]?: Characteristic[];
+    };
+  };
   StoreDetailScreen: { storeId: string };
   CustomLocationScreen: undefined;
 };
+
+export type StoresScreenNavigationProp = NativeStackNavigationProp<
+  HomeStackParamList,
+  "StoresScreen"
+>;
+
+export type StoresScreenRouteProp = RouteProp<
+  HomeStackParamList,
+  "StoresScreen"
+>;
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 

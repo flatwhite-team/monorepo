@@ -40,27 +40,43 @@ model StoreCharacteristic {
 }
 
 enum Characteristic {
+  // 음식료
   SPECIALTY_COFFEE
   DECAFFEINATED_COFFEE
+  HAND_DRIP
+  COLD_BREW
+  SINGLE_ORIGIN
+  ESPRESSO
+  TEA
+  VEGAN
+  // 종류
   BAKERY
   DESSERT
-  VEGAN
-  PET_FRIENDLY
+  BRUNCH
   ROASTERY
-  STUDY
+  ESPRESSO_BAR
+  STUDY_CAFE
+  // 분위기
   CALM
   QUIET
+  COZY
+  WARM
   TALK
-  WIFI
   FAMILY
   FRIENDS
   DATE
   WORK
   MEETING
+  STUDY
+  LONG_HOURS
+  // 시설
+  WIFI
   OUTDOOR
+  PET_FRIENDLY
   PARKING
   DRIVE_THRU
   OUTLET
+  RESERVATION
 }
 
 enum DayOfWeek {

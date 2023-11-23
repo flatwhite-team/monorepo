@@ -2,17 +2,21 @@ import { useRef, useState } from "react";
 import { Dimensions, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
+import BottomSheet from "@gorhom/bottom-sheet";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { debounce } from "lodash";
 
 import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { api } from "~/utils/api";
+import { FiltersBottomSheet } from "../components/FiltersBottomSheet";
 import { FiltersScrollView } from "../components/FiltersScrollView";
 import { StoreItem } from "../components/StoreItem";
 
 export function StoreMapTabContent() {
-  const { params } = useRoute<RouteProp<HomeStackParamList, "StoresScreen">>();
+  const {
+    params: { filters },
+  } = useRoute<RouteProp<HomeStackParamList, "StoresScreen">>();
   const { location } = useCustomLocation();
   const initialRegion = {
     latitude: location.latitude,
@@ -23,11 +27,14 @@ export function StoreMapTabContent() {
   const [region, setRegion] = useState(initialRegion);
   const { data: stores } = api.store.findInBox.useQuery({
     location: region,
-    characteristics: params.filters,
+    filters: Object.values(filters ?? {}).filter((filterGroup) => {
+      return filterGroup.length > 0;
+    }),
   });
   const _stores = stores ?? [];
   const mapRef = useRef<MapView>(null);
   const carouselRef = useRef<ICarouselInstance>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const handleRegionChangeComplete = debounce((region: Region) => {
     setRegion(region);
@@ -35,7 +42,10 @@ export function StoreMapTabContent() {
 
   return (
     <View className="flex-1">
-      <FiltersScrollView className="absolute z-50 py-3" />
+      <FiltersScrollView
+        className="absolute z-50 w-full py-3"
+        bottomSheetRef={bottomSheetRef}
+      />
       <MapView
         ref={mapRef}
         className="w-full flex-1"
@@ -77,6 +87,7 @@ export function StoreMapTabContent() {
           />
         </View>
       ) : null}
+      <FiltersBottomSheet ref={bottomSheetRef} />
     </View>
   );
 }

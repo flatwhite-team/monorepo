@@ -5,6 +5,7 @@ import { api } from "../../../../utils/api";
 export function useInfiniteStores({
   locationOptions,
   characteristics,
+  filters,
   take,
 }: {
   locationOptions: {
@@ -12,6 +13,7 @@ export function useInfiniteStores({
     longitude: number;
     radius: number;
   };
+  filters?: Characteristic[][];
   characteristics?: Characteristic[];
   take: number;
 }) {
@@ -19,6 +21,7 @@ export function useInfiniteStores({
     {
       locationOptions,
       characteristics,
+      filters,
       take,
     },
     {

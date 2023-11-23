@@ -1,29 +1,35 @@
-import { ComponentProps } from "react";
-import { Pressable, Text, View } from "react-native";
+import { ComponentProps, RefObject } from "react";
+import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Characteristic } from "@flatwhite-team/prisma";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import { useRoute } from "@react-navigation/native";
 import { XStack } from "tamagui";
 
-import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
+import { Badge } from "~/components/Badge";
+import { getCategoryLabels, 필터_카테고리 } from "~/models/Filters";
+import { StoresScreenRouteProp } from "~/navigation/HomeStackNavigator";
+import { useStoresScreenNavigation } from "../hooks/useStoresScreenNavigation";
 
-interface Props extends ComponentProps<typeof View> {}
+interface Props extends ComponentProps<typeof View> {
+  bottomSheetRef: RefObject<BottomSheetMethods>;
+}
 
-export function FiltersScrollView(props: Props) {
+export function FiltersScrollView({ bottomSheetRef, ...props }: Props) {
   return (
     <View {...props}>
       <ScrollView
+        className="px-4"
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        className="px-4"
       >
         <XStack space={4} className="mr-8">
-          {Object.keys(필터).map((characteristic) => {
+          <ResetBadge />
+          {Object.values(필터_카테고리).map((category) => {
             return (
-              <Badge
-                key={characteristic}
-                characteristic={characteristic as Characteristic}
+              <CategoryBadge
+                key={category}
+                category={category}
+                bottomSheetRef={bottomSheetRef}
               />
             );
           })}
@@ -33,71 +39,51 @@ export function FiltersScrollView(props: Props) {
   );
 }
 
-interface BadgeProps {
-  characteristic: Characteristic;
-}
-
-function Badge({ characteristic }: BadgeProps) {
-  const navigation =
-    useNavigation<
-      NativeStackNavigationProp<HomeStackParamList, "StoresScreen">
-    >();
-  const {
-    params: { filters },
-  } = useRoute<RouteProp<HomeStackParamList, "StoresScreen">>();
-  const active = filters.includes(characteristic);
+function ResetBadge() {
+  const navigation = useStoresScreenNavigation();
+  const { params } = useRoute<StoresScreenRouteProp>();
+  const active =
+    params.filters == null || Object.values(params.filters).flat().length < 1;
 
   return (
-    <Pressable
+    <Badge
+      label="전체"
+      active={active}
       onPress={() => {
-        const newParams = active
-          ? filters.filter((filter) => {
-              return filter !== characteristic;
-            })
-          : [...filters, characteristic];
-
-        navigation.setParams({
-          filters: newParams,
-        });
+        navigation.resetFilters();
       }}
-    >
-      <View
-        className={`bg-background rounded-full border px-3 py-1 ${
-          active ? "border-primary" : "border-gray-300"
-        }`}
-      >
-        <Text
-          className={`text-sm ${
-            active ? "text-primary font-bold" : "font-medium text-gray-700"
-          }`}
-        >
-          {필터[characteristic]}
-        </Text>
-      </View>
-    </Pressable>
+    />
   );
 }
 
-const 필터: Record<Characteristic, string> = {
-  SPECIALTY_COFFEE: "스페셜티",
-  DECAFFEINATED_COFFEE: "디카페인",
-  BAKERY: "베이커리",
-  DESSERT: "디저트",
-  VEGAN: "비건",
-  PET_FRIENDLY: "반려동물",
-  ROASTERY: "로스터리",
-  WIFI: "와이파이",
-  CALM: "차분한",
-  QUIET: "조용한",
-  TALK: "대화",
-  FAMILY: "가족",
-  FRIENDS: "친구",
-  DATE: "데이트",
-  WORK: "업무",
-  MEETING: "미팅",
-  STUDY: "공부",
-  OUTDOOR: "야외",
-  PARKING: "주차",
-  DRIVE_THRU: "드라이브스루",
-  OUTLET: "콘센트",
-} as const;
+interface CategoryBadgeProps {
+  category: 필터_카테고리;
+  bottomSheetRef: RefObject<BottomSheetMethods>;
+}
+
+function CategoryBadge({ category, bottomSheetRef }: CategoryBadgeProps) {
+  const {
+    params: { filters },
+  } = useRoute<StoresScreenRouteProp>();
+  const categoryFilters = filters?.[category] ?? [];
+  const active = categoryFilters.length > 0;
+  const 라벨 = getCategoryLabels(category);
+
+  return (
+    <Badge
+      onPress={() => {
+        bottomSheetRef.current?.expand();
+      }}
+      active={active}
+      label={`${필터_카테고리[category]} · ${
+        active
+          ? `${라벨[categoryFilters[0]]}${
+              categoryFilters.length > 1
+                ? ` 외 ${categoryFilters.length - 1}`
+                : ""
+            }`
+          : "전체"
+      }`}
+    />
+  );
+}

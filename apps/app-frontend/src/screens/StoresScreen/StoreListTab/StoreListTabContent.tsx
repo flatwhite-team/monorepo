@@ -1,12 +1,14 @@
-import { Suspense, useState } from "react";
+import { Suspense, useRef, useState } from "react";
 import {
   Animated,
   FlatList,
   RefreshControl,
+  Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import BottomSheet from "@gorhom/bottom-sheet";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
@@ -15,39 +17,41 @@ import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicato
 import { colors, DEFAULT_RADIUS } from "~/constants";
 import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
+import { FiltersBottomSheet } from "../components/FiltersBottomSheet";
 import { FiltersScrollView } from "../components/FiltersScrollView";
 import { StoreItem } from "../components/StoreItem";
 import { Emtpy } from "./components/Empty";
 import { useInfiniteStores } from "./hooks/useInfiniteStores";
 
 const FILTERS_SCROLL_VIEW_HEIGHT = 62;
+const DIFF_CLAMP_MAX = FILTERS_SCROLL_VIEW_HEIGHT + 40;
 
 export function StoreListTabContent() {
   const scrollY = new Animated.Value(0);
-  const diffClamp = Animated.diffClamp(scrollY, 0, FILTERS_SCROLL_VIEW_HEIGHT);
+  const diffClamp = Animated.diffClamp(scrollY, 0, DIFF_CLAMP_MAX);
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   return (
     <View className="flex-1">
       <Animated.View
+        className="bg-background absolute z-10 w-full py-4"
         style={{
-          position: "absolute",
-          backgroundColor: colors.background,
           transform: [
             {
               translateY: diffClamp.interpolate({
-                inputRange: [0, FILTERS_SCROLL_VIEW_HEIGHT],
-                outputRange: [0, -FILTERS_SCROLL_VIEW_HEIGHT],
+                inputRange: [0, DIFF_CLAMP_MAX],
+                outputRange: [0, -DIFF_CLAMP_MAX],
               }),
             },
           ],
-          zIndex: 1,
         }}
       >
-        <FiltersScrollView className="my-4" />
+        <FiltersScrollView bottomSheetRef={bottomSheetRef} />
       </Animated.View>
       <Suspense fallback={<CenteredActivityIndicator size="large" />}>
         <Resolved scrollY={scrollY} />
       </Suspense>
+      <FiltersBottomSheet ref={bottomSheetRef} />
     </View>
   );
 }
@@ -75,7 +79,9 @@ function Resolved({ scrollY }: Props) {
       longitude: location.longitude,
       radius,
     },
-    characteristics: Array.from(filters.values()),
+    filters: Object.values(filters ?? {}).filter((filterGroup) => {
+      return filterGroup.length > 0;
+    }),
     take: pageSize,
   });
 
