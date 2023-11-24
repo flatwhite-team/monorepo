@@ -1,11 +1,13 @@
 import { ComponentProps, RefObject } from "react";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { useRoute } from "@react-navigation/native";
 import { XStack } from "tamagui";
 
 import { Badge } from "~/components/Badge";
+import { colors } from "~/constants";
 import { getCategoryFilters, 필터_카테고리 } from "~/models/Filters";
 import { StoresScreenRouteProp } from "~/navigation/HomeStackNavigator";
 import { useStoresScreenNavigation } from "../hooks/useStoresScreenNavigation";
@@ -47,7 +49,12 @@ function ResetBadge() {
 
   return (
     <Badge
-      label="전체"
+      icon={
+        active ? undefined : (
+          <Ionicons name="refresh-outline" size={18} color={colors.gray700} />
+        )
+      }
+      label={active ? "전체" : undefined}
       active={active}
       onPress={() => {
         navigation.resetFilters();
