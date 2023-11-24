@@ -6,6 +6,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { debounce } from "lodash";
 
+import { DEFAULT_LATITUDE_DELTA, DEFAULT_LONGITUDE_DELTA } from "~/constants";
 import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { api } from "~/utils/api";
@@ -24,8 +25,8 @@ export function StoreMapTabContent({ filterBottomSheetRef }: Props) {
   const initialRegion = {
     latitude: location.latitude,
     longitude: location.longitude,
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.002,
+    latitudeDelta: DEFAULT_LATITUDE_DELTA,
+    longitudeDelta: DEFAULT_LONGITUDE_DELTA,
   };
   const [region, setRegion] = useState(initialRegion);
   const { data: stores } = api.store.findInBox.useQuery({

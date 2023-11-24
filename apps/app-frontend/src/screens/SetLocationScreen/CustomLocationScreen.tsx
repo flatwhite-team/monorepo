@@ -5,7 +5,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { debounce } from "lodash";
 
-import { colors } from "~/constants";
+import {
+  colors,
+  DEFAULT_LATITUDE_DELTA,
+  DEFAULT_LONGITUDE_DELTA,
+} from "~/constants";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { api } from "~/utils/api";
 
@@ -16,8 +20,8 @@ export function CustomLocationScreen() {
   const initialRegion = {
     latitude: location.latitude,
     longitude: location.longitude,
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.002,
+    latitudeDelta: DEFAULT_LATITUDE_DELTA,
+    longitudeDelta: DEFAULT_LONGITUDE_DELTA,
   };
   const [region, setRegion] = useState(initialRegion);
   const [regionForQuery, setRegionForQuery] = useState(region);
