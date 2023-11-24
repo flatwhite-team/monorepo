@@ -9,7 +9,6 @@ import { debounce } from "lodash";
 import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { api } from "~/utils/api";
-import { FiltersBottomSheet } from "../components/FiltersBottomSheet";
 import { FiltersScrollView } from "../components/FiltersScrollView";
 import { StoreItem } from "../components/StoreItem";
 
