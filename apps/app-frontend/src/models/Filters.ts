@@ -34,7 +34,13 @@ export const 음식료_필터: Record<음식료_필터, string> = {
 
 type 종류_필터 = Extract<
   Characteristic,
-  "BAKERY" | "DESSERT" | "BRUNCH" | "ROASTERY" | "ESPRESSO_BAR" | "STUDY_CAFE"
+  | "BAKERY"
+  | "DESSERT"
+  | "BRUNCH"
+  | "ROASTERY"
+  | "ESPRESSO_BAR"
+  | "BOOK_CAFE"
+  | "STUDY_CAFE"
 >;
 
 export const 종류_필터: Record<종류_필터, string> = {
@@ -43,6 +49,7 @@ export const 종류_필터: Record<종류_필터, string> = {
   BRUNCH: "브런치",
   ROASTERY: "로스터리",
   ESPRESSO_BAR: "에스프레소바",
+  BOOK_CAFE: "북카페",
   STUDY_CAFE: "스터디카페",
 } as const;
 
@@ -52,10 +59,17 @@ type 분위기_필터 = Extract<
   | "QUIET"
   | "COZY"
   | "WARM"
+  | "MODERN"
+  | "ANTIQUE"
+  | "CLASSIC"
+  | "LUXURY"
+  | "TRENDY"
+  | "CHIC"
   | "TALK"
   | "FAMILY"
   | "FRIENDS"
   | "DATE"
+  | "GROUP"
   | "WORK"
   | "MEETING"
   | "STUDY"
@@ -67,10 +81,17 @@ export const 분위기_필터: Record<분위기_필터, string> = {
   QUIET: "조용한",
   COZY: "아늑한",
   WARM: "따뜻한",
+  MODERN: "모던",
+  ANTIQUE: "앤틱",
+  CLASSIC: "클래식",
+  LUXURY: "럭셔리",
+  TRENDY: "트렌디",
+  CHIC: "시크",
   TALK: "대화",
   FAMILY: "가족",
   FRIENDS: "친구모임",
   DATE: "데이트",
+  GROUP: "단체",
   WORK: "업무",
   MEETING: "미팅",
   STUDY: "공부",

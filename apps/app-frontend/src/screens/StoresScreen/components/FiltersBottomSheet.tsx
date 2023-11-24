@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Characteristic } from "@flatwhite-team/prisma";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
@@ -18,7 +19,8 @@ import { useStoresScreenNavigation } from "../hooks/useStoresScreenNavigation";
 
 export const FiltersBottomSheet = forwardRef<BottomSheetMethods>(
   function FiltersBottomSheet(props, ref) {
-    const snapPoints = ["65%"];
+    const layout = useWindowDimensions();
+    const snapPoints = [layout.height - 354];
 
     return (
       <BottomSheet
@@ -58,15 +60,16 @@ export const FiltersBottomSheet = forwardRef<BottomSheetMethods>(
               category="종류"
               filters={[
                 ["BAKERY", "DESSERT", "BRUNCH", "ROASTERY"],
-                ["ESPRESSO_BAR", "STUDY_CAFE"],
+                ["ESPRESSO_BAR", "BOOK_CAFE", "STUDY_CAFE"],
               ]}
             />
             <Section
               category="분위기"
               filters={[
                 ["CALM", "QUIET", "COZY", "WARM"],
-                ["TALK", "FAMILY", "FRIENDS", "DATE", "LONG_HOURS"],
-                ["WORK", "MEETING", "STUDY"],
+                ["MODERN", "ANTIQUE", "CLASSIC", "LUXURY", "TRENDY"],
+                ["CHIC", "TALK", "FAMILY", "FRIENDS", "DATE"],
+                ["GROUP", "WORK", "MEETING", "STUDY", "LONG_HOURS"],
               ]}
             />
             <Section
