@@ -1,16 +1,17 @@
-import { forwardRef } from "react";
+import { ComponentProps, forwardRef } from "react";
+import { useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Characteristic } from "@flatwhite-team/prisma";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { useRoute } from "@react-navigation/native";
-import { Text, XStack, YStack } from "tamagui";
+import { Text, View, YStack } from "tamagui";
 
 import { Badge } from "~/components/Badge";
 import { colors } from "~/constants";
 import {
   findCategory,
-  getCategoryLabels,
+  getCategoryFilters,
   필터_카테고리,
 } from "~/models/Filters";
 import { StoresScreenRouteProp } from "~/navigation/HomeStackNavigator";
@@ -18,7 +19,8 @@ import { useStoresScreenNavigation } from "../hooks/useStoresScreenNavigation";
 
 export const FiltersBottomSheet = forwardRef<BottomSheetMethods>(
   function FiltersBottomSheet(props, ref) {
-    const snapPoints = ["65%"];
+    const layout = useWindowDimensions();
+    const snapPoints = [layout.height - 354];
 
     return (
       <BottomSheet
@@ -46,36 +48,10 @@ export const FiltersBottomSheet = forwardRef<BottomSheetMethods>(
       >
         <ScrollView className="bg-background flex-1 px-5 py-1">
           <YStack gap={24} className="pb-8">
-            <Section
-              category="음식료"
-              filters={[
-                ["SPECIALTY_COFFEE", "DECAFFEINATED_COFFEE", "HAND_DRIP"],
-                ["COLD_BREW", "SINGLE_ORIGIN", "ESPRESSO"],
-                ["TEA", "VEGAN"],
-              ]}
-            />
-            <Section
-              category="종류"
-              filters={[
-                ["BAKERY", "DESSERT", "BRUNCH", "ROASTERY"],
-                ["ESPRESSO_BAR", "STUDY_CAFE"],
-              ]}
-            />
-            <Section
-              category="분위기"
-              filters={[
-                ["CALM", "QUIET", "COZY", "WARM"],
-                ["TALK", "FAMILY", "FRIENDS", "DATE", "LONG_HOURS"],
-                ["WORK", "MEETING", "STUDY"],
-              ]}
-            />
-            <Section
-              category="시설"
-              filters={[
-                ["WIFI", "OUTDOOR", "PET_FRIENDLY", "OUTLET"],
-                ["PARKING", "DRIVE_THRU", "RESERVATION"],
-              ]}
-            />
+            <Section category="음식료" />
+            <Section category="종류" />
+            <Section category="분위기" />
+            <Section category="시설" />
           </YStack>
         </ScrollView>
       </BottomSheet>
@@ -85,58 +61,58 @@ export const FiltersBottomSheet = forwardRef<BottomSheetMethods>(
 
 interface SetionProps {
   category: 필터_카테고리;
-  filters: Characteristic[][];
 }
 
-function Section({ category, filters }: SetionProps) {
+function Section({ category }: SetionProps) {
   const navigation = useStoresScreenNavigation();
   const { params } = useRoute<StoresScreenRouteProp>();
   const filtered =
     params.filters?.[category] != null &&
     Number(params.filters[category]?.length) > 0;
+  const categoryFilters = getCategoryFilters(category);
 
   return (
     <YStack gap={8}>
       <Text className="text-lg font-semibold text-gray-800">{category}</Text>
-      {filters.map((group, index) => {
-        return (
-          <XStack key={JSON.stringify(group)} gap={6}>
-            {index === 0 ? (
-              <Badge
-                label="전체"
-                active={!filtered}
-                onPress={() => {
-                  navigation.setCategoryFilters(category, []);
-                }}
+      <View className="flex flex-row flex-wrap">
+        <Badge
+          className="mr-1.5"
+          label="전체"
+          active={!filtered}
+          onPress={() => {
+            navigation.setCategoryFilters(category, []);
+          }}
+          size="large"
+        />
+        {(Object.keys(categoryFilters) as Characteristic[]).map(
+          (characteristic) => {
+            return (
+              <FilterBadge
+                className="mb-2 mr-1.5"
+                key={`${category}-${characteristic}`}
+                characteristic={characteristic}
+                size="large"
               />
-            ) : null}
-            {group.map((characteristic) => {
-              return (
-                <FilterBadge
-                  key={`${category}-${characteristic}`}
-                  characteristic={characteristic}
-                />
-              );
-            })}
-          </XStack>
-        );
-      })}
+            );
+          },
+        )}
+      </View>
     </YStack>
   );
 }
 
-interface FilterBadgeProps {
+interface FilterBadgeProps extends ComponentProps<typeof Badge> {
   characteristic: Characteristic;
 }
 
-function FilterBadge({ characteristic }: FilterBadgeProps) {
+function FilterBadge({ characteristic, ...props }: FilterBadgeProps) {
   const navigation = useStoresScreenNavigation();
   const {
     params: { filters },
   } = useRoute<StoresScreenRouteProp>();
   const 카테고리 = findCategory(characteristic);
   const 활성화했는가 = Boolean(filters?.[카테고리]?.includes(characteristic));
-  const 카테고리_필터_라벨 = getCategoryLabels(카테고리);
+  const 카테고리_필터_라벨 = getCategoryFilters(카테고리);
 
   return (
     <Badge
@@ -152,6 +128,7 @@ function FilterBadge({ characteristic }: FilterBadgeProps) {
       }}
       active={활성화했는가}
       label={카테고리_필터_라벨[characteristic]}
+      {...props}
     />
   );
 }

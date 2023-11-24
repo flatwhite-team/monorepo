@@ -1,12 +1,14 @@
 import { ComponentProps, RefObject } from "react";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { useRoute } from "@react-navigation/native";
 import { XStack } from "tamagui";
 
 import { Badge } from "~/components/Badge";
-import { getCategoryLabels, 필터_카테고리 } from "~/models/Filters";
+import { colors } from "~/constants";
+import { getCategoryFilters, 필터_카테고리 } from "~/models/Filters";
 import { StoresScreenRouteProp } from "~/navigation/HomeStackNavigator";
 import { useStoresScreenNavigation } from "../hooks/useStoresScreenNavigation";
 
@@ -22,7 +24,7 @@ export function FiltersScrollView({ bottomSheetRef, ...props }: Props) {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       >
-        <XStack space={4} className="mr-8">
+        <XStack space={6} className="mr-8">
           <ResetBadge />
           {Object.values(필터_카테고리).map((category) => {
             return (
@@ -47,7 +49,12 @@ function ResetBadge() {
 
   return (
     <Badge
-      label="전체"
+      icon={
+        active ? undefined : (
+          <Ionicons name="refresh-outline" size={18} color={colors.gray700} />
+        )
+      }
+      label={active ? "전체" : undefined}
       active={active}
       onPress={() => {
         navigation.resetFilters();
@@ -67,7 +74,7 @@ function CategoryBadge({ category, bottomSheetRef }: CategoryBadgeProps) {
   } = useRoute<StoresScreenRouteProp>();
   const categoryFilters = filters?.[category] ?? [];
   const active = categoryFilters.length > 0;
-  const 라벨 = getCategoryLabels(category);
+  const 라벨 = getCategoryFilters(category);
 
   return (
     <Badge

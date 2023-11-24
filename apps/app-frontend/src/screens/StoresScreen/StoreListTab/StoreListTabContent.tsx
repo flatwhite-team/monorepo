@@ -1,4 +1,4 @@
-import { Suspense, useRef, useState } from "react";
+import { RefObject, Suspense, useState } from "react";
 import {
   Animated,
   FlatList,
@@ -26,10 +26,13 @@ import { useInfiniteStores } from "./hooks/useInfiniteStores";
 const FILTERS_SCROLL_VIEW_HEIGHT = 62;
 const DIFF_CLAMP_MAX = FILTERS_SCROLL_VIEW_HEIGHT + 40;
 
-export function StoreListTabContent() {
+interface Props {
+  filterBottomSheetRef: RefObject<BottomSheet>;
+}
+
+export function StoreListTabContent({ filterBottomSheetRef }: Props) {
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, DIFF_CLAMP_MAX);
-  const bottomSheetRef = useRef<BottomSheet>(null);
 
   return (
     <View className="flex-1">
@@ -46,21 +49,20 @@ export function StoreListTabContent() {
           ],
         }}
       >
-        <FiltersScrollView bottomSheetRef={bottomSheetRef} />
+        <FiltersScrollView bottomSheetRef={filterBottomSheetRef} />
       </Animated.View>
       <Suspense fallback={<CenteredActivityIndicator size="large" />}>
         <Resolved scrollY={scrollY} />
       </Suspense>
-      <FiltersBottomSheet ref={bottomSheetRef} />
     </View>
   );
 }
 
-interface Props {
+interface ResolvedProps {
   scrollY: Animated.Value;
 }
 
-function Resolved({ scrollY }: Props) {
+function Resolved({ scrollY }: ResolvedProps) {
   const {
     params: { filters },
   } = useRoute<RouteProp<HomeStackParamList, "StoresScreen">>();

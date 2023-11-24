@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { RefObject, useRef, useState } from "react";
 import { Dimensions, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
@@ -9,11 +9,14 @@ import { debounce } from "lodash";
 import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { api } from "~/utils/api";
-import { FiltersBottomSheet } from "../components/FiltersBottomSheet";
 import { FiltersScrollView } from "../components/FiltersScrollView";
 import { StoreItem } from "../components/StoreItem";
 
-export function StoreMapTabContent() {
+interface Props {
+  filterBottomSheetRef: RefObject<BottomSheet>;
+}
+
+export function StoreMapTabContent({ filterBottomSheetRef }: Props) {
   const {
     params: { filters },
   } = useRoute<RouteProp<HomeStackParamList, "StoresScreen">>();
@@ -34,7 +37,6 @@ export function StoreMapTabContent() {
   const _stores = stores ?? [];
   const mapRef = useRef<MapView>(null);
   const carouselRef = useRef<ICarouselInstance>(null);
-  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const handleRegionChangeComplete = debounce((region: Region) => {
     setRegion(region);
@@ -44,7 +46,7 @@ export function StoreMapTabContent() {
     <View className="flex-1">
       <FiltersScrollView
         className="absolute z-50 w-full py-3"
-        bottomSheetRef={bottomSheetRef}
+        bottomSheetRef={filterBottomSheetRef}
       />
       <MapView
         ref={mapRef}
@@ -87,7 +89,6 @@ export function StoreMapTabContent() {
           />
         </View>
       ) : null}
-      <FiltersBottomSheet ref={bottomSheetRef} />
     </View>
   );
 }
