@@ -6,13 +6,27 @@ interface BadgeProps extends ComponentProps<typeof Pressable> {
   active?: boolean;
   icon?: ReactNode;
   label?: string;
+  size?: "small" | "medium" | "large";
 }
 
-export function Badge({ active, icon, label, ...props }: BadgeProps) {
+export function Badge({
+  active,
+  icon,
+  label,
+  size = "medium",
+  ...props
+}: BadgeProps) {
+  const paddingClassName =
+    size === "small"
+      ? "px-3 py-0.5"
+      : size === "large"
+      ? "px-3.5 py-1.5"
+      : "px-3 py-1";
+
   return (
     <Pressable {...props}>
       <XStack
-        className={`bg-background rounded-full border px-3 py-1 ${
+        className={`bg-background rounded-full border ${paddingClassName} ${
           active ? "border-primary" : "border-gray-300"
         }`}
       >

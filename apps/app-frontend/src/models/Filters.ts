@@ -139,7 +139,7 @@ export function findCategory(characteristic: Characteristic) {
   throw new Error("Invalid characteristic");
 }
 
-export function getCategoryLabels(category: keyof typeof 필터_카테고리) {
+export function getCategoryFilters(category: keyof typeof 필터_카테고리) {
   switch (category) {
     case 필터_카테고리.음식료:
       return 음식료_필터 as Record<Characteristic, string>;

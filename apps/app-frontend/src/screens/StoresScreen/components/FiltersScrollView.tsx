@@ -6,7 +6,7 @@ import { useRoute } from "@react-navigation/native";
 import { XStack } from "tamagui";
 
 import { Badge } from "~/components/Badge";
-import { getCategoryLabels, 필터_카테고리 } from "~/models/Filters";
+import { getCategoryFilters, 필터_카테고리 } from "~/models/Filters";
 import { StoresScreenRouteProp } from "~/navigation/HomeStackNavigator";
 import { useStoresScreenNavigation } from "../hooks/useStoresScreenNavigation";
 
@@ -22,7 +22,7 @@ export function FiltersScrollView({ bottomSheetRef, ...props }: Props) {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       >
-        <XStack space={4} className="mr-8">
+        <XStack space={6} className="mr-8">
           <ResetBadge />
           {Object.values(필터_카테고리).map((category) => {
             return (
@@ -67,7 +67,7 @@ function CategoryBadge({ category, bottomSheetRef }: CategoryBadgeProps) {
   } = useRoute<StoresScreenRouteProp>();
   const categoryFilters = filters?.[category] ?? [];
   const active = categoryFilters.length > 0;
-  const 라벨 = getCategoryLabels(category);
+  const 라벨 = getCategoryFilters(category);
 
   return (
     <Badge
