@@ -1,5 +1,8 @@
+import { RefObject } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { FlashList } from "@shopify/flash-list";
 
 import { colors } from "../constants";
 import { ContactScreen } from "../screens/ContactScreen/ContactScreen";
@@ -7,7 +10,11 @@ import { StoresScreen } from "../screens/StoresScreen/StoresScreen";
 
 const Tab = createBottomTabNavigator();
 
-export function RootTabNavigator() {
+interface Props {
+  storeListRef: RefObject<FlashList<JoinedStore>>;
+}
+
+export function RootTabNavigator({ storeListRef }: Props) {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -26,7 +33,6 @@ export function RootTabNavigator() {
     >
       <Tab.Screen
         name="Home"
-        component={StoresScreen}
         initialParams={{
           filters: undefined,
         }}
@@ -43,7 +49,11 @@ export function RootTabNavigator() {
             );
           },
         }}
-      />
+      >
+        {(props) => {
+          return <StoresScreen storeListRef={storeListRef} {...props} />;
+        }}
+      </Tab.Screen>
       <Tab.Screen
         name="ContactScreen"
         component={ContactScreen}

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { Text } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 
 import { CenteredActivityIndicator } from "../../../components/CenteredActivityIndicator";
 import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
@@ -26,11 +27,12 @@ function Resolved() {
   }
 
   return menus.length > 0 ? (
-    <FlatList
+    <FlashList
       data={menus}
       renderItem={({ item }) => {
         return <MenuItem {...item} />;
       }}
+      estimatedItemSize={120}
     />
   ) : (
     <Text className="mt-5 text-center text-base text-gray-700">

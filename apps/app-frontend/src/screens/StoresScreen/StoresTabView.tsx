@@ -1,7 +1,9 @@
-import { useCallback, useRef, useState } from "react";
+import { RefObject, useCallback, useRef, useState } from "react";
 import { Text, useWindowDimensions } from "react-native";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import BottomSheet from "@gorhom/bottom-sheet";
+import { FlashList } from "@shopify/flash-list";
 
 import { colors } from "~/constants";
 import { FiltersBottomSheet } from "./components/FiltersBottomSheet";
@@ -13,7 +15,11 @@ const tabs = [
   { key: "map", title: "지도" },
 ];
 
-export function StoresTabView() {
+interface Props {
+  storeListRef: RefObject<FlashList<JoinedStore>>;
+}
+
+export function StoresTabView({ storeListRef }: Props) {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const filterBottomSheetRef = useRef<BottomSheet>(null);
@@ -23,7 +29,10 @@ export function StoresTabView() {
       switch (route.key) {
         case "list":
           return (
-            <StoreListTabContent filterBottomSheetRef={filterBottomSheetRef} />
+            <StoreListTabContent
+              storeListRef={storeListRef}
+              filterBottomSheetRef={filterBottomSheetRef}
+            />
           );
         case "map":
           return (

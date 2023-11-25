@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { Button, StyleSheet, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import { useNavigation } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 import { debounce } from "lodash";
 
 import {
@@ -13,7 +15,11 @@ import {
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { api } from "~/utils/api";
 
-export function CustomLocationScreen() {
+interface Props {
+  storeListRef: RefObject<FlashList<JoinedStore>>;
+}
+
+export function CustomLocationScreen({ storeListRef }: Props) {
   const inset = useSafeAreaInsets();
   const navigation = useNavigation();
   const { location, setLocation } = useCustomLocation();
@@ -79,6 +85,9 @@ export function CustomLocationScreen() {
               longitude: region.longitude,
             });
             navigation.goBack();
+            storeListRef.current?.scrollToOffset({
+              offset: 0,
+            });
           }}
         />
       </View>
