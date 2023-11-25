@@ -18,7 +18,7 @@ export function Badge({
 }: BadgeProps) {
   const paddingClassName =
     size === "small"
-      ? "px-3 py-0.5"
+      ? "px-2.5 py-0.5"
       : size === "large"
       ? "px-3.5 py-1.5"
       : "px-3 py-1";
@@ -33,7 +33,7 @@ export function Badge({
         {icon != null ? icon : null}
         {label != null ? (
           <Text
-            className={`text-sm ${
+            className={`${size === "small" ? "text-xs" : "text-sm"} ${
               active ? "text-primary font-bold" : "font-medium text-gray-700"
             }`}
           >

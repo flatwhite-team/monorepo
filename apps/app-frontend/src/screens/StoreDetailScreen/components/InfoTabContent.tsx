@@ -19,7 +19,7 @@ export function InfoTabContent() {
   }
 
   return (
-    <ScrollView className="mb-5 flex flex-1 flex-col px-6 pt-5">
+    <ScrollView className="mb-5 flex flex-1 flex-col px-5 pt-5">
       <View className="mb-2 flex flex-row gap-x-2">
         <View className="mt-0.5">
           <Ionicons name="time-outline" size={20} color={colors.gray900} />

@@ -1,9 +1,13 @@
-import React, { Suspense } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import React, { ComponentProps, Suspense } from "react";
+import { Image, Text, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { Characteristic } from "@flatwhite-team/prisma";
 import { RouteProp, useRoute } from "@react-navigation/native";
+import { YStack } from "tamagui";
 
+import { Badge } from "~/components/Badge";
+import { findCategory, getCategoryFilters } from "~/models/Filters";
 import { CenteredActivityIndicator } from "../../components/CenteredActivityIndicator";
-import { colors } from "../../constants";
 import { HomeStackParamList } from "../../navigation/HomeStackNavigator";
 import { api } from "../../utils/api";
 import { StoreDetailTabView } from "./components/StoreDetailTabView";
@@ -52,9 +56,42 @@ function Resolved() {
             })}
           </Swiper> */}
       <View className="bg-background flex-1 gap-y-4">
-        <Text className="px-6 text-2xl font-semibold">{store.name}</Text>
+        <YStack gap={4}>
+          {store.characteristics.length > 0 ? (
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingHorizontal: 20 }}
+            >
+              {store.characteristics.map(({ characteristic }) => {
+                return (
+                  <CharacteristicBadge
+                    key={characteristic}
+                    className="mr-1"
+                    characteristic={characteristic}
+                  />
+                );
+              })}
+            </ScrollView>
+          ) : null}
+          <Text className="px-5 text-2xl font-semibold">{store.name}</Text>
+        </YStack>
         <StoreDetailTabView />
       </View>
     </View>
   );
+}
+
+interface CharacteristicBadgeProps extends ComponentProps<typeof Badge> {
+  characteristic: Characteristic;
+}
+
+function CharacteristicBadge({
+  characteristic,
+  ...props
+}: CharacteristicBadgeProps) {
+  const category = findCategory(characteristic);
+  const label = getCategoryFilters(category)[characteristic];
+
+  return <Badge size="small" label={label} {...props} />;
 }
