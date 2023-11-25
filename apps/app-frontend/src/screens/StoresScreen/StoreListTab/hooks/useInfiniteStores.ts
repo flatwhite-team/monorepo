@@ -4,7 +4,6 @@ import { api } from "../../../../utils/api";
 
 export function useInfiniteStores({
   locationOptions,
-  characteristics,
   filters,
   take,
 }: {
@@ -14,20 +13,18 @@ export function useInfiniteStores({
     radius: number;
   };
   filters?: Characteristic[][];
-  characteristics?: Characteristic[];
   take: number;
 }) {
   return api.store.infiniteFindByDistance.useInfiniteQuery(
     {
       locationOptions,
-      characteristics,
       filters,
       take,
     },
     {
       queryKey: [
         useInfiniteStores.baseQueryKey,
-        { locationOptions, characteristics },
+        { locationOptions, filters, take },
       ],
       getNextPageParam: (lastPage) => {
         if (lastPage.length < take || lastPage.length === 0) {

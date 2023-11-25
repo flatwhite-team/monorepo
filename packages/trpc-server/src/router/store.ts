@@ -68,8 +68,6 @@ export const storeRouter = createTRPCRouter({
           latitudeDelta: z.number(),
           longitudeDelta: z.number(),
         }),
-        // deprecated
-        characteristics: z.nativeEnum(Characteristic).array().optional(),
         filters: z.array(z.array(z.nativeEnum(Characteristic))).optional(),
       }),
     )
@@ -152,8 +150,6 @@ export const storeRouter = createTRPCRouter({
           longitude: z.number(),
           radius: z.number(),
         }),
-        // deprecated
-        characteristics: z.nativeEnum(Characteristic).array().optional(),
         filters: z.array(z.array(z.nativeEnum(Characteristic))).optional(),
         take: z.number().optional(),
         cursor: z.string().optional(),
