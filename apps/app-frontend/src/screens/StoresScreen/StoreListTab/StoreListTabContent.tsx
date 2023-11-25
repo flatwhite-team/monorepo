@@ -3,7 +3,6 @@ import {
   Animated,
   FlatList,
   RefreshControl,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -17,7 +16,6 @@ import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicato
 import { colors, DEFAULT_RADIUS } from "~/constants";
 import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
-import { FiltersBottomSheet } from "../components/FiltersBottomSheet";
 import { FiltersScrollView } from "../components/FiltersScrollView";
 import { StoreItem } from "../components/StoreItem";
 import { Emtpy } from "./components/Empty";
