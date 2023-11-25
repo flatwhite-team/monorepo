@@ -13,7 +13,6 @@ export type JoinedStore = Store & {
   menus: MenuWithImages[];
   businessDays: BusinessDay[];
   images: ImageUrl[];
-  characteristics: Characteristic[];
 };
 
 export const storeRouter = createTRPCRouter({
@@ -207,15 +206,7 @@ export const storeRouter = createTRPCRouter({
               WHERE Store.id = Menu.storeId
             ),
             JSON_ARRAY()
-          ) AS menus,
-          COALESCE(
-            (
-              SELECT JSON_ARRAYAGG(StoreCharacteristic.characteristic)
-              FROM StoreCharacteristic
-              WHERE Store.id = StoreCharacteristic.storeId
-            ),
-            JSON_ARRAY()
-          ) AS characteristics
+          ) AS menus
         FROM
           Store
         WHERE
