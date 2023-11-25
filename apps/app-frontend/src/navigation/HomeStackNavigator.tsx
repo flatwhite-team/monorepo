@@ -1,10 +1,12 @@
-import { Suspense } from "react";
+import { Suspense, useRef } from "react";
 import { Characteristic } from "@flatwhite-team/prisma";
+import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import { RouteProp } from "@react-navigation/native";
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
+import { FlashList } from "@shopify/flash-list";
 
 import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicator";
 import { colors } from "~/constants";
@@ -40,6 +42,8 @@ export type StoresScreenRouteProp = RouteProp<
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
 export function HomeStackNavigator() {
+  const storeListRef = useRef<FlashList<JoinedStore>>(null);
+
   return (
     <Suspense fallback={<CenteredActivityIndicator size="large" />}>
       <CustomLocationProvider>
@@ -53,11 +57,16 @@ export function HomeStackNavigator() {
         >
           <Stack.Screen
             name="StoresScreen"
-            component={RootTabNavigator}
             options={{
               headerShown: false,
             }}
-          />
+          >
+            {(props) => {
+              return (
+                <RootTabNavigator storeListRef={storeListRef} {...props} />
+              );
+            }}
+          </Stack.Screen>
           <Stack.Screen
             name="StoreDetailScreen"
             component={StoreDetailScreen}
@@ -67,11 +76,16 @@ export function HomeStackNavigator() {
           />
           <Stack.Screen
             name="CustomLocationScreen"
-            component={CustomLocationScreen}
             options={{
               title: "위치 설정",
             }}
-          />
+          >
+            {(props) => {
+              return (
+                <CustomLocationScreen storeListRef={storeListRef} {...props} />
+              );
+            }}
+          </Stack.Screen>
         </Stack.Navigator>
       </CustomLocationProvider>
     </Suspense>

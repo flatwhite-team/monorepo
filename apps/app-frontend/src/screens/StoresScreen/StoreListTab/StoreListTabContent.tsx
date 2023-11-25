@@ -1,15 +1,11 @@
 import { RefObject, Suspense, useState } from "react";
-import {
-  Animated,
-  FlatList,
-  RefreshControl,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Animated, RefreshControl, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { FlashList } from "@shopify/flash-list";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicator";
@@ -25,10 +21,14 @@ const FILTERS_SCROLL_VIEW_HEIGHT = 62;
 const DIFF_CLAMP_MAX = FILTERS_SCROLL_VIEW_HEIGHT + 40;
 
 interface Props {
+  storeListRef: RefObject<FlashList<JoinedStore>>;
   filterBottomSheetRef: RefObject<BottomSheet>;
 }
 
-export function StoreListTabContent({ filterBottomSheetRef }: Props) {
+export function StoreListTabContent({
+  storeListRef,
+  filterBottomSheetRef,
+}: Props) {
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, DIFF_CLAMP_MAX);
 
@@ -50,17 +50,18 @@ export function StoreListTabContent({ filterBottomSheetRef }: Props) {
         <FiltersScrollView bottomSheetRef={filterBottomSheetRef} />
       </Animated.View>
       <Suspense fallback={<CenteredActivityIndicator size="large" />}>
-        <Resolved scrollY={scrollY} />
+        <Resolved storeListRef={storeListRef} scrollY={scrollY} />
       </Suspense>
     </View>
   );
 }
 
 interface ResolvedProps {
+  storeListRef: RefObject<FlashList<JoinedStore>>;
   scrollY: Animated.Value;
 }
 
-function Resolved({ scrollY }: ResolvedProps) {
+function Resolved({ storeListRef, scrollY }: ResolvedProps) {
   const {
     params: { filters },
   } = useRoute<RouteProp<HomeStackParamList, "StoresScreen">>();
@@ -96,8 +97,12 @@ function Resolved({ scrollY }: ResolvedProps) {
       {stores.length === 0 ? (
         <Emtpy className={`mt-[${FILTERS_SCROLL_VIEW_HEIGHT}px]`} />
       ) : (
-        <FlatList
-          className="w-full pt-12"
+        <FlashList
+          ref={storeListRef}
+          className="w-full"
+          contentContainerStyle={{
+            paddingTop: FILTERS_SCROLL_VIEW_HEIGHT - 14,
+          }}
           data={stores}
           renderItem={({ item }) => {
             return (
@@ -106,12 +111,11 @@ function Resolved({ scrollY }: ResolvedProps) {
                 style={{
                   borderBottomWidth: 1,
                   borderBottomColor: colors.gray100,
-                  marginBottom:
-                    item.id === stores[stores.length - 1].id ? 48 : 0,
                 }}
               />
             );
           }}
+          estimatedItemSize={120}
           onEndReached={() => {
             if (hasNextPage) {
               fetchNextPage({
