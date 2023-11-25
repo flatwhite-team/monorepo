@@ -2,6 +2,7 @@ import { RefObject, useRef, useState } from "react";
 import { Dimensions, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
+import { Store } from "@flatwhite-team/prisma";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { debounce } from "lodash";
@@ -39,9 +40,30 @@ export function StoreMapTabContent({ filterBottomSheetRef }: Props) {
   const mapRef = useRef<MapView>(null);
   const carouselRef = useRef<ICarouselInstance>(null);
 
-  const handleRegionChangeComplete = debounce((region: Region) => {
+  const debounceRegionChange = debounce((region: Region) => {
     setRegion(region);
   }, 500);
+
+  const animateCameraTo = (store: Store) => {
+    mapRef.current?.animateCamera(
+      {
+        center: {
+          latitude: store.latitude,
+          longitude: store.longitude,
+        },
+      },
+      {
+        duration: 200,
+      },
+    );
+  };
+
+  const scrollCarouselTo = (index: number) => {
+    carouselRef.current?.scrollTo({
+      index,
+      animated: true,
+    });
+  };
 
   return (
     <View className="flex-1">
@@ -58,10 +80,23 @@ export function StoreMapTabContent({ filterBottomSheetRef }: Props) {
         showsUserLocation={true}
         showsMyLocationButton={true}
         minZoomLevel={7}
+        mapPadding={{ top: 64, right: 4, bottom: 4, left: 4 }}
         rotateEnabled={false}
         pitchEnabled={false}
         toolbarEnabled={false}
-        onRegionChangeComplete={handleRegionChangeComplete}
+        onRegionChangeComplete={(region, { isGesture }) => {
+          if (isGesture) {
+            debounceRegionChange(region);
+          }
+        }}
+        onMarkerPress={({ nativeEvent }) => {
+          const storeIndex = _stores.findIndex((store) => {
+            return store.id === nativeEvent.id;
+          });
+
+          animateCameraTo(_stores[storeIndex]);
+          scrollCarouselTo(storeIndex);
+        }}
       >
         {_stores.map((store) => {
           return (
@@ -79,13 +114,17 @@ export function StoreMapTabContent({ filterBottomSheetRef }: Props) {
       {_stores.length > 0 ? (
         <View style={{ maxHeight: StoreItem.maxHeight }}>
           <Carousel
+            key={_stores.length}
             ref={carouselRef}
             loop={false}
             width={Dimensions.get("window").width}
             data={_stores}
-            scrollAnimationDuration={300}
+            scrollAnimationDuration={500}
             renderItem={({ item }) => {
               return <StoreItem data={item} />;
+            }}
+            onSnapToItem={(index) => {
+              animateCameraTo(_stores[index]);
             }}
           />
         </View>

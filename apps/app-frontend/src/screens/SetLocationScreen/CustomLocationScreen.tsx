@@ -51,6 +51,7 @@ export function CustomLocationScreen() {
         showsUserLocation={true}
         showsMyLocationButton={true}
         minZoomLevel={7}
+        mapPadding={{ top: 4, right: 4, bottom: 4, left: 4 }}
         rotateEnabled={false}
         pitchEnabled={false}
         toolbarEnabled={false}

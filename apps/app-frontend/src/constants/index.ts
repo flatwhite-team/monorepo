@@ -4,8 +4,8 @@ export const DEFAULT_COORDS = {
   longitude: 127.027619,
 };
 export const DEFAULT_RADIUS = 3000; // 3km
-export const DEFAULT_LATITUDE_DELTA = 0.005;
-export const DEFAULT_LONGITUDE_DELTA = 0.002;
+export const DEFAULT_LATITUDE_DELTA = 0.012;
+export const DEFAULT_LONGITUDE_DELTA = 0.006;
 
 export const colors = {
   black: "#000000",
