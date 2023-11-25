@@ -115,30 +115,19 @@ export const storeRouter = createTRPCRouter({
               return new Set(filter);
             });
 
-          return result
-            .filter((store) => {
-              for (const filterSet of filterSets) {
-                if (
-                  !store.characteristics.some(({ characteristic }) => {
-                    return filterSet.has(characteristic);
-                  })
-                ) {
-                  return false;
-                }
+          return result.filter((store) => {
+            for (const filterSet of filterSets) {
+              if (
+                !store.characteristics.some(({ characteristic }) => {
+                  return filterSet.has(characteristic);
+                })
+              ) {
+                return false;
               }
+            }
 
-              return true;
-            })
-            .map((store) => {
-              return {
-                ...store,
-                characteristics: store.characteristics.map(
-                  ({ characteristic }) => {
-                    return characteristic;
-                  },
-                ),
-              };
-            });
+            return true;
+          });
         });
     }),
   infiniteFindByDistance: publicProcedure
