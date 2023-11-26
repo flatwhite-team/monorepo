@@ -1,10 +1,14 @@
 import { Suspense } from "react";
 import { Text } from "react-native";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 
 import { CenteredActivityIndicator } from "../../../components/CenteredActivityIndicator";
-import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
+import {
+  StoreDetailScreenNavigationProp,
+  StoreDetailScreenRouteProp,
+} from "../../../navigation/HomeStackNavigator";
 import { api } from "../../../utils/api";
 import { MenuItem } from "./MenuItem";
 
@@ -17,9 +21,10 @@ export function MenuTabContent() {
 }
 
 function Resolved() {
+  const navigation = useNavigation<StoreDetailScreenNavigationProp>();
   const {
     params: { storeId },
-  } = useRoute<RouteProp<HomeStackParamList, "StoreDetailScreen">>();
+  } = useRoute<StoreDetailScreenRouteProp>();
   const { data: menus } = api.menu.findByStoreId.useQuery(storeId);
 
   if (menus == null) {
@@ -30,7 +35,17 @@ function Resolved() {
     <FlashList
       data={menus}
       renderItem={({ item }) => {
-        return <MenuItem {...item} />;
+        return (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.setParams({
+                selectedMenuId: item.id,
+              });
+            }}
+          >
+            <MenuItem {...item} />
+          </TouchableOpacity>
+        );
       }}
       estimatedItemSize={120}
     />
