@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import Toast from "react-native-root-toast";
 import { setStringAsync } from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
 import { RouteProp, useRoute } from "@react-navigation/native";
@@ -85,8 +86,12 @@ function Resolved() {
           </View>
           <YStack gap={8} className="flex-1">
             <TouchableOpacity
-              onPress={() => {
-                setStringAsync(store.address);
+              onPress={async () => {
+                await setStringAsync(store.address);
+                Toast.show("주소를 복사했어요.", {
+                  opacity: 1,
+                  backgroundColor: colors.gray900,
+                });
               }}
             >
               <Text className="flex-1 text-base text-gray-900">

@@ -1,5 +1,6 @@
 import { StatusBar, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { RootSiblingParent } from "react-native-root-siblings";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { TamaguiProvider } from "tamagui";
@@ -29,17 +30,19 @@ export default function App() {
       >
         <TRPCProvider>
           <SafeAreaProvider>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <View style={styles.container}>
-                <StatusBar
-                  barStyle="dark-content"
-                  backgroundColor={colors.background}
-                />
-                <NavigationContainer>
-                  <HomeStackNavigator />
-                </NavigationContainer>
-              </View>
-            </GestureHandlerRootView>
+            <RootSiblingParent>
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <View style={styles.container}>
+                  <StatusBar
+                    barStyle="dark-content"
+                    backgroundColor={colors.background}
+                  />
+                  <NavigationContainer>
+                    <HomeStackNavigator />
+                  </NavigationContainer>
+                </View>
+              </GestureHandlerRootView>
+            </RootSiblingParent>
           </SafeAreaProvider>
         </TRPCProvider>
       </CustomErrorBoundary>
