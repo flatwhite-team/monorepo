@@ -59,7 +59,7 @@ function Resolved() {
             })}
           </Swiper> */}
       <View className="bg-background flex-1 gap-y-4">
-        <YStack gap={4}>
+        <YStack gap={8}>
           {store.characteristics.length > 0 ? (
             <ScrollView
               horizontal={true}
