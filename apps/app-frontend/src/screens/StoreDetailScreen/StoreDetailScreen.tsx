@@ -1,7 +1,8 @@
-import React, { ComponentProps, Suspense } from "react";
+import React, { ComponentProps, Suspense, useRef } from "react";
 import { Image, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Characteristic } from "@flatwhite-team/prisma";
+import BottomSheet from "@gorhom/bottom-sheet";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { YStack } from "tamagui";
 
@@ -10,6 +11,7 @@ import { findCategory, getCategoryFilters } from "~/models/Filters";
 import { CenteredActivityIndicator } from "../../components/CenteredActivityIndicator";
 import { HomeStackParamList } from "../../navigation/HomeStackNavigator";
 import { api } from "../../utils/api";
+import { MenuBottomSheet } from "./components/MenuBottomSheet";
 import { StoreDetailTabView } from "./components/StoreDetailTabView";
 
 export function StoreDetailScreen() {
@@ -25,6 +27,7 @@ function Resolved() {
     params: { storeId },
   } = useRoute<RouteProp<HomeStackParamList, "StoreDetailScreen">>();
   const { data: store } = api.store.findById.useQuery(storeId);
+  const menuBottomSheetRef = useRef<BottomSheet>(null);
 
   if (store == null) {
     throw new Error("상점 정보를 불러오지 못했습니다.");
@@ -78,6 +81,7 @@ function Resolved() {
         </YStack>
         <StoreDetailTabView />
       </View>
+      <MenuBottomSheet ref={menuBottomSheetRef} />
     </View>
   );
 }

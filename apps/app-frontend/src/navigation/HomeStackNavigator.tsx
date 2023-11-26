@@ -25,7 +25,10 @@ export type HomeStackParamList = {
       [필터_카테고리.시설]?: Characteristic[];
     };
   };
-  StoreDetailScreen: { storeId: string };
+  StoreDetailScreen: {
+    storeId: string;
+    selectedMenuId?: string;
+  };
   CustomLocationScreen: undefined;
 };
 
@@ -37,6 +40,16 @@ export type StoresScreenNavigationProp = NativeStackNavigationProp<
 export type StoresScreenRouteProp = RouteProp<
   HomeStackParamList,
   "StoresScreen"
+>;
+
+export type StoreDetailScreenNavigationProp = NativeStackNavigationProp<
+  HomeStackParamList,
+  "StoreDetailScreen"
+>;
+
+export type StoreDetailScreenRouteProp = RouteProp<
+  HomeStackParamList,
+  "StoreDetailScreen"
 >;
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
