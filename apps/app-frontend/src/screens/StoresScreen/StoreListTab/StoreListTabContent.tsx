@@ -74,6 +74,7 @@ function Resolved({ storeListRef, scrollY }: ResolvedProps) {
     data: infiniteStoresData,
     hasNextPage,
     fetchNextPage,
+    isFetchingNextPage,
   } = useInfiniteStores({
     locationOptions: {
       latitude: location.latitude,
@@ -156,6 +157,13 @@ function Resolved({ storeListRef, scrollY }: ResolvedProps) {
 
             scrollY.setValue(contentOffsetY);
           }}
+          ListFooterComponent={
+            isFetchingNextPage ? (
+              <View>
+                <CenteredActivityIndicator size="small" />
+              </View>
+            ) : null
+          }
         />
       )}
       <CustomLocationButton />
