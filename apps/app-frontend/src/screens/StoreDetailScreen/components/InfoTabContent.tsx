@@ -103,7 +103,7 @@ function Resolved() {
                 />
               </Text>
             </TouchableOpacity>
-            <View className="h-44">
+            <View className="h-40">
               <MapView
                 className="w-full flex-1"
                 provider={PROVIDER_GOOGLE}
