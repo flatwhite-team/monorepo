@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useRef } from "react";
-import { Image, Text } from "react-native";
+import { Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { Image } from "expo-image";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -84,7 +85,7 @@ export const MenuBottomSheet = forwardRef<BottomSheetMethods>(
           >
             {selectedMenu.images.length > 0 ? (
               <Image
-                className="h-64 w-full object-cover"
+                className="h-64 w-full"
                 source={{
                   uri: selectedMenu.images[0].url,
                 }}

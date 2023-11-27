@@ -1,7 +1,6 @@
-import { memo } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { Image } from "expo-image";
 import { Image as ImageModel, Menu } from "@flatwhite-team/prisma";
-import isEqual from "lodash/isEqual";
 
 import { colors } from "../../../constants";
 
@@ -15,8 +14,9 @@ export function MenuItem({ id, name, price, description, images }: MenuProps) {
   return (
     <View key={id} style={MenuItemStyle.container}>
       <Image
-        style={MenuItemStyle.image}
+        className="h-20 w-20 rounded"
         source={images.length > 0 ? { uri: images[0].url } : tempMenuImage}
+        recyclingKey={id}
       />
       <View style={MenuItemStyle.info}>
         <Text style={MenuItemStyle.title}>{name}</Text>
@@ -47,12 +47,6 @@ const MenuItemStyle = StyleSheet.create({
     borderBottomWidth: 1,
     paddingVertical: 20,
     paddingHorizontal: 24,
-  },
-  image: {
-    width: 80,
-    height: 80,
-    resizeMode: "cover",
-    borderRadius: 4,
   },
   info: {
     flexDirection: "column",

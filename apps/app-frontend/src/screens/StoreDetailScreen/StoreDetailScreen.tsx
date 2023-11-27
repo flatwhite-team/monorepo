@@ -1,6 +1,7 @@
 import React, { ComponentProps, Suspense, useRef } from "react";
-import { Image, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { Image } from "expo-image";
 import { Characteristic } from "@flatwhite-team/prisma";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { RouteProp, useRoute } from "@react-navigation/native";
@@ -41,7 +42,7 @@ function Resolved() {
             ? { uri: store.images[0].url }
             : require("../../images/icon.png")
         }
-        className="h-64 w-full object-cover"
+        className="h-64 w-full"
       />
       {/* [TODO] 이미지 슬라이더 */}
       {/* <Swiper
