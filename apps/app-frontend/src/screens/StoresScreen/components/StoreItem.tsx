@@ -1,11 +1,11 @@
 import {
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native";
+import { Image } from "expo-image";
 import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -37,12 +37,13 @@ export function StoreItem({
       onPress={() => navigate("StoreDetailScreen", { storeId: id })}
     >
       <Image
-        style={StoreItemStyle.image}
+        className="mr-5 h-20 w-20 rounded"
         source={
           images.length > 0
             ? { uri: images[0].url }
             : require("../../../images/icon.png")
         }
+        recyclingKey={id}
       />
       <View style={StoreItemStyle.info}>
         <Text style={StoreItemStyle.title} numberOfLines={1}>
@@ -89,12 +90,5 @@ const StoreItemStyle = StyleSheet.create({
   menu: {
     fontSize: 16,
     color: colors.gray500,
-  },
-  image: {
-    width: 80,
-    height: 80,
-    resizeMode: "cover",
-    marginRight: 20,
-    borderRadius: 4,
   },
 });
