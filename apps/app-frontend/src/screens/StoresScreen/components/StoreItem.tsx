@@ -1,4 +1,3 @@
-import { memo } from "react";
 import {
   Image,
   StyleSheet,
@@ -10,7 +9,6 @@ import {
 import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import isEqual from "lodash/isEqual";
 
 import { colors } from "../../../constants";
 import { BusinessDay } from "../../../models/BusinessDay";
