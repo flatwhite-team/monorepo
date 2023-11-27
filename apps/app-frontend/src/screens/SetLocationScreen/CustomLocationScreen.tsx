@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useState } from "react";
-import { Button, StyleSheet, View } from "react-native";
+import { Button, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
@@ -7,11 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import { debounce } from "lodash";
 
-import {
-  colors,
-  DEFAULT_LATITUDE_DELTA,
-  DEFAULT_LONGITUDE_DELTA,
-} from "~/constants";
+import { DEFAULT_LATITUDE_DELTA, DEFAULT_LONGITUDE_DELTA } from "~/constants";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { api } from "~/utils/api";
 
@@ -44,10 +40,8 @@ export function CustomLocationScreen({ storeListRef }: Props) {
 
   return (
     <View
-      style={{
-        ...Style.wrapper,
-        paddingBottom: inset.bottom,
-      }}
+      className="bg-background flex-1"
+      style={{ paddingBottom: inset.bottom }}
     >
       <MapView
         className="w-full flex-1"
@@ -94,10 +88,3 @@ export function CustomLocationScreen({ storeListRef }: Props) {
     </View>
   );
 }
-
-const Style = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-});

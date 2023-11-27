@@ -15,20 +15,8 @@ export function StoresScreen({ storeListRef }: Props) {
   const inset = useSafeAreaInsets();
 
   return (
-    <View
-      style={{
-        ...Style.wrapper,
-        paddingTop: inset.top,
-      }}
-    >
+    <View className="bg-background flex-1" style={{ paddingTop: inset.top }}>
       <StoresTabView storeListRef={storeListRef} />
     </View>
   );
 }
-
-const Style = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-});
