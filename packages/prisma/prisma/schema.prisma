@@ -58,6 +58,7 @@ enum Characteristic {
   BOOK_CAFE
   STUDY_CAFE
   // 분위기
+  SPACIOUS
   CALM
   QUIET
   COZY
@@ -79,6 +80,7 @@ enum Characteristic {
   LONG_HOURS
   // 시설
   WIFI
+  MULTI_FLOOR
   OUTDOOR
   PET_FRIENDLY
   PARKING

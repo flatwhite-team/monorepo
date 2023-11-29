@@ -55,6 +55,7 @@ export const 종류_필터: Record<종류_필터, string> = {
 
 type 분위기_필터 = Extract<
   Characteristic,
+  | "SPACIOUS"
   | "CALM"
   | "QUIET"
   | "COZY"
@@ -77,6 +78,7 @@ type 분위기_필터 = Extract<
 >;
 
 export const 분위기_필터: Record<분위기_필터, string> = {
+  SPACIOUS: "넓은",
   CALM: "차분한",
   QUIET: "조용한",
   COZY: "아늑한",
@@ -103,6 +105,7 @@ type 시설_필터 = Extract<
   | "WIFI"
   | "OUTDOOR"
   | "PET_FRIENDLY"
+  | "MULTI_FLOOR"
   | "PARKING"
   | "DRIVE_THRU"
   | "OUTLET"
@@ -111,6 +114,7 @@ type 시설_필터 = Extract<
 
 export const 시설_필터: Record<시설_필터, string> = {
   WIFI: "와이파이",
+  MULTI_FLOOR: "복층",
   OUTDOOR: "야외",
   PET_FRIENDLY: "반려동물",
   PARKING: "주차",
