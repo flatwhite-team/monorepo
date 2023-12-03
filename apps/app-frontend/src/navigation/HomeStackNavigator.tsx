@@ -12,6 +12,7 @@ import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicato
 import { colors } from "~/constants";
 import { 필터_카테고리 } from "~/models/Filters";
 import { CustomLocationProvider } from "~/providers/CustomLocationProvider";
+import { AuthScreen } from "~/screens/AuthScreen/AuthScreen";
 import { CustomLocationScreen } from "~/screens/SetLocationScreen/CustomLocationScreen";
 import { StoreDetailScreen } from "../screens/StoreDetailScreen/StoreDetailScreen";
 import { RootTabNavigator } from "./RootTabNavigator";
@@ -30,6 +31,7 @@ export type HomeStackParamList = {
     selectedMenuId?: string;
   };
   CustomLocationScreen: undefined;
+  AuthScreen: undefined;
 };
 
 export type StoresScreenNavigationProp = NativeStackNavigationProp<
@@ -99,6 +101,13 @@ export function HomeStackNavigator() {
               );
             }}
           </Stack.Screen>
+          <Stack.Screen
+            name="AuthScreen"
+            component={AuthScreen}
+            options={{
+              title: "계정",
+            }}
+          />
         </Stack.Navigator>
       </CustomLocationProvider>
     </Suspense>

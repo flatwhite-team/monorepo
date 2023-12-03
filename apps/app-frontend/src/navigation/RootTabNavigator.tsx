@@ -4,8 +4,8 @@ import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FlashList } from "@shopify/flash-list";
 
+import { MyScreen } from "~/screens/MyScreen/MyScreen";
 import { colors } from "../constants";
-import { ContactScreen } from "../screens/ContactScreen/ContactScreen";
 import { StoresScreen } from "../screens/StoresScreen/StoresScreen";
 
 const Tab = createBottomTabNavigator();
@@ -55,15 +55,15 @@ export function RootTabNavigator({ storeListRef }: Props) {
         }}
       </Tab.Screen>
       <Tab.Screen
-        name="ContactScreen"
-        component={ContactScreen}
+        name="MyScreen"
+        component={MyScreen}
         options={{
-          headerTitle: "문의",
-          tabBarLabel: "문의",
+          headerTitle: "나",
+          tabBarLabel: "나",
           tabBarIcon: ({ focused }) => {
             return (
               <Ionicons
-                name="mail"
+                name="person"
                 size={24}
                 color={focused ? colors.primary : colors.gray400}
               />

@@ -16,13 +16,15 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "cafe.flatwhite",
+      "usesAppleSignIn": true,
       "infoPlist": {
         "NSLocationAlwaysAndWhenInUseUsageDescription": "현재 위치를 중심으로 주변 카페를 찾습니다.",
         "NSLocationAlwaysUsageDescription": "현재 위치를 중심으로 주변 카페를 찾습니다.",
         "NSLocationWhenInUseUsageDescription": "현재 위치를 중심으로 주변 카페를 찾습니다."
       },
       "config": {
-        "googleMapsApiKey": "AIzaSyAWnbhJI3XgnTNz578j2Y1iSpRxgt1Pneg"
+        "googleMapsApiKey": "AIzaSyAWnbhJI3XgnTNz578j2Y1iSpRxgt1Pneg",
+        "usesNonExemptEncryption": false
       }
     },
     "android": {
@@ -46,6 +48,7 @@
       "favicon": "./assets/icon.png"
     },
     "plugins": [
+      "expo-apple-authentication",
       [
         "expo-location",
         {

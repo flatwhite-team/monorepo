@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { StatusBar, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RootSiblingParent } from "react-native-root-siblings";
@@ -6,9 +7,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { TamaguiProvider } from "tamagui";
 
 import config from "../tamagui.config";
+import { CenteredActivityIndicator } from "./components/CenteredActivityIndicator";
 import CustomErrorBoundary from "./components/CustomErrorBoundary";
 import { colors } from "./constants";
 import { HomeStackNavigator } from "./navigation/HomeStackNavigator";
+import { AuthSessionProvider } from "./providers/AuthProvider";
 import { TRPCProvider } from "./utils/api";
 
 export default function App() {
@@ -33,7 +36,13 @@ export default function App() {
                     backgroundColor={colors.background}
                   />
                   <NavigationContainer>
-                    <HomeStackNavigator />
+                    <Suspense
+                      fallback={<CenteredActivityIndicator size="large" />}
+                    >
+                      <AuthSessionProvider>
+                        <HomeStackNavigator />
+                      </AuthSessionProvider>
+                    </Suspense>
                   </NavigationContainer>
                 </View>
               </GestureHandlerRootView>
