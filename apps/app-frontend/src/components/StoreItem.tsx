@@ -10,9 +10,9 @@ import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-import { colors } from "../../../constants";
-import { BusinessDay } from "../../../models/BusinessDay";
-import { HomeStackParamList } from "../../../navigation/HomeStackNavigator";
+import { colors } from "../constants";
+import { BusinessDay } from "../models/BusinessDay";
+import { HomeStackParamList } from "../navigation/HomeStackNavigator";
 
 type StoreItemNavigationProp = NativeStackNavigationProp<
   HomeStackParamList,
@@ -41,7 +41,7 @@ export function StoreItem({
         source={
           images.length > 0
             ? { uri: images[0].url }
-            : require("../../../images/icon.png")
+            : require("../images/icon.png")
         }
         recyclingKey={id}
       />

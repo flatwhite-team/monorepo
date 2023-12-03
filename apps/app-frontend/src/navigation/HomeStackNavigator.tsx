@@ -17,14 +17,7 @@ import { StoreDetailScreen } from "../screens/StoreDetailScreen/StoreDetailScree
 import { RootTabNavigator } from "./RootTabNavigator";
 
 export type HomeStackParamList = {
-  StoresScreen: {
-    filters?: {
-      [필터_카테고리.음식료]?: Characteristic[];
-      [필터_카테고리.종류]?: Characteristic[];
-      [필터_카테고리.분위기]?: Characteristic[];
-      [필터_카테고리.시설]?: Characteristic[];
-    };
-  };
+  StoresScreen: undefined;
   StoreDetailScreen: {
     storeId: string;
     selectedMenuId?: string;

@@ -1,13 +1,16 @@
 import React, { ComponentProps, Suspense, useRef } from "react";
 import { Text, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
+import { Ionicons } from "@expo/vector-icons";
 import { Characteristic } from "@flatwhite-team/prisma";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { YStack } from "tamagui";
 
 import { Badge } from "~/components/Badge";
+import { colors } from "~/constants";
+import { useLocalBookmarkedStoreIds } from "~/hooks/useLocalBookmarkedStoreIds";
 import { findCategory, getCategoryFilters } from "~/models/Filters";
 import { CenteredActivityIndicator } from "../../components/CenteredActivityIndicator";
 import { HomeStackParamList } from "../../navigation/HomeStackNavigator";
@@ -28,11 +31,17 @@ function Resolved() {
     params: { storeId },
   } = useRoute<RouteProp<HomeStackParamList, "StoreDetailScreen">>();
   const { data: store } = api.store.findById.useQuery(storeId);
-  const menuBottomSheetRef = useRef<BottomSheet>(null);
 
   if (store == null) {
     throw new Error("상점 정보를 불러오지 못했습니다.");
   }
+
+  const menuBottomSheetRef = useRef<BottomSheet>(null);
+  const {
+    add: bookmark,
+    remove: unbookmark,
+    isBookmarked,
+  } = useLocalBookmarkedStoreIds();
 
   return (
     <View className="flex-1">
@@ -78,7 +87,30 @@ function Resolved() {
               })}
             </ScrollView>
           ) : null}
-          <Text className="px-5 text-2xl font-semibold">{store.name}</Text>
+          <View className="flex-row items-center justify-between px-5">
+            <Text className="text-2xl font-semibold">{store.name}</Text>
+            {isBookmarked(storeId) ? (
+              <TouchableOpacity
+                onPress={() => {
+                  unbookmark(storeId);
+                }}
+              >
+                <Ionicons name="heart" size={24} color={colors.red500} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  bookmark(storeId);
+                }}
+              >
+                <Ionicons
+                  name="heart-outline"
+                  size={24}
+                  color={colors.gray700}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
         </YStack>
         <StoreDetailTabView />
       </View>

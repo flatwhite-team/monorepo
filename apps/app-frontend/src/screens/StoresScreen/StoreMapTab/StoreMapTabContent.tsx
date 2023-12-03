@@ -4,15 +4,15 @@ import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import { Store } from "@flatwhite-team/prisma";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { debounce } from "lodash";
 
 import { DEFAULT_LATITUDE_DELTA, DEFAULT_LONGITUDE_DELTA } from "~/constants";
-import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
+import { HomeTabRouteProp } from "~/navigation/RootTabNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { api } from "~/utils/api";
+import { StoreItem } from "../../../components/StoreItem";
 import { FiltersScrollView } from "../components/FiltersScrollView";
-import { StoreItem } from "../components/StoreItem";
 
 interface Props {
   filterBottomSheetRef: RefObject<BottomSheet>;
@@ -21,7 +21,7 @@ interface Props {
 export function StoreMapTabContent({ filterBottomSheetRef }: Props) {
   const {
     params: { filters },
-  } = useRoute<RouteProp<HomeStackParamList, "StoresScreen">>();
+  } = useRoute<HomeTabRouteProp>();
   const { location } = useCustomLocation();
   const initialRegion = {
     latitude: location.latitude,

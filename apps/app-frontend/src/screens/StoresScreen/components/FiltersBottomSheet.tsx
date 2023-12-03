@@ -14,7 +14,7 @@ import {
   getCategoryFilters,
   필터_카테고리,
 } from "~/models/Filters";
-import { StoresScreenRouteProp } from "~/navigation/HomeStackNavigator";
+import { HomeTabRouteProp } from "~/navigation/RootTabNavigator";
 import { useStoresScreenNavigation } from "../hooks/useStoresScreenNavigation";
 
 export const FiltersBottomSheet = forwardRef<BottomSheetMethods>(
@@ -65,7 +65,7 @@ interface SetionProps {
 
 function Section({ category }: SetionProps) {
   const navigation = useStoresScreenNavigation();
-  const { params } = useRoute<StoresScreenRouteProp>();
+  const { params } = useRoute<HomeTabRouteProp>();
   const filtered =
     params.filters?.[category] != null &&
     Number(params.filters[category]?.length) > 0;
@@ -109,7 +109,7 @@ function FilterBadge({ characteristic, ...props }: FilterBadgeProps) {
   const navigation = useStoresScreenNavigation();
   const {
     params: { filters },
-  } = useRoute<StoresScreenRouteProp>();
+  } = useRoute<HomeTabRouteProp>();
   const 카테고리 = findCategory(characteristic);
   const 활성화했는가 = Boolean(filters?.[카테고리]?.includes(characteristic));
   const 카테고리_필터_라벨 = getCategoryFilters(카테고리);

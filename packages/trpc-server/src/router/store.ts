@@ -16,6 +16,34 @@ export type JoinedStore = Store & {
 };
 
 export const storeRouter = createTRPCRouter({
+  findByIds: publicProcedure
+    .input(z.array(z.string()))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.store.findMany({
+        where: {
+          id: {
+            in: input,
+          },
+        },
+        include: {
+          images: {
+            select: {
+              url: true,
+            },
+          },
+          menus: {
+            include: {
+              images: {
+                select: {
+                  url: true,
+                },
+              },
+            },
+          },
+          businessDays: true,
+        },
+      });
+    }),
   findById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.prisma.store.findUniqueOrThrow({
       where: {

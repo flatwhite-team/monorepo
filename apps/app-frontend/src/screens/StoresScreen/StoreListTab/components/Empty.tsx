@@ -1,9 +1,9 @@
 import { ComponentProps } from "react";
 import { Button, Text, View } from "react-native";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 
 import { DEFAULT_COORDS } from "~/constants";
-import { StoresScreenRouteProp } from "~/navigation/HomeStackNavigator";
+import { HomeTabRouteProp } from "~/navigation/RootTabNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { useStoresScreenNavigation } from "../../hooks/useStoresScreenNavigation";
 
@@ -13,7 +13,7 @@ export function Emtpy(props: Props) {
   const navigation = useStoresScreenNavigation();
   const {
     params: { filters },
-  } = useRoute<StoresScreenRouteProp>();
+  } = useRoute<HomeTabRouteProp>();
   const { setLocation } = useCustomLocation();
   const filtered = filters != null && Object.values(filters).length > 0;
   const confirmButtonTitle = filtered ? "필터 제거" : "강남역 주변 카페 보기";
