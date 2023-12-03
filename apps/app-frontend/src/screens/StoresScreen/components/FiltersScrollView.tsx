@@ -9,7 +9,7 @@ import { XStack } from "tamagui";
 import { Badge } from "~/components/Badge";
 import { colors } from "~/constants";
 import { getCategoryFilters, 필터_카테고리 } from "~/models/Filters";
-import { StoresScreenRouteProp } from "~/navigation/HomeStackNavigator";
+import { HomeTabRouteProp } from "~/navigation/RootTabNavigator";
 import { useStoresScreenNavigation } from "../hooks/useStoresScreenNavigation";
 
 interface Props extends ComponentProps<typeof View> {
@@ -43,7 +43,7 @@ export function FiltersScrollView({ bottomSheetRef, ...props }: Props) {
 
 function ResetBadge() {
   const navigation = useStoresScreenNavigation();
-  const { params } = useRoute<StoresScreenRouteProp>();
+  const { params } = useRoute<HomeTabRouteProp>();
   const active =
     params.filters == null || Object.values(params.filters).flat().length < 1;
 
@@ -71,7 +71,7 @@ interface CategoryBadgeProps {
 function CategoryBadge({ category, bottomSheetRef }: CategoryBadgeProps) {
   const {
     params: { filters },
-  } = useRoute<StoresScreenRouteProp>();
+  } = useRoute<HomeTabRouteProp>();
   const categoryFilters = filters?.[category] ?? [];
   const active = categoryFilters.length > 0;
   const 라벨 = getCategoryFilters(category);

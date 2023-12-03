@@ -11,9 +11,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicator";
 import { colors, DEFAULT_RADIUS } from "~/constants";
 import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
+import { RootTabParamList } from "~/navigation/RootTabNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
+import { StoreItem } from "../../../components/StoreItem";
 import { FiltersScrollView } from "../components/FiltersScrollView";
-import { StoreItem } from "../components/StoreItem";
 import { Emtpy } from "./components/Empty";
 import { useInfiniteStores } from "./hooks/useInfiniteStores";
 
@@ -64,7 +65,7 @@ interface ResolvedProps {
 function Resolved({ storeListRef, scrollY }: ResolvedProps) {
   const {
     params: { filters },
-  } = useRoute<RouteProp<HomeStackParamList, "StoresScreen">>();
+  } = useRoute<RouteProp<RootTabParamList, "Home">>();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
   const { location, initializeLocation } = useCustomLocation();

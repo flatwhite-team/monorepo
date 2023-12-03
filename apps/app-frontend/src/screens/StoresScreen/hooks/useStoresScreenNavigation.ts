@@ -3,15 +3,15 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { 필터_카테고리 } from "~/models/Filters";
 import {
-  StoresScreenNavigationProp,
-  StoresScreenRouteProp,
-} from "~/navigation/HomeStackNavigator";
+  HomeTabNavigationProp,
+  HomeTabRouteProp,
+} from "~/navigation/RootTabNavigator";
 
 export function useStoresScreenNavigation() {
-  const navigation = useNavigation<StoresScreenNavigationProp>();
+  const navigation = useNavigation<HomeTabNavigationProp>();
   const {
     params: { filters },
-  } = useRoute<StoresScreenRouteProp>();
+  } = useRoute<HomeTabRouteProp>();
 
   return {
     ...navigation,
