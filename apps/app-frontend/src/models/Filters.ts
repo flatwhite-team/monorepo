@@ -110,6 +110,7 @@ type 시설_필터 = Extract<
   | "DRIVE_THRU"
   | "OUTLET"
   | "RESERVATION"
+  | "RENT"
 >;
 
 export const 시설_필터: Record<시설_필터, string> = {
@@ -121,6 +122,7 @@ export const 시설_필터: Record<시설_필터, string> = {
   DRIVE_THRU: "드라이브스루",
   OUTLET: "콘센트",
   RESERVATION: "예약",
+  RENT: "대관",
 } as const;
 
 export function findCategory(characteristic: Characteristic) {

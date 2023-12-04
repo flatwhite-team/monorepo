@@ -87,6 +87,7 @@ enum Characteristic {
   DRIVE_THRU
   OUTLET
   RESERVATION
+  RENT
 }
 
 enum DayOfWeek {
