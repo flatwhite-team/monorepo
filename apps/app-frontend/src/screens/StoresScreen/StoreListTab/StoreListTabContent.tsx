@@ -140,6 +140,7 @@ function Resolved({ storeListRef, scrollY }: ResolvedProps) {
                   queryKey: [useInfiniteStores.baseQueryKey],
                 });
               }}
+              progressViewOffset={FILTERS_SCROLL_VIEW_HEIGHT - 4}
             />
           }
           onScroll={({
