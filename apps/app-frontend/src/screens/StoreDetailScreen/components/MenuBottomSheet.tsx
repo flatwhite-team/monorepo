@@ -25,11 +25,11 @@ export const MenuBottomSheet = forwardRef<BottomSheetMethods>(
     const selectedMenu = menus?.find((menu) => {
       return menu.id === selectedMenuId;
     });
-    const snapPoints = ["80%"];
+    const snapPoints = ["80%", "100%"];
 
     useEffect(() => {
       if (selectedMenu != null) {
-        _ref?.current?.expand();
+        _ref?.current?.snapToIndex(0);
       } else {
         _ref?.current?.close();
       }
