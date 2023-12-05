@@ -1,11 +1,15 @@
 import { Suspense } from "react";
 import { Platform, ScrollView, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import {
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native-gesture-handler";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import Toast from "react-native-root-toast";
 import { setStringAsync } from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { XStack, YStack } from "tamagui";
 
 import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicator";
@@ -23,6 +27,8 @@ export function InfoTabContent() {
 }
 
 function Resolved() {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<HomeStackParamList>>();
   const {
     params: { storeId },
   } = useRoute<RouteProp<HomeStackParamList, "StoreDetailScreen">>();
@@ -109,6 +115,12 @@ function Resolved() {
             </TouchableOpacity>
             <View className="h-40">
               <MapView
+                onPress={() => {
+                  navigation.navigate("MarkedMapScreen", {
+                    latitude: store.latitude,
+                    longitude: store.longitude,
+                  });
+                }}
                 className="w-full flex-1"
                 provider={PROVIDER_GOOGLE}
                 userLocationPriority="balanced"
@@ -122,9 +134,11 @@ function Resolved() {
                   pitch: 0,
                   zoom: 15,
                 }}
+                scrollEnabled={false}
+                zoomEnabled={false}
                 rotateEnabled={false}
                 pitchEnabled={false}
-                toolbarEnabled={false}
+                showsMyLocationButton={false}
               >
                 <Marker
                   coordinate={{
@@ -133,6 +147,11 @@ function Resolved() {
                   }}
                 />
               </MapView>
+              <TouchableWithoutFeedback className="absolute bottom-0 right-0 mb-2 mr-2">
+                <View className="bg-background rounded p-1 shadow">
+                  <Text className="text-xs">지도 크게 보기</Text>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
           </YStack>
         </XStack>
