@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { Platform, ScrollView, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import Toast from "react-native-root-toast";
@@ -88,10 +88,14 @@ function Resolved() {
             <TouchableOpacity
               onPress={async () => {
                 await setStringAsync(store.address);
-                Toast.show("주소를 복사했어요.", {
-                  opacity: 1,
-                  backgroundColor: colors.gray900,
-                });
+
+                if (Platform.OS !== "android") {
+                  Toast.show("주소를 복사했어요.", {
+                    opacity: 0.7,
+                    backgroundColor: colors.gray900,
+                    hideOnPress: true,
+                  });
+                }
               }}
             >
               <Text className="flex-1 text-base text-gray-900">
