@@ -1,5 +1,12 @@
 import { ComponentProps, useState } from "react";
-import { Button, Keyboard, Text, View } from "react-native";
+import {
+  Button,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  View,
+} from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import Toast from "react-native-root-toast";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -53,51 +60,57 @@ export function Emtpy(props: Props) {
       />
     </View>
   ) : (
-    <YStack
-      gap={8}
-      className="w-full flex-1 justify-center self-center p-5"
-      {...props}
+    <KeyboardAvoidingView
+      className="flex-1"
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <Text className="text-xl">지역을 알려주세요. 카페를 등록할게요.</Text>
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field: { onChange, value } }) => {
-          return (
-            <TextInput
-              className={`rounded border ${
-                errors.text == null ? "border-gray-300" : "border-red-500"
-              } px-4 py-3`}
-              placeholder="지역을 입력해주세요."
-              value={value}
-              onChangeText={onChange}
-            />
-          );
-        }}
-        name="text"
-      />
-      <Button
-        title="요청"
-        onPress={handleSubmit(async ({ text }) => {
-          Keyboard.dismiss();
+      <YStack
+        gap={8}
+        className="w-full flex-1 justify-center self-center p-5"
+        onPress={Keyboard.dismiss}
+        {...props}
+      >
+        <Text className="text-xl">지역을 알려주세요. 카페를 등록할게요.</Text>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <TextInput
+                className={`rounded border ${
+                  errors.text == null ? "border-gray-300" : "border-red-500"
+                } px-4 py-3`}
+                placeholder="지역을 입력해주세요."
+                value={value}
+                onChangeText={onChange}
+              />
+            );
+          }}
+          name="text"
+        />
+        <Button
+          title="요청"
+          onPress={handleSubmit(async ({ text }) => {
+            Keyboard.dismiss();
 
-          await sendSlackNotibotMessage(
-            `[지역 요청] ${text}\nfilters: ${JSON.stringify(filters)}`,
-          );
+            await sendSlackNotibotMessage(
+              `[지역 요청] ${text}\nfilters: ${JSON.stringify(filters)}`,
+            );
 
-          Toast.show(`${text} 지역 카페 등록을 요청했어요.`, {
-            opacity: 0.7,
-            backgroundColor: colors.gray900,
-            hideOnPress: true,
-            position: -(Math.abs(Toast.positions.BOTTOM) + tabBarHeight),
-          });
+            Toast.show(`${text} 지역 카페 등록을 요청했어요.`, {
+              opacity: 0.7,
+              backgroundColor: colors.gray900,
+              hideOnPress: true,
+              position: -(Math.abs(Toast.positions.BOTTOM) + tabBarHeight),
+            });
 
-          setHasRegisterLocation(true);
-        })}
-        disabled={isSubmitting}
-      />
-    </YStack>
+            setHasRegisterLocation(true);
+          })}
+          disabled={isSubmitting}
+        />
+      </YStack>
+    </KeyboardAvoidingView>
   );
 }
