@@ -17,7 +17,6 @@ import { YStack } from "tamagui";
 import { colors, DEFAULT_COORDS } from "~/constants";
 import { HomeTabRouteProp } from "~/navigation/RootTabNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
-import { api } from "~/utils/api";
 import { sendSlackNotibotMessage } from "~/utils/sendSlackNotibotMessage";
 import { useStoresScreenNavigation } from "../../hooks/useStoresScreenNavigation";
 
