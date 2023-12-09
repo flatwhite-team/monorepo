@@ -2,6 +2,7 @@ import { ComponentProps, useState } from "react";
 import { Button, Keyboard, Text, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import Toast from "react-native-root-toast";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useRoute } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import { YStack } from "tamagui";
@@ -16,11 +17,12 @@ import { useStoresScreenNavigation } from "../../hooks/useStoresScreenNavigation
 interface Props extends ComponentProps<typeof View> {}
 
 export function Emtpy(props: Props) {
+  const tabBarHeight = useBottomTabBarHeight();
   const [hasRegisterdLocation, setHasRegisterLocation] = useState(false);
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       text: "",
@@ -77,7 +79,7 @@ export function Emtpy(props: Props) {
         name="text"
       />
       <Button
-        title="확인"
+        title="요청"
         onPress={handleSubmit(async ({ text }) => {
           Keyboard.dismiss();
 
@@ -89,10 +91,12 @@ export function Emtpy(props: Props) {
             opacity: 0.7,
             backgroundColor: colors.gray900,
             hideOnPress: true,
+            position: -(Math.abs(Toast.positions.BOTTOM) + tabBarHeight),
           });
 
           setHasRegisterLocation(true);
         })}
+        disabled={isSubmitting}
       />
     </YStack>
   );
