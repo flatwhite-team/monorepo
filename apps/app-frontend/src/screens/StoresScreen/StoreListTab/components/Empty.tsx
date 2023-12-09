@@ -10,19 +10,22 @@ import { colors, DEFAULT_COORDS } from "~/constants";
 import { HomeTabRouteProp } from "~/navigation/RootTabNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { api } from "~/utils/api";
+import { sendSlackNotibotMessage } from "~/utils/sendSlackNotibotMessage";
 import { useStoresScreenNavigation } from "../../hooks/useStoresScreenNavigation";
 
 interface Props extends ComponentProps<typeof View> {}
 
 export function Emtpy(props: Props) {
   const [hasRegisterdLocation, setHasRegisterLocation] = useState(false);
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       text: "",
     },
   });
-  const { mutateAsync: sendNotibotMessage } =
-    api.slack.sendNotibotMessage.useMutation();
   const navigation = useStoresScreenNavigation();
   const {
     params: { filters },
@@ -56,13 +59,18 @@ export function Emtpy(props: Props) {
       <Text className="text-xl">지역을 알려주세요. 카페를 등록할게요.</Text>
       <Controller
         control={control}
+        rules={{
+          required: true,
+        }}
         render={({ field: { onChange, value } }) => {
           return (
             <TextInput
-              className="rounded border border-gray-300 px-4 py-3 align-middle"
+              className={`rounded border ${
+                errors.text == null ? "border-gray-300" : "border-red-500"
+              } px-4 py-3`}
               placeholder="지역을 입력해주세요."
-              onChangeText={onChange}
               value={value}
+              onChangeText={onChange}
             />
           );
         }}
@@ -73,15 +81,17 @@ export function Emtpy(props: Props) {
         onPress={handleSubmit(async ({ text }) => {
           Keyboard.dismiss();
 
-          await sendNotibotMessage(
+          await sendSlackNotibotMessage(
             `[지역 요청] ${text}\nfilters: ${JSON.stringify(filters)}`,
           );
 
-          Toast.show("지역 요청을 보냈어요", {
+          Toast.show(`${text} 지역 카페 등록을 요청했어요.`, {
             opacity: 0.7,
             backgroundColor: colors.gray900,
             hideOnPress: true,
           });
+
+          setHasRegisterLocation(true);
         })}
       />
     </YStack>
