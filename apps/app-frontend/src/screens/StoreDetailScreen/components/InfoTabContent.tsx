@@ -5,7 +5,6 @@ import {
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import Toast from "react-native-root-toast";
 import { setStringAsync } from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
@@ -17,6 +16,7 @@ import { colors } from "~/constants";
 import { BusinessDay } from "~/models/BusinessDay";
 import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
 import { api } from "~/utils/api";
+import { showToast } from "~/utils/showToast";
 
 export function InfoTabContent() {
   return (
@@ -96,11 +96,7 @@ function Resolved() {
                 await setStringAsync(store.address);
 
                 if (Platform.OS !== "android") {
-                  Toast.show("주소를 복사했어요.", {
-                    opacity: 0.7,
-                    backgroundColor: colors.gray900,
-                    hideOnPress: true,
-                  });
+                  showToast("주소를 복사했어요.");
                 }
               }}
             >

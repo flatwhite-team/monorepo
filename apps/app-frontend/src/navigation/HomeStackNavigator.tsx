@@ -10,8 +10,10 @@ import { FlashList } from "@shopify/flash-list";
 import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicator";
 import { colors } from "~/constants";
 import { CustomLocationProvider } from "~/providers/CustomLocationProvider";
+import { BizScreen } from "~/screens/BizScreen/BizScreen";
 import { CustomLocationScreen } from "~/screens/CustomLocationScreen/CustomLocationScreen";
 import { MarkedMapScreen } from "~/screens/MarkedMapScreen/MarkedMapScreen";
+import { RequestScreen } from "~/screens/RequestScreen/RequestScreen";
 import { StoreDetailScreen } from "../screens/StoreDetailScreen/StoreDetailScreen";
 import { RootTabNavigator } from "./RootTabNavigator";
 
@@ -26,7 +28,12 @@ export type HomeStackParamList = {
     latitude: number;
     longitude: number;
   };
+  RequestScreen: undefined;
+  BizScreen: undefined;
 };
+
+export type HomeStackNavigationProp =
+  NativeStackNavigationProp<HomeStackParamList>;
 
 export type StoresScreenNavigationProp = NativeStackNavigationProp<
   HomeStackParamList,
@@ -105,6 +112,20 @@ export function HomeStackNavigator() {
             component={MarkedMapScreen}
             options={{
               title: "지도",
+            }}
+          />
+          <Stack.Screen
+            name="RequestScreen"
+            component={RequestScreen}
+            options={{
+              title: "지역 / 카페 등록 요청",
+            }}
+          />
+          <Stack.Screen
+            name="BizScreen"
+            component={BizScreen}
+            options={{
+              title: "사전 신청",
             }}
           />
         </Stack.Navigator>

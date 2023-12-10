@@ -14,10 +14,11 @@ import { useRoute } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import { YStack } from "tamagui";
 
-import { colors, DEFAULT_COORDS } from "~/constants";
+import { DEFAULT_COORDS } from "~/constants";
 import { HomeTabRouteProp } from "~/navigation/RootTabNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { sendSlackNotibotMessage } from "~/utils/sendSlackNotibotMessage";
+import { showToast } from "~/utils/showToast";
 import { useStoresScreenNavigation } from "../../hooks/useStoresScreenNavigation";
 
 interface Props extends ComponentProps<typeof View> {}
@@ -31,7 +32,7 @@ export function Emtpy(props: Props) {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      text: "",
+      requestValue: "",
     },
   });
   const navigation = useStoresScreenNavigation();
@@ -79,29 +80,30 @@ export function Emtpy(props: Props) {
             return (
               <TextInput
                 className={`rounded border ${
-                  errors.text == null ? "border-gray-300" : "border-red-500"
+                  errors.requestValue == null
+                    ? "border-gray-300"
+                    : "border-red-500"
                 } px-4 py-3`}
-                placeholder="지역을 입력해주세요."
+                placeholder="예) 성수동, 강남역, 스타벅스"
                 value={value}
                 onChangeText={onChange}
               />
             );
           }}
-          name="text"
+          name="requestValue"
         />
         <Button
           title="요청"
-          onPress={handleSubmit(async ({ text }) => {
+          onPress={handleSubmit(async ({ requestValue }) => {
             Keyboard.dismiss();
 
             await sendSlackNotibotMessage(
-              `[지역 요청] ${text}\nfilters: ${JSON.stringify(filters)}`,
+              `[지역 요청] ${requestValue}\nfilters: ${JSON.stringify(
+                filters,
+              )}`,
             );
 
-            Toast.show(`${text} 지역 카페 등록을 요청했어요.`, {
-              opacity: 0.7,
-              backgroundColor: colors.gray900,
-              hideOnPress: true,
+            showToast(`${requestValue} 지역 카페 등록을 요청했어요.`, {
               position: -(Math.abs(Toast.positions.BOTTOM) + tabBarHeight),
             });
 
