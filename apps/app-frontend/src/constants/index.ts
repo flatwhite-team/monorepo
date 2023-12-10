@@ -1,3 +1,5 @@
+export const EMAIL = "flatwhiteapp@gmail.com";
+
 // 강남역
 export const DEFAULT_COORDS = {
   latitude: 37.497952,

@@ -9,8 +9,8 @@ import { FlashList } from "@shopify/flash-list";
 
 import { 필터_카테고리 } from "~/models/Filters";
 import { BookmarksScreen } from "~/screens/BookmarksScreen/BookmarksScreen";
+import { MyScreen } from "~/screens/MyScreen/MyScreen";
 import { colors } from "../constants";
-import { ContactScreen } from "../screens/ContactScreen/ContactScreen";
 import { StoresScreen } from "../screens/StoresScreen/StoresScreen";
 
 export type RootTabParamList = {
@@ -23,8 +23,10 @@ export type RootTabParamList = {
     };
   };
   BookmarksScreen: undefined;
-  ContactScreen: undefined;
+  MyScreen: undefined;
 };
+
+export type RootTabNavigationProp = NativeStackNavigationProp<RootTabParamList>;
 
 export type HomeTabNavigationProp = NativeStackNavigationProp<
   RootTabParamList,
@@ -97,15 +99,15 @@ export function RootTabNavigator({ storeListRef }: Props) {
         }}
       />
       <Tab.Screen
-        name="ContactScreen"
-        component={ContactScreen}
+        name="MyScreen"
+        component={MyScreen}
         options={{
-          headerTitle: "문의",
-          tabBarLabel: "문의",
+          headerTitle: "나",
+          tabBarLabel: "나",
           tabBarIcon: ({ focused }) => {
             return (
               <Ionicons
-                name={focused ? "mail" : "mail-outline"}
+                name={focused ? "person" : "person-outline"}
                 size={24}
                 color={focused ? colors.primary : colors.gray400}
               />
