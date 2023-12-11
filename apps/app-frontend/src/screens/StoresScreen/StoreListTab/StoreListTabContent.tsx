@@ -1,16 +1,21 @@
 import { RefObject, Suspense, useState } from "react";
-import { Animated, RefreshControl, TouchableOpacity, View } from "react-native";
+import {
+  Animated,
+  Button,
+  RefreshControl,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { JoinedStore } from "@flatwhite-team/trpc-server/src/router/store";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { FlashList } from "@shopify/flash-list";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { CenteredActivityIndicator } from "~/components/CenteredActivityIndicator";
 import { colors, DEFAULT_RADIUS } from "~/constants";
-import { HomeStackParamList } from "~/navigation/HomeStackNavigator";
+import { HomeStackNavigationProp } from "~/navigation/HomeStackNavigator";
 import { RootTabParamList } from "~/navigation/RootTabNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { StoreItem } from "../../../components/StoreItem";
@@ -63,6 +68,7 @@ interface ResolvedProps {
 }
 
 function Resolved({ storeListRef, scrollY }: ResolvedProps) {
+  const navigation = useNavigation<HomeStackNavigationProp>();
   const {
     params: { filters },
   } = useRoute<RouteProp<RootTabParamList, "Home">>();
@@ -161,9 +167,16 @@ function Resolved({ storeListRef, scrollY }: ResolvedProps) {
           }}
           ListFooterComponent={
             isFetchingNextPage ? (
-              <View>
+              <View className="py-1">
                 <CenteredActivityIndicator size="small" />
               </View>
+            ) : !hasNextPage ? (
+              <Button
+                title="찾는 카페가 없나요?"
+                onPress={() => {
+                  navigation.navigate("RequestScreen");
+                }}
+              />
             ) : null
           }
         />
@@ -174,8 +187,7 @@ function Resolved({ storeListRef, scrollY }: ResolvedProps) {
 }
 
 function CustomLocationButton() {
-  const { navigate } =
-    useNavigation<NativeStackNavigationProp<HomeStackParamList>>();
+  const { navigate } = useNavigation<HomeStackNavigationProp>();
 
   return (
     <TouchableOpacity
