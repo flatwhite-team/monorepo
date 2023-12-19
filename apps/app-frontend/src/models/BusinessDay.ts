@@ -125,7 +125,7 @@ export class BusinessDay implements Omit<BusinessDayModel, "storeId"> {
 
     const [hourAsString, minuteAsString] = time.split(":");
     const hour = parseInt(hourAsString);
-    const period = hour < 12 ? "오전" : "오후";
+    const period = hour < 12 || hour >= 24 ? "오전" : "오후";
     const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
 
     return `${period} ${formattedHour}:${minuteAsString}`;
