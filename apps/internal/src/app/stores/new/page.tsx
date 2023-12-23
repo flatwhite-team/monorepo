@@ -36,24 +36,38 @@ export default function NewStorePage() {
   const [done, setDone] = useState(false);
   const { mutate: createStore } = api.store.create.useMutation();
   const { register, handleSubmit, control } = useForm<Inputs>();
-  const { fields: businessDayFields, append: appendBusinessDay } =
-    useFieldArray({
-      control,
-      name: "businessDays",
-    });
-  const { fields: imageFields, append: appendImage } = useFieldArray({
+  const {
+    fields: businessDayFields,
+    append: appendBusinessDay,
+    remove: removeBusinessDay,
+  } = useFieldArray({
+    control,
+    name: "businessDays",
+  });
+  const {
+    fields: imageFields,
+    append: appendImage,
+    remove: removeImage,
+  } = useFieldArray({
     control,
     name: "images",
   });
-  const { fields: menuFields, append: appendMenu } = useFieldArray({
+  const {
+    fields: menuFields,
+    append: appendMenu,
+    remove: removeMenu,
+  } = useFieldArray({
     control,
     name: "menus",
   });
-  const { fields: characteristicFields, append: appendCharacteristic } =
-    useFieldArray({
-      control,
-      name: "characteristics",
-    });
+  const {
+    fields: characteristicFields,
+    append: appendCharacteristic,
+    remove: removeCharacteristic,
+  } = useFieldArray({
+    control,
+    name: "characteristics",
+  });
 
   return (
     <form
@@ -176,6 +190,13 @@ export default function NewStorePage() {
               type="text"
               {...register(`businessDays.${index}.closeTime`)}
             />
+            <button
+              onClick={() => {
+                removeBusinessDay(index);
+              }}
+            >
+              영업일 삭제
+            </button>
           </div>
         );
       })}
@@ -204,6 +225,13 @@ export default function NewStorePage() {
                 },
               })}
             />
+            <button
+              onClick={() => {
+                removeImage(index);
+              }}
+            >
+              이미지 삭제
+            </button>
           </div>
         );
       })}
@@ -262,6 +290,13 @@ export default function NewStorePage() {
                 },
               })}
             />
+            <button
+              onClick={() => {
+                removeMenu(index);
+              }}
+            >
+              메뉴 삭제
+            </button>
           </div>
         );
       })}
@@ -293,6 +328,13 @@ export default function NewStorePage() {
                 );
               })}
             </select>
+            <button
+              onClick={() => {
+                removeCharacteristic(index);
+              }}
+            >
+              특징 삭제
+            </button>
           </div>
         );
       })}
