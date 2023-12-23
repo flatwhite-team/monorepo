@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DayOfWeek } from "@flatwhite-team/prisma";
+import { Characteristic, DayOfWeek } from "@flatwhite-team/prisma";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { api } from "~/utils/api";
@@ -13,6 +13,9 @@ interface Inputs {
   latitude: number;
   longitude: number;
   description: string | null;
+  images: {
+    url: string;
+  }[];
   businessDays: {
     dayOfWeek: DayOfWeek;
     openTime: string;
@@ -23,6 +26,9 @@ interface Inputs {
     description: string | null;
     price: number | null;
     imageUrl: string;
+  }[];
+  characteristics: {
+    value: Characteristic;
   }[];
 }
 
@@ -35,10 +41,19 @@ export default function NewStorePage() {
       control,
       name: "businessDays",
     });
+  const { fields: imageFields, append: appendImage } = useFieldArray({
+    control,
+    name: "images",
+  });
   const { fields: menuFields, append: appendMenu } = useFieldArray({
     control,
     name: "menus",
   });
+  const { fields: characteristicFields, append: appendCharacteristic } =
+    useFieldArray({
+      control,
+      name: "characteristics",
+    });
 
   return (
     <form
@@ -55,6 +70,7 @@ export default function NewStorePage() {
           latitude: fields.latitude,
           longitude: fields.longitude,
           description: fields.description,
+          images: fields.images,
           businessDays: fields.businessDays,
           menus: fields.menus.map((menuField) => {
             return {
@@ -63,6 +79,9 @@ export default function NewStorePage() {
               description: menuField.description,
               images: [menuField.imageUrl],
             };
+          }),
+          characteristics: fields.characteristics.map(({ value }) => {
+            return value;
           }),
         });
       })}
@@ -171,6 +190,32 @@ export default function NewStorePage() {
       >
         영업일 추가
       </button>
+      {imageFields.map((imageField, index) => {
+        return (
+          <div key={imageField.id}>
+            <input
+              className="border"
+              type="text"
+              placeholder="imageUrl"
+              {...register(`images.${index}.url`, {
+                required: true,
+                setValueAs: (value) => {
+                  return value === "" ? null : value;
+                },
+              })}
+            />
+          </div>
+        );
+      })}
+      <button
+        onClick={() => {
+          appendImage({
+            url: "",
+          });
+        }}
+      >
+        이미지 추가
+      </button>
       {menuFields.map((menuField, index) => {
         return (
           <div key={menuField.id}>
@@ -231,6 +276,34 @@ export default function NewStorePage() {
         }}
       >
         메뉴 추가
+      </button>
+      {characteristicFields.map((characteristicField, index) => {
+        return (
+          <div key={characteristicField.id}>
+            <select
+              {...register(`characteristics.${index}.value`, {
+                required: true,
+              })}
+            >
+              {Object.values(Characteristic).map((characteristic) => {
+                return (
+                  <option key={characteristic} value={characteristic}>
+                    {characteristic}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        );
+      })}
+      <button
+        onClick={() => {
+          appendCharacteristic({
+            value: Characteristic.WIFI,
+          });
+        }}
+      >
+        특징 추가
       </button>
       <input
         type="checkbox"

@@ -289,12 +289,9 @@ export const storeRouter = createTRPCRouter({
         latitude: z.number(),
         longitude: z.number(),
         description: z.string().nullable(),
-        menus: z.array(
+        images: z.array(
           z.object({
-            name: z.string(),
-            price: z.number().nullable(),
-            images: z.array(z.string()),
-            description: z.string().nullable(),
+            url: z.string(),
           }),
         ),
         businessDays: z.array(
@@ -304,6 +301,15 @@ export const storeRouter = createTRPCRouter({
             closeTime: z.string().nullable(),
           }),
         ),
+        menus: z.array(
+          z.object({
+            name: z.string(),
+            price: z.number().nullable(),
+            images: z.array(z.string()),
+            description: z.string().nullable(),
+          }),
+        ),
+        characteristics: z.array(z.nativeEnum(Characteristic)),
       }),
     )
     .mutation(({ ctx, input }) => {
@@ -315,6 +321,11 @@ export const storeRouter = createTRPCRouter({
           latitude: input.latitude,
           longitude: input.longitude,
           description: input.description,
+          images: {
+            createMany: {
+              data: input.images,
+            },
+          },
           businessDays: {
             create: input.businessDays,
           },
@@ -333,6 +344,15 @@ export const storeRouter = createTRPCRouter({
                 },
               };
             }),
+          },
+          characteristics: {
+            createMany: {
+              data: input.characteristics.map((characteristic) => {
+                return {
+                  characteristic,
+                };
+              }),
+            },
           },
         },
       });
