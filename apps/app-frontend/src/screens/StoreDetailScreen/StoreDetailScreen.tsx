@@ -53,21 +53,6 @@ function Resolved() {
         }
         className="h-64 w-full"
       />
-      {/* [TODO] 이미지 슬라이더 */}
-      {/* <Swiper
-            width={300}
-            height={250}
-            autoplayTimeout={10}
-            showsPagination={true}
-          >
-            {store.images.map(({ url: uri }, index) => {
-              return (
-                <View key={index}>
-                  <Image source={{ uri }} style={DetailStyle.image} />
-                </View>
-              );
-            })}
-          </Swiper> */}
       <View className="bg-background flex-1 gap-y-4">
         <YStack gap={8}>
           {store.characteristics.length > 0 ? (
