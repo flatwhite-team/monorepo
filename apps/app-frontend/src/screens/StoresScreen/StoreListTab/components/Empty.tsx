@@ -1,4 +1,4 @@
-import { ComponentProps, useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 import {
   Button,
   Keyboard,
@@ -39,8 +39,12 @@ export function Emtpy(props: Props) {
   const {
     params: { filters },
   } = useRoute<HomeTabRouteProp>();
-  const { setLocation } = useCustomLocation();
+  const { location, setLocation } = useCustomLocation();
   const filtered = filters != null && Object.values(filters).length > 0;
+
+  useEffect(() => {
+    sendSlackNotibotMessage(`[미등록 지역] ${JSON.stringify(location)}`);
+  }, []);
 
   return hasRegisterdLocation ? (
     <View className="flex-1 justify-center self-center" {...props}>
