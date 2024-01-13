@@ -34,7 +34,7 @@ interface Inputs {
 
 export default function NewStorePage() {
   const [done, setDone] = useState(false);
-  const { mutate: createStore } = api.store.create.useMutation();
+  const { mutateAsync: createStore } = api.store.create.useMutation();
   const { register, handleSubmit, control } = useForm<Inputs>();
   const {
     fields: businessDayFields,
@@ -72,32 +72,38 @@ export default function NewStorePage() {
   return (
     <form
       className="flex flex-col gap-4"
-      onSubmit={handleSubmit((fields) => {
+      onSubmit={handleSubmit(async (fields) => {
         if (!done) {
           return;
         }
 
-        createStore({
-          name: fields.name,
-          address: fields.address,
-          phoneNumber: fields.phoneNumber,
-          latitude: fields.latitude,
-          longitude: fields.longitude,
-          description: fields.description,
-          images: fields.images,
-          businessDays: fields.businessDays,
-          menus: fields.menus.map((menuField) => {
-            return {
-              name: menuField.name,
-              price: menuField.price,
-              description: menuField.description,
-              images: [menuField.imageUrl],
-            };
-          }),
-          characteristics: fields.characteristics.map(({ value }) => {
-            return value;
-          }),
-        });
+        try {
+          await createStore({
+            name: fields.name,
+            address: fields.address,
+            phoneNumber: fields.phoneNumber,
+            latitude: fields.latitude,
+            longitude: fields.longitude,
+            description: fields.description,
+            images: fields.images,
+            businessDays: fields.businessDays,
+            menus: fields.menus.map((menuField) => {
+              return {
+                name: menuField.name,
+                price: menuField.price,
+                description: menuField.description,
+                images: [menuField.imageUrl],
+              };
+            }),
+            characteristics: fields.characteristics.map(({ value }) => {
+              return value;
+            }),
+          });
+
+          alert("ok");
+        } catch {
+          alert("error");
+        }
       })}
     >
       <div className="flex gap-4">
