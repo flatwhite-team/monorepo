@@ -25,7 +25,6 @@ interface Props extends ComponentProps<typeof View> {}
 
 export function Emtpy(props: Props) {
   const tabBarHeight = useBottomTabBarHeight();
-  const [hasRegisterdLocation, setHasRegisterLocation] = useState(false);
   const {
     control,
     handleSubmit,
@@ -46,7 +45,7 @@ export function Emtpy(props: Props) {
     sendSlackNotibotMessage(`[미등록 지역] ${JSON.stringify(location)}`);
   }, []);
 
-  return hasRegisterdLocation ? (
+  return (
     <View className="flex-1 justify-center self-center" {...props}>
       <Text className="text-xl">주변에 카페가 없어요.</Text>
       <Button
@@ -63,59 +62,5 @@ export function Emtpy(props: Props) {
         }}
       />
     </View>
-  ) : (
-    <KeyboardAvoidingView
-      className="flex-1"
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <YStack
-        gap={8}
-        className="w-full flex-1 justify-center self-center p-5"
-        onPress={Keyboard.dismiss}
-        {...props}
-      >
-        <Text className="text-xl">지역을 알려주세요. 카페를 등록할게요.</Text>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <TextInput
-                className={`rounded border ${
-                  errors.requestValue == null
-                    ? "border-gray-300"
-                    : "border-red-500"
-                } px-4 py-3`}
-                placeholder="예) 성수동, 강남역, 스타벅스"
-                value={value}
-                onChangeText={onChange}
-              />
-            );
-          }}
-          name="requestValue"
-        />
-        <Button
-          title="요청"
-          onPress={handleSubmit(async ({ requestValue }) => {
-            Keyboard.dismiss();
-
-            await sendSlackNotibotMessage(
-              `[지역 요청] ${requestValue}\nfilters: ${JSON.stringify(
-                filters,
-              )}`,
-            );
-
-            showToast(`${requestValue} 지역 카페 등록을 요청했어요.`, {
-              position: -(Math.abs(Toast.positions.BOTTOM) + tabBarHeight),
-            });
-
-            setHasRegisterLocation(true);
-          })}
-          disabled={isSubmitting}
-        />
-      </YStack>
-    </KeyboardAvoidingView>
   );
 }
