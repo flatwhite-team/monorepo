@@ -1,39 +1,16 @@
-import { ComponentProps, useEffect, useState } from "react";
-import {
-  Button,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  View,
-} from "react-native";
-import { TextInput } from "react-native-gesture-handler";
-import Toast from "react-native-root-toast";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { ComponentProps, useEffect } from "react";
+import { Button, Text, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { Controller, useForm } from "react-hook-form";
-import { YStack } from "tamagui";
 
 import { DEFAULT_COORDS } from "~/constants";
 import { HomeTabRouteProp } from "~/navigation/RootTabNavigator";
 import { useCustomLocation } from "~/providers/CustomLocationProvider";
 import { sendSlackNotibotMessage } from "~/utils/sendSlackNotibotMessage";
-import { showToast } from "~/utils/showToast";
 import { useStoresScreenNavigation } from "../../hooks/useStoresScreenNavigation";
 
 interface Props extends ComponentProps<typeof View> {}
 
 export function Emtpy(props: Props) {
-  const tabBarHeight = useBottomTabBarHeight();
-  const {
-    control,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    defaultValues: {
-      requestValue: "",
-    },
-  });
   const navigation = useStoresScreenNavigation();
   const {
     params: { filters },
