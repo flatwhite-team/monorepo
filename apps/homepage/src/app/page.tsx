@@ -67,9 +67,9 @@ function CatchPhrase() {
   const variant = Math.random() > 0.5 ? "A" : "B";
 
   return (
-    <div className="mt-8 text-7xl font-bold text-white">
+    <div className="mt-8 font-bold text-white">
       <div className="md:hidden">
-        <p className="leading-tight">
+        <p className="text-6xl leading-tight">
           {variant === "A" ? (
             <>
               분위기
@@ -87,19 +87,8 @@ function CatchPhrase() {
         </p>
       </div>
       <div className="hidden md:block">
-        <p className="leading-tight">
-          {variant === "A" ? (
-            <>
-              분위기
-              <br />
-              좋은
-            </>
-          ) : (
-            <>
-              취향에
-              <br />딱 맞는
-            </>
-          )}
+        <p className="text-7xl leading-tight">
+          {variant === "A" ? "분위기 좋은" : "취향에 딱 맞는"}
           <br />
           카페를 찾으세요
         </p>

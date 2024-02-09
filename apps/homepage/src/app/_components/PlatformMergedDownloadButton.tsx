@@ -4,9 +4,9 @@ export function PlatformMergedDownloadButton() {
   "use client";
 
   return (
-    <div className="fixed bottom-16 left-0 right-0 flex justify-center p-4">
+    <div className="fixed bottom-12 left-0 right-0 flex justify-center p-4">
       <button
-        className="bg-primary w-60 rounded-md p-6 text-3xl font-bold text-white shadow-2xl"
+        className="bg-primary w-52 rounded-lg p-5 text-2xl font-bold text-white shadow-2xl"
         onClick={() => {
           if (isIos() || isMac()) {
             return window.open(appStoreUrl, "_blank");
