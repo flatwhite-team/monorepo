@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import cafeImage from "../../public/karl-fredrickson-TYIzeCiZ_60-unsplash.jpg";
-import { PlatformMergedDownloadButton } from "./_components/MobileDownloadButton";
+import { PlatformMergedDownloadButton } from "./_components/PlatformMergedDownloadButton";
 
 export const metadata: Metadata = {
   title: "분위기 좋은 카페 찾기, 플랫화이트",
