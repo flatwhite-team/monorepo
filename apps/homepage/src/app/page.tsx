@@ -49,7 +49,7 @@ type WrapperProps = HTMLAttributes<HTMLDivElement>;
 function Wrapper(props: WrapperProps) {
   return (
     <div
-      className="relative mx-auto h-full p-10 md:max-w-4xl md:p-12"
+      className="relative mx-auto h-full p-10 sm:p-14 md:max-w-3xl"
       {...props}
     />
   );
@@ -57,7 +57,7 @@ function Wrapper(props: WrapperProps) {
 
 function Title() {
   return (
-    <h1 className="py-4 text-3xl font-bold text-white md:text-4xl">
+    <h1 className="py-4 text-3xl font-bold text-white sm:text-4xl">
       플랫화이트
     </h1>
   );
@@ -68,7 +68,7 @@ function CatchPhrase() {
 
   return (
     <div className="mt-8 font-bold text-white">
-      <div className="md:hidden">
+      <div className="sm:hidden">
         <p className="text-6xl leading-tight">
           {variant === "A" ? (
             <>
@@ -86,7 +86,7 @@ function CatchPhrase() {
           카페 찾기
         </p>
       </div>
-      <div className="hidden md:block">
+      <div className="hidden sm:block">
         <p className="text-7xl leading-tight">
           {variant === "A" ? "분위기 좋은" : "취향에 딱 맞는"}
           <br />
