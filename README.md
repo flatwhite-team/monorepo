@@ -17,6 +17,7 @@ packages
   └─ trpc-server
 ```
 
-| ![list view](README.assets/0.png) | ![detail screen](README.assets/1.png) | ![map view](README.assets/2.png)       |
-| --------------------------------- | ------------------------------------- | -------------------------------------- |
-| ![filters](README.assets/3.png)   | ![favorites](README.assets/4.png)     | ![account screen](README.assets/5.png) |
+| ![list view](README.assets/0.png) | ![detail screen](README.assets/1.png)  |
+| --------------------------------- | -------------------------------------- |
+| ![map view](README.assets/2.png)  | ![filters](README.assets/3.png)        |
+| ![favorites](README.assets/4.png) | ![account screen](README.assets/5.png) |
