@@ -124,6 +124,21 @@ const enforceUserIsServerAuthed = t.middleware(({ ctx, next }) => {
   });
 });
 
+const enforceUserIsManager = t.middleware(({ ctx, next }) => {
+  if (
+    ctx.session?.user.role !== "STORE_MANAGER" &&
+    ctx.session?.user.role !== "APP_ADMIN"
+  ) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+    });
+  }
+
+  return next({
+    ctx,
+  });
+});
+
 /**
  * Protected (authed) procedure
  *
@@ -136,3 +151,7 @@ const enforceUserIsServerAuthed = t.middleware(({ ctx, next }) => {
 export const protectedServerProcedure = t.procedure.use(
   enforceUserIsServerAuthed,
 );
+
+export const protectedAdminServerProcedure = t.procedure
+  .use(enforceUserIsServerAuthed)
+  .use(enforceUserIsManager);
